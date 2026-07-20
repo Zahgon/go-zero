@@ -2,6 +2,4 @@
 
 package pathx
 
-func ReadLink(name string) (string, error) {
-	return name, nil
-}
+func ReadLink(name string) (string, error) { _ = "STUB: not implemented"; return "", nil }

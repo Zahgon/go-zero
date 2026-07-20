@@ -1,10 +1,7 @@
 package gen
 
 import (
-	"fmt"
-
 	"github.com/zeromicro/go-zero/tools/goctl/model/sql/template"
-	"github.com/zeromicro/go-zero/tools/goctl/util/pathx"
 )
 
 const (
@@ -60,50 +57,14 @@ var templates = map[string]string{
 	errTemplateFile:                       template.Error,
 }
 
-// Category returns model const value
-func Category() string {
-	return category
-}
+func Category() string { _ = "STUB: not implemented"; return "" }
 
-// Clean deletes all template files
-func Clean() error {
-	return pathx.Clean(category)
-}
+func Clean() error { _ = "STUB: not implemented"; return nil }
 
-// GenTemplates creates template files if not exists
-func GenTemplates() error {
-	return pathx.InitTemplates(category, templates)
-}
+func GenTemplates() error { _ = "STUB: not implemented"; return nil }
 
-// RevertTemplate reverts the deleted template files
-func RevertTemplate(name string) error {
-	content, ok := templates[name]
-	if !ok {
-		return fmt.Errorf("%s: no such file name", name)
-	}
+func RevertTemplate(name string) error { _ = "STUB: not implemented"; return nil }
 
-	return pathx.CreateTemplate(category, name, content)
-}
+func Update() error { _ = "STUB: not implemented"; return nil }
 
-// Update provides template clean and init
-func Update() error {
-	err := Clean()
-	if err != nil {
-		return err
-	}
-
-	return pathx.InitTemplates(category, templates)
-}
-
-// hasField returns a function that checks if a field exists in the table.
-// It uses a pre-built map for O(1) lookup performance.
-func hasField(table Table) func(string) bool {
-	fieldSet := make(map[string]struct{}, len(table.Fields))
-	for _, field := range table.Fields {
-		fieldSet[field.NameOriginal] = struct{}{}
-	}
-	return func(f string) bool {
-		_, ok := fieldSet[f]
-		return ok
-	}
-}
+func hasField(table Table) func(string) bool { _ = "STUB: not implemented"; return nil }

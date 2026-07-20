@@ -9,48 +9,25 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-// assert that metadataSupplier implements the TextMapCarrier interface
 var _ propagation.TextMapCarrier = (*metadataSupplier)(nil)
 
 type metadataSupplier struct {
 	metadata *metadata.MD
 }
 
-func (s *metadataSupplier) Get(key string) string {
-	values := s.metadata.Get(key)
-	if len(values) == 0 {
-		return ""
-	}
+func (s *metadataSupplier) Get(key string) string { _ = "STUB: not implemented"; return "" }
 
-	return values[0]
-}
+func (s *metadataSupplier) Set(key, value string) { _ = "STUB: not implemented"; return }
 
-func (s *metadataSupplier) Set(key, value string) {
-	s.metadata.Set(key, value)
-}
+func (s *metadataSupplier) Keys() []string { _ = "STUB: not implemented"; return nil }
 
-func (s *metadataSupplier) Keys() []string {
-	out := make([]string, 0, len(*s.metadata))
-	for key := range *s.metadata {
-		out = append(out, key)
-	}
-
-	return out
-}
-
-// Inject injects cross-cutting concerns from the ctx into the metadata.
 func Inject(ctx context.Context, p propagation.TextMapPropagator, metadata *metadata.MD) {
-	p.Inject(ctx, &metadataSupplier{
-		metadata: metadata,
-	})
+	_ = "STUB: not implemented"
+	return
 }
 
-// Extract extracts the metadata from ctx.
 func Extract(ctx context.Context, p propagation.TextMapPropagator, metadata *metadata.MD) (
 	baggage.Baggage, sdktrace.SpanContext) {
-	ctx = p.Extract(ctx, &metadataSupplier{
-		metadata: metadata,
-	})
-
-	return baggage.FromContext(ctx), sdktrace.SpanContextFromContext(ctx)
+	_ = "STUB: not implemented"
+	return *new(baggage.Baggage), *new(sdktrace.SpanContext)
 }

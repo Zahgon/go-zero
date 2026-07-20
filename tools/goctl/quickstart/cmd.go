@@ -10,7 +10,6 @@ const (
 var (
 	varStringServiceType string
 
-	// Cmd describes the command to run.
 	Cmd = cobrax.NewCommand("quickstart", cobrax.WithRunE(run))
 )
 

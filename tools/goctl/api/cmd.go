@@ -20,7 +20,6 @@ import (
 )
 
 var (
-	// Cmd describes an api command.
 	Cmd       = cobrax.NewCommand("api", cobrax.WithRunE(apigen.CreateApiTemplate))
 	dartCmd   = cobrax.NewCommand("dart", cobrax.WithRunE(dartgen.DartCommand))
 	docCmd    = cobrax.NewCommand("doc", cobrax.WithRunE(docgen.DocCommand))
@@ -110,6 +109,5 @@ func init() {
 
 	validateCmdFlags.StringVar(&validate.VarStringAPI, "api")
 
-	// Add sub-commands
 	Cmd.AddCommand(dartCmd, docCmd, formatCmd, goCmd, javaCmd, ktCmd, newCmd, pluginCmd, tsCmd, validateCmd, swaggerCmd)
 }

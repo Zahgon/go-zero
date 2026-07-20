@@ -8,15 +8,8 @@ type lessWriter struct {
 }
 
 func newLessWriter(writer io.Writer, milliseconds int) *lessWriter {
-	return &lessWriter{
-		limitedExecutor: newLimitedExecutor(milliseconds),
-		writer:          writer,
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (w *lessWriter) Write(p []byte) (n int, err error) {
-	w.logOrDiscard(func() {
-		w.writer.Write(p)
-	})
-	return len(p), nil
-}
+func (w *lessWriter) Write(p []byte) (n int, err error) { _ = "STUB: not implemented"; return 0, nil }

@@ -3,25 +3,19 @@ package redis
 import (
 	"context"
 	"errors"
-	"fmt"
-	"strconv"
 	"time"
 
 	red "github.com/redis/go-redis/v9"
 	"github.com/redis/go-redis/v9/maintnotifications"
 	"github.com/zeromicro/go-zero/core/breaker"
-	"github.com/zeromicro/go-zero/core/errorx"
-	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/mapping"
 	"github.com/zeromicro/go-zero/core/syncx"
 )
 
 const (
-	// ClusterType means redis cluster.
 	ClusterType = "cluster"
-	// NodeType means redis node.
+
 	NodeType = "node"
-	// Nil is an alias of redis.Nil.
+
 	Nil = red.Nil
 
 	blockingQueryTimeout = 5 * time.Second
@@ -31,28 +25,23 @@ const (
 )
 
 var (
-	// ErrNilNode is an error that indicates a nil redis node.
 	ErrNilNode    = errors.New("nil redis node")
 	slowThreshold = syncx.ForAtomicDuration(defaultSlowThreshold)
 )
 
 type (
-	// Option defines the method to customize a Redis.
 	Option func(r *Redis)
 
-	// A Pair is a key/pair set used in redis zset.
 	Pair struct {
 		Key   string
 		Score int64
 	}
 
-	// A FloatPair is a key/pair for float set used in redis zet.
 	FloatPair struct {
 		Key   string
 		Score float64
 	}
 
-	// Redis defines a redis node/cluster. It is thread-safe.
 	Redis struct {
 		Addr               string
 		Type               string
@@ -66,2784 +55,1388 @@ type (
 		hooks              []red.Hook
 	}
 
-	// RedisNode interface represents a redis node.
 	RedisNode interface {
 		red.Cmdable
 		Do(ctx context.Context, args ...any) *red.Cmd
 	}
 
-	// GeoLocation is used with GeoAdd to add geospatial location.
 	GeoLocation = red.GeoLocation
-	// GeoRadiusQuery is used with GeoRadius to query geospatial index.
+
 	GeoRadiusQuery = red.GeoRadiusQuery
-	// GeoPos is used to represent a geo position.
+
 	GeoPos = red.GeoPos
 
-	// Pipeliner is an alias of redis.Pipeliner.
 	Pipeliner = red.Pipeliner
 
-	// Z represents sorted set member.
 	Z = red.Z
-	// ZStore is an alias of redis.ZStore.
+
 	ZStore = red.ZStore
 
-	// IntCmd is an alias of redis.IntCmd.
 	IntCmd = red.IntCmd
-	// FloatCmd is an alias of redis.FloatCmd.
+
 	FloatCmd = red.FloatCmd
-	// StringCmd is an alias of redis.StringCmd.
+
 	StringCmd = red.StringCmd
-	// Script is an alias of redis.Script.
+
 	Script = red.Script
 
-	// Hook is an alias of redis.Hook.
 	Hook = red.Hook
-	// DialHook is an alias of redis.DialHook.
+
 	DialHook = red.DialHook
-	// ProcessHook is an alias of redis.ProcessHook.
+
 	ProcessHook = red.ProcessHook
-	// ProcessPipelineHook is an alias of redis.ProcessPipelineHook.
+
 	ProcessPipelineHook = red.ProcessPipelineHook
 
-	// Cmder is an alias of redis.Cmder.
 	Cmder = red.Cmder
 )
 
-// MustNewRedis returns a Redis with given options.
-func MustNewRedis(conf RedisConf, opts ...Option) *Redis {
-	rds, err := NewRedis(conf, opts...)
-	logx.Must(err)
-	return rds
-}
+func MustNewRedis(conf RedisConf, opts ...Option) *Redis { _ = "STUB: not implemented"; return nil }
 
-// New returns a Redis with given options.
-// Deprecated: use MustNewRedis or NewRedis instead.
-func New(addr string, opts ...Option) *Redis {
-	return newRedis(addr, opts...)
-}
+func New(addr string, opts ...Option) *Redis { _ = "STUB: not implemented"; return nil }
 
-// NewRedis returns a Redis with given options.
 func NewRedis(conf RedisConf, opts ...Option) (*Redis, error) {
-	if err := conf.Validate(); err != nil {
-		return nil, err
-	}
-
-	if conf.Type == ClusterType {
-		opts = append([]Option{Cluster()}, opts...)
-	}
-	if len(conf.User) > 0 {
-		opts = append([]Option{WithUser(conf.User)}, opts...)
-	}
-	if len(conf.Pass) > 0 {
-		opts = append([]Option{WithPass(conf.Pass)}, opts...)
-	}
-	if conf.Tls {
-		opts = append([]Option{WithTLS()}, opts...)
-	}
-	if conf.Protocol > 0 {
-		opts = append([]Option{WithProtocol(conf.Protocol)}, opts...)
-	}
-	if conf.DisableIdentity {
-		opts = append([]Option{WithIdentity()}, opts...)
-	}
-	if len(conf.MaintNotifications) > 0 {
-		opts = append([]Option{WithMaintNotifications(conf.MaintNotifications)}, opts...)
-	}
-
-	rds := newRedis(conf.Host, opts...)
-	if !conf.NonBlock {
-		if err := rds.checkConnection(conf.PingTimeout); err != nil {
-			return nil, errorx.Wrap(err, fmt.Sprintf("redis connect error, addr: %s", conf.Host))
-		}
-	}
-
-	return rds, nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// NewScript returns a new Script instance.
-func NewScript(script string) *Script {
-	return red.NewScript(script)
-}
+func NewScript(script string) *Script { _ = "STUB: not implemented"; return nil }
 
-// BitCount is redis bitcount command implementation.
 func (s *Redis) BitCount(key string, start, end int64) (int64, error) {
-	return s.BitCountCtx(context.Background(), key, start, end)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitCountCtx is redis bitcount command implementation.
 func (s *Redis) BitCountCtx(ctx context.Context, key string, start, end int64) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.BitCount(ctx, key, &red.BitCount{
-		Start: start,
-		End:   end,
-	}).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitOpAnd is redis bit operation (and) command implementation.
 func (s *Redis) BitOpAnd(destKey string, keys ...string) (int64, error) {
-	return s.BitOpAndCtx(context.Background(), destKey, keys...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitOpAndCtx is redis bit operation (and) command implementation.
 func (s *Redis) BitOpAndCtx(ctx context.Context, destKey string, keys ...string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.BitOpAnd(ctx, destKey, keys...).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitOpNot is redis bit operation (not) command implementation.
 func (s *Redis) BitOpNot(destKey, key string) (int64, error) {
-	return s.BitOpNotCtx(context.Background(), destKey, key)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitOpNotCtx is redis bit operation (not) command implementation.
 func (s *Redis) BitOpNotCtx(ctx context.Context, destKey, key string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.BitOpNot(ctx, destKey, key).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitOpOr is redis bit operation (or) command implementation.
 func (s *Redis) BitOpOr(destKey string, keys ...string) (int64, error) {
-	return s.BitOpOrCtx(context.Background(), destKey, keys...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitOpOrCtx is redis bit operation (or) command implementation.
 func (s *Redis) BitOpOrCtx(ctx context.Context, destKey string, keys ...string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.BitOpOr(ctx, destKey, keys...).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitOpXor is redis bit operation (xor) command implementation.
 func (s *Redis) BitOpXor(destKey string, keys ...string) (int64, error) {
-	return s.BitOpXorCtx(context.Background(), destKey, keys...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitOpXorCtx is redis bit operation (xor) command implementation.
 func (s *Redis) BitOpXorCtx(ctx context.Context, destKey string, keys ...string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.BitOpXor(ctx, destKey, keys...).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitPos is redis bitpos command implementation.
 func (s *Redis) BitPos(key string, bit, start, end int64) (int64, error) {
-	return s.BitPosCtx(context.Background(), key, bit, start, end)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// BitPosCtx is redis bitpos command implementation.
 func (s *Redis) BitPosCtx(ctx context.Context, key string, bit, start, end int64) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.BitPos(ctx, key, bit, start, end).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Blpop uses passed in redis connection to execute blocking queries.
-//
-// For blocking operations, you must create a dedicated RedisNode using CreateBlockingNode to avoid
-// exhausting the connection pool. Blocking commands hold connections for extended periods and should
-// not share the regular connection pool.
-//
-// Example usage:
-//
-//	node, err := redis.CreateBlockingNode(rds)
-//	if err != nil {
-//	    // handle error
-//	}
-//	defer node.Close()
-//
-//	value, err := rds.Blpop(node, "mylist")
-//	if err != nil {
-//	    // handle error
-//	}
-//
-// Doesn't benefit from pooling redis connections of blocking queries
 func (s *Redis) Blpop(node RedisNode, key string) (string, error) {
-	return s.BlpopCtx(context.Background(), node, key)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// BlpopCtx uses passed in redis connection to execute blocking queries.
-//
-// For blocking operations, you must create a dedicated RedisNode using CreateBlockingNode.
-// See Blpop for usage examples.
-//
-// Doesn't benefit from pooling redis connections of blocking queries
 func (s *Redis) BlpopCtx(ctx context.Context, node RedisNode, key string) (string, error) {
-	return s.BlpopWithTimeoutCtx(ctx, node, blockingQueryTimeout, key)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// BlpopEx uses passed in redis connection to execute blpop command.
-// The difference against Blpop is that this method returns a bool to indicate success.
-//
-// For blocking operations, you must create a dedicated RedisNode using CreateBlockingNode.
-// See Blpop for usage examples.
 func (s *Redis) BlpopEx(node RedisNode, key string) (string, bool, error) {
-	return s.BlpopExCtx(context.Background(), node, key)
+	_ = "STUB: not implemented"
+	return "", false, nil
 }
 
-// BlpopExCtx uses passed in redis connection to execute blpop command.
-// The difference against Blpop is that this method returns a bool to indicate success.
-//
-// For blocking operations, you must create a dedicated RedisNode using CreateBlockingNode.
-// See Blpop for usage examples.
 func (s *Redis) BlpopExCtx(ctx context.Context, node RedisNode, key string) (string, bool, error) {
-	if node == nil {
-		return "", false, ErrNilNode
-	}
-
-	vals, err := node.BLPop(ctx, blockingQueryTimeout, key).Result()
-	if err != nil {
-		return "", false, err
-	}
-
-	if len(vals) < 2 {
-		return "", false, fmt.Errorf("no value on key: %s", key)
-	}
-
-	return vals[1], true, nil
+	_ = "STUB: not implemented"
+	return "", false, nil
 }
 
-// BlpopWithTimeout uses passed in redis connection to execute blpop command.
-// Control blocking query timeout
-//
-// For blocking operations, you must create a dedicated RedisNode using CreateBlockingNode.
-// See Blpop for usage examples.
 func (s *Redis) BlpopWithTimeout(node RedisNode, timeout time.Duration, key string) (string, error) {
-	return s.BlpopWithTimeoutCtx(context.Background(), node, timeout, key)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// BlpopWithTimeoutCtx uses passed in redis connection to execute blpop command.
-// Control blocking query timeout
-//
-// For blocking operations, you must create a dedicated RedisNode using CreateBlockingNode.
-// See Blpop for usage examples.
 func (s *Redis) BlpopWithTimeoutCtx(ctx context.Context, node RedisNode, timeout time.Duration,
 	key string) (string, error) {
-	if node == nil {
-		return "", ErrNilNode
-	}
-
-	vals, err := node.BLPop(ctx, timeout, key).Result()
-	if err != nil {
-		return "", err
-	}
-
-	if len(vals) < 2 {
-		return "", fmt.Errorf("no value on key: %s", key)
-	}
-
-	return vals[1], nil
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// Decr is the implementation of redis decr command.
-func (s *Redis) Decr(key string) (int64, error) {
-	return s.DecrCtx(context.Background(), key)
-}
+func (s *Redis) Decr(key string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// DecrCtx is the implementation of redis decr command.
 func (s *Redis) DecrCtx(ctx context.Context, key string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.Decr(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Decrby is the implementation of redis decrby command.
 func (s *Redis) Decrby(key string, decrement int64) (int64, error) {
-	return s.DecrbyCtx(context.Background(), key, decrement)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// DecrbyCtx is the implementation of redis decrby command.
 func (s *Redis) DecrbyCtx(ctx context.Context, key string, decrement int64) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.DecrBy(ctx, key, decrement).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Del deletes keys.
-func (s *Redis) Del(keys ...string) (int, error) {
-	return s.DelCtx(context.Background(), keys...)
-}
+func (s *Redis) Del(keys ...string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// DelCtx deletes keys.
 func (s *Redis) DelCtx(ctx context.Context, keys ...string) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.Del(ctx, keys...).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Do executes a generic redis command with given arguments.
-func (s *Redis) Do(args ...any) (any, error) {
-	return s.DoCtx(context.Background(), args...)
-}
+func (s *Redis) Do(args ...any) (any, error) { _ = "STUB: not implemented"; return *new(any), nil }
 
-// DoCtx executes a generic redis command with given arguments using the provided context.
 func (s *Redis) DoCtx(ctx context.Context, args ...any) (any, error) {
-	if len(args) == 0 {
-		return nil, errors.New("missing redis command")
-	}
-
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.Do(ctx, args...).Result()
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
-// Eval is the implementation of redis eval command.
 func (s *Redis) Eval(script string, keys []string, args ...any) (any, error) {
-	return s.EvalCtx(context.Background(), script, keys, args...)
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
-// EvalCtx is the implementation of redis eval command.
 func (s *Redis) EvalCtx(ctx context.Context, script string, keys []string,
 	args ...any) (any, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.Eval(ctx, script, keys, args...).Result()
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
-// EvalSha is the implementation of redis evalsha command.
 func (s *Redis) EvalSha(sha string, keys []string, args ...any) (any, error) {
-	return s.EvalShaCtx(context.Background(), sha, keys, args...)
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
-// EvalShaCtx is the implementation of redis evalsha command.
 func (s *Redis) EvalShaCtx(ctx context.Context, sha string, keys []string,
 	args ...any) (any, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.EvalSha(ctx, sha, keys, args...).Result()
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
-// Exists is the implementation of redis exists command.
-func (s *Redis) Exists(key string) (bool, error) {
-	return s.ExistsCtx(context.Background(), key)
-}
+func (s *Redis) Exists(key string) (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
-// ExistsCtx is the implementation of redis exists command.
 func (s *Redis) ExistsCtx(ctx context.Context, key string) (bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	v, err := conn.Exists(ctx, key).Result()
-	if err != nil {
-		return false, err
-	}
-
-	return v == 1, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// ExistsMany is the implementation of redis exists command.
-// checks the existence of multiple keys in Redis using the EXISTS command.
-func (s *Redis) ExistsMany(keys ...string) (int64, error) {
-	return s.ExistsManyCtx(context.Background(), keys...)
-}
+func (s *Redis) ExistsMany(keys ...string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// ExistsManyCtx is the implementation of redis exists command.
-// checks the existence of multiple keys in Redis using the EXISTS command.
 func (s *Redis) ExistsManyCtx(ctx context.Context, keys ...string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.Exists(ctx, keys...).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Expire is the implementation of redis expire command.
-func (s *Redis) Expire(key string, seconds int) error {
-	return s.ExpireCtx(context.Background(), key, seconds)
-}
+func (s *Redis) Expire(key string, seconds int) error { _ = "STUB: not implemented"; return nil }
 
-// ExpireCtx is the implementation of redis expire command.
 func (s *Redis) ExpireCtx(ctx context.Context, key string, seconds int) error {
-	conn, err := getRedis(s)
-	if err != nil {
-		return err
-	}
-
-	return conn.Expire(ctx, key, time.Duration(seconds)*time.Second).Err()
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// Expireat is the implementation of redis expireat command.
-func (s *Redis) Expireat(key string, expireTime int64) error {
-	return s.ExpireatCtx(context.Background(), key, expireTime)
-}
+func (s *Redis) Expireat(key string, expireTime int64) error { _ = "STUB: not implemented"; return nil }
 
-// ExpireatCtx is the implementation of redis expireat command.
 func (s *Redis) ExpireatCtx(ctx context.Context, key string, expireTime int64) error {
-	conn, err := getRedis(s)
-	if err != nil {
-		return err
-	}
-
-	return conn.ExpireAt(ctx, key, time.Unix(expireTime, 0)).Err()
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// GeoAdd is the implementation of redis geoadd command.
 func (s *Redis) GeoAdd(key string, geoLocation ...*GeoLocation) (int64, error) {
-	return s.GeoAddCtx(context.Background(), key, geoLocation...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// GeoAddCtx is the implementation of redis geoadd command.
 func (s *Redis) GeoAddCtx(ctx context.Context, key string, geoLocation ...*GeoLocation) (
 	int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.GeoAdd(ctx, key, geoLocation...).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// GeoDist is the implementation of redis geodist command.
 func (s *Redis) GeoDist(key, member1, member2, unit string) (float64, error) {
-	return s.GeoDistCtx(context.Background(), key, member1, member2, unit)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// GeoDistCtx is the implementation of redis geodist command.
 func (s *Redis) GeoDistCtx(ctx context.Context, key, member1, member2, unit string) (
 	float64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.GeoDist(ctx, key, member1, member2, unit).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// GeoHash is the implementation of redis geohash command.
 func (s *Redis) GeoHash(key string, members ...string) ([]string, error) {
-	return s.GeoHashCtx(context.Background(), key, members...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// GeoHashCtx is the implementation of redis geohash command.
 func (s *Redis) GeoHashCtx(ctx context.Context, key string, members ...string) (
 	[]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.GeoHash(ctx, key, members...).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// GeoRadius is the implementation of redis georadius command.
 func (s *Redis) GeoRadius(key string, longitude, latitude float64, query *GeoRadiusQuery) (
 	[]GeoLocation, error) {
-	return s.GeoRadiusCtx(context.Background(), key, longitude, latitude, query)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// GeoRadiusCtx is the implementation of redis georadius command.
 func (s *Redis) GeoRadiusCtx(ctx context.Context, key string, longitude, latitude float64,
 	query *GeoRadiusQuery) ([]GeoLocation, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.GeoRadius(ctx, key, longitude, latitude, query).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// GeoRadiusByMember is the implementation of redis georadiusbymember command.
 func (s *Redis) GeoRadiusByMember(key, member string, query *GeoRadiusQuery) ([]GeoLocation, error) {
-	return s.GeoRadiusByMemberCtx(context.Background(), key, member, query)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// GeoRadiusByMemberCtx is the implementation of redis georadiusbymember command.
 func (s *Redis) GeoRadiusByMemberCtx(ctx context.Context, key, member string,
 	query *GeoRadiusQuery) ([]GeoLocation, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.GeoRadiusByMember(ctx, key, member, query).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// GeoPos is the implementation of redis geopos command.
 func (s *Redis) GeoPos(key string, members ...string) ([]*GeoPos, error) {
-	return s.GeoPosCtx(context.Background(), key, members...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// GeoPosCtx is the implementation of redis geopos command.
 func (s *Redis) GeoPosCtx(ctx context.Context, key string, members ...string) (
 	[]*GeoPos, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.GeoPos(ctx, key, members...).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Get is the implementation of redis get command.
-func (s *Redis) Get(key string) (string, error) {
-	return s.GetCtx(context.Background(), key)
-}
+func (s *Redis) Get(key string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-// GetCtx is the implementation of redis get command.
 func (s *Redis) GetCtx(ctx context.Context, key string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	if val, err := conn.Get(ctx, key).Result(); errors.Is(err, red.Nil) {
-		return "", nil
-	} else if err != nil {
-		return "", err
-	} else {
-		return val, nil
-	}
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// GetBit is the implementation of redis getbit command.
 func (s *Redis) GetBit(key string, offset int64) (int, error) {
-	return s.GetBitCtx(context.Background(), key, offset)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// GetBitCtx is the implementation of redis getbit command.
 func (s *Redis) GetBitCtx(ctx context.Context, key string, offset int64) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.GetBit(ctx, key, offset).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// GetDel is the implementation of redis getdel command.
-// Available since: redis version 6.2.0
-func (s *Redis) GetDel(key string) (string, error) {
-	return s.GetDelCtx(context.Background(), key)
-}
+func (s *Redis) GetDel(key string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-// GetDelCtx is the implementation of redis getdel command.
-// Available since: redis version 6.2.0
 func (s *Redis) GetDelCtx(ctx context.Context, key string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	val, err := conn.GetDel(ctx, key).Result()
-	if errors.Is(err, red.Nil) {
-		return "", nil
-	}
-
-	return val, err
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// GetEx is the implementation of redis getex command.
-// Available since: redis version 6.2.0
 func (s *Redis) GetEx(key string, seconds int) (string, error) {
-	return s.GetExCtx(context.Background(), key, seconds)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// GetExCtx is the implementation of redis getex command.
-// Available since: redis version 6.2.0
 func (s *Redis) GetExCtx(ctx context.Context, key string, seconds int) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	val, err := conn.GetEx(ctx, key, time.Duration(seconds)*time.Second).Result()
-	if errors.Is(err, red.Nil) {
-		return "", nil
-	}
-
-	return val, err
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// GetSet is the implementation of redis getset command.
 func (s *Redis) GetSet(key, value string) (string, error) {
-	return s.GetSetCtx(context.Background(), key, value)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// GetSetCtx is the implementation of redis getset command.
 func (s *Redis) GetSetCtx(ctx context.Context, key, value string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	val, err := conn.GetSet(ctx, key, value).Result()
-	if errors.Is(err, red.Nil) {
-		return "", nil
-	}
-
-	return val, err
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// Hdel is the implementation of redis hdel command.
 func (s *Redis) Hdel(key string, fields ...string) (bool, error) {
-	return s.HdelCtx(context.Background(), key, fields...)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// HdelCtx is the implementation of redis hdel command.
 func (s *Redis) HdelCtx(ctx context.Context, key string, fields ...string) (bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	v, err := conn.HDel(ctx, key, fields...).Result()
-	if err != nil {
-		return false, err
-	}
-
-	return v >= 1, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// Hexists is the implementation of redis hexists command.
 func (s *Redis) Hexists(key, field string) (bool, error) {
-	return s.HexistsCtx(context.Background(), key, field)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// HexistsCtx is the implementation of redis hexists command.
 func (s *Redis) HexistsCtx(ctx context.Context, key, field string) (bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	return conn.HExists(ctx, key, field).Result()
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// Hget is the implementation of redis hget command.
-func (s *Redis) Hget(key, field string) (string, error) {
-	return s.HgetCtx(context.Background(), key, field)
-}
+func (s *Redis) Hget(key, field string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-// HgetCtx is the implementation of redis hget command.
 func (s *Redis) HgetCtx(ctx context.Context, key, field string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.HGet(ctx, key, field).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// Hgetall is the implementation of redis hgetall command.
 func (s *Redis) Hgetall(key string) (map[string]string, error) {
-	return s.HgetallCtx(context.Background(), key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// HgetallCtx is the implementation of redis hgetall command.
 func (s *Redis) HgetallCtx(ctx context.Context, key string) (map[string]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.HGetAll(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Hincrby is the implementation of redis hincrby command.
 func (s *Redis) Hincrby(key, field string, increment int) (int, error) {
-	return s.HincrbyCtx(context.Background(), key, field, increment)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// HincrbyCtx is the implementation of redis hincrby command.
 func (s *Redis) HincrbyCtx(ctx context.Context, key, field string, increment int) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.HIncrBy(ctx, key, field, int64(increment)).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// HincrbyFloat is the implementation of redis hincrbyfloat command.
 func (s *Redis) HincrbyFloat(key, field string, increment float64) (float64, error) {
-	return s.HincrbyFloatCtx(context.Background(), key, field, increment)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// HincrbyFloatCtx is the implementation of redis hincrbyfloat command.
 func (s *Redis) HincrbyFloatCtx(ctx context.Context, key, field string, increment float64) (
 	float64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.HIncrByFloat(ctx, key, field, increment).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Hkeys is the implementation of redis hkeys command.
-func (s *Redis) Hkeys(key string) ([]string, error) {
-	return s.HkeysCtx(context.Background(), key)
-}
+func (s *Redis) Hkeys(key string) ([]string, error) { _ = "STUB: not implemented"; return nil, nil }
 
-// HkeysCtx is the implementation of redis hkeys command.
 func (s *Redis) HkeysCtx(ctx context.Context, key string) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.HKeys(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Hlen is the implementation of redis hlen command.
-func (s *Redis) Hlen(key string) (int, error) {
-	return s.HlenCtx(context.Background(), key)
-}
+func (s *Redis) Hlen(key string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// HlenCtx is the implementation of redis hlen command.
 func (s *Redis) HlenCtx(ctx context.Context, key string) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.HLen(ctx, key).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Hmget is the implementation of redis hmget command.
 func (s *Redis) Hmget(key string, fields ...string) ([]string, error) {
-	return s.HmgetCtx(context.Background(), key, fields...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// HmgetCtx is the implementation of redis hmget command.
 func (s *Redis) HmgetCtx(ctx context.Context, key string, fields ...string) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.HMGet(ctx, key, fields...).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toStrings(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Hset is the implementation of redis hset command.
-func (s *Redis) Hset(key, field, value string) error {
-	return s.HsetCtx(context.Background(), key, field, value)
-}
+func (s *Redis) Hset(key, field, value string) error { _ = "STUB: not implemented"; return nil }
 
-// HsetCtx is the implementation of redis hset command.
 func (s *Redis) HsetCtx(ctx context.Context, key, field, value string) error {
-	conn, err := getRedis(s)
-	if err != nil {
-		return err
-	}
-
-	return conn.HSet(ctx, key, field, value).Err()
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// Hsetnx is the implementation of redis hsetnx command.
 func (s *Redis) Hsetnx(key, field, value string) (bool, error) {
-	return s.HsetnxCtx(context.Background(), key, field, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// HsetnxCtx is the implementation of redis hsetnx command.
 func (s *Redis) HsetnxCtx(ctx context.Context, key, field, value string) (bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	return conn.HSetNX(ctx, key, field, value).Result()
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// Hmset is the implementation of redis hmset command.
 func (s *Redis) Hmset(key string, fieldsAndValues map[string]string) error {
-	return s.HmsetCtx(context.Background(), key, fieldsAndValues)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// HmsetCtx is the implementation of redis hmset command.
 func (s *Redis) HmsetCtx(ctx context.Context, key string, fieldsAndValues map[string]string) error {
-	conn, err := getRedis(s)
-	if err != nil {
-		return err
-	}
-
-	vals := make(map[string]any, len(fieldsAndValues))
-	for k, v := range fieldsAndValues {
-		vals[k] = v
-	}
-
-	return conn.HMSet(ctx, key, vals).Err()
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// Hscan is the implementation of redis hscan command.
 func (s *Redis) Hscan(key string, cursor uint64, match string, count int64) (
 	[]string, uint64, error) {
-	return s.HscanCtx(context.Background(), key, cursor, match, count)
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
-// HscanCtx is the implementation of redis hscan command.
 func (s *Redis) HscanCtx(ctx context.Context, key string, cursor uint64, match string, count int64) (
 	[]string, uint64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return conn.HScan(ctx, key, cursor, match, count).Result()
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
-// Hvals is the implementation of redis hvals command.
-func (s *Redis) Hvals(key string) ([]string, error) {
-	return s.HvalsCtx(context.Background(), key)
-}
+func (s *Redis) Hvals(key string) ([]string, error) { _ = "STUB: not implemented"; return nil, nil }
 
-// HvalsCtx is the implementation of redis hvals command.
 func (s *Redis) HvalsCtx(ctx context.Context, key string) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.HVals(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Incr is the implementation of redis incr command.
-func (s *Redis) Incr(key string) (int64, error) {
-	return s.IncrCtx(context.Background(), key)
-}
+func (s *Redis) Incr(key string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// IncrCtx is the implementation of redis incr command.
 func (s *Redis) IncrCtx(ctx context.Context, key string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.Incr(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Incrby is the implementation of redis incrby command.
 func (s *Redis) Incrby(key string, increment int64) (int64, error) {
-	return s.IncrbyCtx(context.Background(), key, increment)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// IncrbyCtx is the implementation of redis incrby command.
 func (s *Redis) IncrbyCtx(ctx context.Context, key string, increment int64) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.IncrBy(ctx, key, increment).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// IncrbyFloat is the implementation of redis hincrbyfloat command.
 func (s *Redis) IncrbyFloat(key string, increment float64) (float64, error) {
-	return s.IncrbyFloatCtx(context.Background(), key, increment)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// IncrbyFloatCtx is the implementation of redis hincrbyfloat command.
 func (s *Redis) IncrbyFloatCtx(ctx context.Context, key string, increment float64) (float64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.IncrByFloat(ctx, key, increment).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Keys is the implementation of redis keys command.
-func (s *Redis) Keys(pattern string) ([]string, error) {
-	return s.KeysCtx(context.Background(), pattern)
-}
+func (s *Redis) Keys(pattern string) ([]string, error) { _ = "STUB: not implemented"; return nil, nil }
 
-// KeysCtx is the implementation of redis keys command.
 func (s *Redis) KeysCtx(ctx context.Context, pattern string) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.Keys(ctx, pattern).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Llen is the implementation of redis llen command.
-func (s *Redis) Llen(key string) (int, error) {
-	return s.LlenCtx(context.Background(), key)
-}
+func (s *Redis) Llen(key string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// LlenCtx is the implementation of redis llen command.
 func (s *Redis) LlenCtx(ctx context.Context, key string) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.LLen(ctx, key).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Lindex is the implementation of redis lindex command.
 func (s *Redis) Lindex(key string, index int64) (string, error) {
-	return s.LindexCtx(context.Background(), key, index)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// LindexCtx is the implementation of redis lindex command.
 func (s *Redis) LindexCtx(ctx context.Context, key string, index int64) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.LIndex(ctx, key, index).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// Lpop is the implementation of redis lpop command.
-func (s *Redis) Lpop(key string) (string, error) {
-	return s.LpopCtx(context.Background(), key)
-}
+func (s *Redis) Lpop(key string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-// LpopCtx is the implementation of redis lpop command.
 func (s *Redis) LpopCtx(ctx context.Context, key string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.LPop(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// LpopCount is the implementation of redis lpopCount command.
 func (s *Redis) LpopCount(key string, count int) ([]string, error) {
-	return s.LpopCountCtx(context.Background(), key, count)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// LpopCountCtx is the implementation of redis lpopCount command.
 func (s *Redis) LpopCountCtx(ctx context.Context, key string, count int) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.LPopCount(ctx, key, count).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Lpush is the implementation of redis lpush command.
 func (s *Redis) Lpush(key string, values ...any) (int, error) {
-	return s.LpushCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// LpushCtx is the implementation of redis lpush command.
 func (s *Redis) LpushCtx(ctx context.Context, key string, values ...any) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.LPush(ctx, key, values...).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Lrange is the implementation of redis lrange command.
 func (s *Redis) Lrange(key string, start, stop int) ([]string, error) {
-	return s.LrangeCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// LrangeCtx is the implementation of redis lrange command.
 func (s *Redis) LrangeCtx(ctx context.Context, key string, start, stop int) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.LRange(ctx, key, int64(start), int64(stop)).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Lrem is the implementation of redis lrem command.
 func (s *Redis) Lrem(key string, count int, value string) (int, error) {
-	return s.LremCtx(context.Background(), key, count, value)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// LremCtx is the implementation of redis lrem command.
 func (s *Redis) LremCtx(ctx context.Context, key string, count int, value string) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.LRem(ctx, key, int64(count), value).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Ltrim is the implementation of redis ltrim command.
-func (s *Redis) Ltrim(key string, start, stop int64) error {
-	return s.LtrimCtx(context.Background(), key, start, stop)
-}
+func (s *Redis) Ltrim(key string, start, stop int64) error { _ = "STUB: not implemented"; return nil }
 
-// LtrimCtx is the implementation of redis ltrim command.
 func (s *Redis) LtrimCtx(ctx context.Context, key string, start, stop int64) error {
-	conn, err := getRedis(s)
-	if err != nil {
-		return err
-	}
-
-	return conn.LTrim(ctx, key, start, stop).Err()
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// Mget is the implementation of redis mget command.
-func (s *Redis) Mget(keys ...string) ([]string, error) {
-	return s.MgetCtx(context.Background(), keys...)
-}
+func (s *Redis) Mget(keys ...string) ([]string, error) { _ = "STUB: not implemented"; return nil, nil }
 
-// MgetCtx is the implementation of redis mget command.
 func (s *Redis) MgetCtx(ctx context.Context, keys ...string) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.MGet(ctx, keys...).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toStrings(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Mset is the implementation of redis mset command.
 func (s *Redis) Mset(fieldsAndValues ...any) (string, error) {
-	return s.MsetCtx(context.Background(), fieldsAndValues...)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// MsetCtx is the implementation of redis mset command.
 func (s *Redis) MsetCtx(ctx context.Context, fieldsAndValues ...any) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.MSet(ctx, fieldsAndValues...).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// Persist is the implementation of redis persist command.
-func (s *Redis) Persist(key string) (bool, error) {
-	return s.PersistCtx(context.Background(), key)
-}
+func (s *Redis) Persist(key string) (bool, error) { _ = "STUB: not implemented"; return false, nil }
 
-// PersistCtx is the implementation of redis persist command.
 func (s *Redis) PersistCtx(ctx context.Context, key string) (bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	return conn.Persist(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// Pfadd is the implementation of redis pfadd command.
 func (s *Redis) Pfadd(key string, values ...any) (bool, error) {
-	return s.PfaddCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// PfaddCtx is the implementation of redis pfadd command.
 func (s *Redis) PfaddCtx(ctx context.Context, key string, values ...any) (bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	v, err := conn.PFAdd(ctx, key, values...).Result()
-	if err != nil {
-		return false, err
-	}
-
-	return v >= 1, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// Pfcount is the implementation of redis pfcount command.
-func (s *Redis) Pfcount(key string) (int64, error) {
-	return s.PfcountCtx(context.Background(), key)
-}
+func (s *Redis) Pfcount(key string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// PfcountCtx is the implementation of redis pfcount command.
 func (s *Redis) PfcountCtx(ctx context.Context, key string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.PFCount(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Pfmerge is the implementation of redis pfmerge command.
-func (s *Redis) Pfmerge(dest string, keys ...string) error {
-	return s.PfmergeCtx(context.Background(), dest, keys...)
-}
+func (s *Redis) Pfmerge(dest string, keys ...string) error { _ = "STUB: not implemented"; return nil }
 
-// PfmergeCtx is the implementation of redis pfmerge command.
 func (s *Redis) PfmergeCtx(ctx context.Context, dest string, keys ...string) error {
-	conn, err := getRedis(s)
-	if err != nil {
-		return err
-	}
-
-	_, err = conn.PFMerge(ctx, dest, keys...).Result()
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// Ping is the implementation of redis ping command.
-func (s *Redis) Ping() bool {
-	return s.PingCtx(context.Background())
-}
+func (s *Redis) Ping() bool { _ = "STUB: not implemented"; return false }
 
-// PingCtx is the implementation of redis ping command.
-func (s *Redis) PingCtx(ctx context.Context) bool {
-	// ignore error, error means false
-	conn, err := getRedis(s)
-	if err != nil {
-		return false
-	}
+func (s *Redis) PingCtx(ctx context.Context) bool { _ = "STUB: not implemented"; return false }
 
-	v, err := conn.Ping(ctx).Result()
-	if err != nil {
-		return false
-	}
+func (s *Redis) Pipelined(fn func(Pipeliner) error) error { _ = "STUB: not implemented"; return nil }
 
-	return v == "PONG"
-}
-
-// Pipelined lets fn execute pipelined commands.
-func (s *Redis) Pipelined(fn func(Pipeliner) error) error {
-	return s.PipelinedCtx(context.Background(), fn)
-}
-
-// PipelinedCtx lets fn execute pipelined commands.
-// Results need to be retrieved by calling Pipeline.Exec()
 func (s *Redis) PipelinedCtx(ctx context.Context, fn func(Pipeliner) error) error {
-	conn, err := getRedis(s)
-	if err != nil {
-		return err
-	}
-
-	_, err = conn.Pipelined(ctx, fn)
-	return err
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (s *Redis) Publish(channel string, message interface{}) (int64, error) {
-	return s.PublishCtx(context.Background(), channel, message)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (s *Redis) PublishCtx(ctx context.Context, channel string, message interface{}) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-	return conn.Publish(ctx, channel, message).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Rpop is the implementation of redis rpop command.
-func (s *Redis) Rpop(key string) (string, error) {
-	return s.RpopCtx(context.Background(), key)
-}
+func (s *Redis) Rpop(key string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-// RpopCtx is the implementation of redis rpop command.
 func (s *Redis) RpopCtx(ctx context.Context, key string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.RPop(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// RpopCount is the implementation of redis rpopCount command.
 func (s *Redis) RpopCount(key string, count int) ([]string, error) {
-	return s.RpopCountCtx(context.Background(), key, count)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// RpopCountCtx is the implementation of redis rpopCount command.
 func (s *Redis) RpopCountCtx(ctx context.Context, key string, count int) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.RPopCount(ctx, key, count).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Rpush is the implementation of redis rpush command.
 func (s *Redis) Rpush(key string, values ...any) (int, error) {
-	return s.RpushCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// RpushCtx is the implementation of redis rpush command.
 func (s *Redis) RpushCtx(ctx context.Context, key string, values ...any) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.RPush(ctx, key, values...).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// RPopLPush atomically removes the last element from source list and prepends it to destination list.
 func (s *Redis) RPopLPush(source string, destination string) (string, error) {
-	return s.RPopLPushCtx(context.Background(), source, destination)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// RPopLPushCtx is the context-aware version of RPopLPush.
 func (s *Redis) RPopLPushCtx(ctx context.Context, source string, destination string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-	return conn.RPopLPush(ctx, source, destination).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// Sadd is the implementation of redis sadd command.
 func (s *Redis) Sadd(key string, values ...any) (int, error) {
-	return s.SaddCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// SaddCtx is the implementation of redis sadd command.
 func (s *Redis) SaddCtx(ctx context.Context, key string, values ...any) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.SAdd(ctx, key, values...).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Scan is the implementation of redis scan command.
 func (s *Redis) Scan(cursor uint64, match string, count int64) ([]string, uint64, error) {
-	return s.ScanCtx(context.Background(), cursor, match, count)
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
-// ScanCtx is the implementation of redis scan command.
 func (s *Redis) ScanCtx(ctx context.Context, cursor uint64, match string, count int64) (
 	[]string, uint64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return conn.Scan(ctx, cursor, match, count).Result()
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
-// SetBit is the implementation of redis setbit command.
 func (s *Redis) SetBit(key string, offset int64, value int) (int, error) {
-	return s.SetBitCtx(context.Background(), key, offset, value)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// SetBitCtx is the implementation of redis setbit command.
 func (s *Redis) SetBitCtx(ctx context.Context, key string, offset int64, value int) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.SetBit(ctx, key, offset, value).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Sscan is the implementation of redis sscan command.
 func (s *Redis) Sscan(key string, cursor uint64, match string, count int64) (
 	[]string, uint64, error) {
-	return s.SscanCtx(context.Background(), key, cursor, match, count)
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
-// SscanCtx is the implementation of redis sscan command.
 func (s *Redis) SscanCtx(ctx context.Context, key string, cursor uint64, match string, count int64) (
 	[]string, uint64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return conn.SScan(ctx, key, cursor, match, count).Result()
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
-// Scard is the implementation of redis scard command.
-func (s *Redis) Scard(key string) (int64, error) {
-	return s.ScardCtx(context.Background(), key)
-}
+func (s *Redis) Scard(key string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// ScardCtx is the implementation of redis scard command.
 func (s *Redis) ScardCtx(ctx context.Context, key string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.SCard(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ScriptLoad is the implementation of redis script load command.
 func (s *Redis) ScriptLoad(script string) (string, error) {
-	return s.ScriptLoadCtx(context.Background(), script)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// ScriptLoadCtx is the implementation of redis script load command.
 func (s *Redis) ScriptLoadCtx(ctx context.Context, script string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.ScriptLoad(ctx, script).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// ScriptRun is the implementation of *redis.Script run command.
 func (s *Redis) ScriptRun(script *Script, keys []string, args ...any) (any, error) {
-	return s.ScriptRunCtx(context.Background(), script, keys, args...)
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
-// ScriptRunCtx is the implementation of *redis.Script run command.
 func (s *Redis) ScriptRunCtx(ctx context.Context, script *Script, keys []string,
 	args ...any) (any, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return script.Run(ctx, conn, keys, args...).Result()
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
-// Set is the implementation of redis set command.
-func (s *Redis) Set(key, value string) error {
-	return s.SetCtx(context.Background(), key, value)
-}
+func (s *Redis) Set(key, value string) error { _ = "STUB: not implemented"; return nil }
 
-// SetCtx is the implementation of redis set command.
 func (s *Redis) SetCtx(ctx context.Context, key, value string) error {
-	conn, err := getRedis(s)
-	if err != nil {
-		return err
-	}
-
-	return conn.Set(ctx, key, value, 0).Err()
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// Setex is the implementation of redis setex command.
-func (s *Redis) Setex(key, value string, seconds int) error {
-	return s.SetexCtx(context.Background(), key, value, seconds)
-}
+func (s *Redis) Setex(key, value string, seconds int) error { _ = "STUB: not implemented"; return nil }
 
-// SetexCtx is the implementation of redis setex command.
 func (s *Redis) SetexCtx(ctx context.Context, key, value string, seconds int) error {
-	conn, err := getRedis(s)
-	if err != nil {
-		return err
-	}
-
-	return conn.Set(ctx, key, value, time.Duration(seconds)*time.Second).Err()
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// Setnx is the implementation of redis setnx command.
 func (s *Redis) Setnx(key, value string) (bool, error) {
-	return s.SetnxCtx(context.Background(), key, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// SetnxCtx is the implementation of redis setnx command.
 func (s *Redis) SetnxCtx(ctx context.Context, key, value string) (bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	return conn.SetNX(ctx, key, value, 0).Result()
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// SetnxEx is the implementation of redis setnx command with expire.
 func (s *Redis) SetnxEx(key, value string, seconds int) (bool, error) {
-	return s.SetnxExCtx(context.Background(), key, value, seconds)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// SetnxExCtx is the implementation of redis setnx command with expire.
 func (s *Redis) SetnxExCtx(ctx context.Context, key, value string, seconds int) (bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	return conn.SetNX(ctx, key, value, time.Duration(seconds)*time.Second).Result()
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// Sismember is the implementation of redis sismember command.
 func (s *Redis) Sismember(key string, value any) (bool, error) {
-	return s.SismemberCtx(context.Background(), key, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// SismemberCtx is the implementation of redis sismember command.
 func (s *Redis) SismemberCtx(ctx context.Context, key string, value any) (bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	return conn.SIsMember(ctx, key, value).Result()
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// Smembers is the implementation of redis smembers command.
-func (s *Redis) Smembers(key string) ([]string, error) {
-	return s.SmembersCtx(context.Background(), key)
-}
+func (s *Redis) Smembers(key string) ([]string, error) { _ = "STUB: not implemented"; return nil, nil }
 
-// SmembersCtx is the implementation of redis smembers command.
 func (s *Redis) SmembersCtx(ctx context.Context, key string) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.SMembers(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Spop is the implementation of redis spop command.
-func (s *Redis) Spop(key string) (string, error) {
-	return s.SpopCtx(context.Background(), key)
-}
+func (s *Redis) Spop(key string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
-// SpopCtx is the implementation of redis spop command.
 func (s *Redis) SpopCtx(ctx context.Context, key string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.SPop(ctx, key).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// Srandmember is the implementation of redis srandmember command.
 func (s *Redis) Srandmember(key string, count int) ([]string, error) {
-	return s.SrandmemberCtx(context.Background(), key, count)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// SrandmemberCtx is the implementation of redis srandmember command.
 func (s *Redis) SrandmemberCtx(ctx context.Context, key string, count int) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.SRandMemberN(ctx, key, int64(count)).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Srem is the implementation of redis srem command.
 func (s *Redis) Srem(key string, values ...any) (int, error) {
-	return s.SremCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// SremCtx is the implementation of redis srem command.
 func (s *Redis) SremCtx(ctx context.Context, key string, values ...any) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.SRem(ctx, key, values...).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// String returns the string representation of s.
-func (s *Redis) String() string {
-	return s.Addr
-}
+func (s *Redis) String() string { _ = "STUB: not implemented"; return "" }
 
-// Sunion is the implementation of redis sunion command.
 func (s *Redis) Sunion(keys ...string) ([]string, error) {
-	return s.SunionCtx(context.Background(), keys...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// SunionCtx is the implementation of redis sunion command.
 func (s *Redis) SunionCtx(ctx context.Context, keys ...string) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.SUnion(ctx, keys...).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Sunionstore is the implementation of redis sunionstore command.
 func (s *Redis) Sunionstore(destination string, keys ...string) (int, error) {
-	return s.SunionstoreCtx(context.Background(), destination, keys...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// SunionstoreCtx is the implementation of redis sunionstore command.
 func (s *Redis) SunionstoreCtx(ctx context.Context, destination string, keys ...string) (
 	int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.SUnionStore(ctx, destination, keys...).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Sdiff is the implementation of redis sdiff command.
-func (s *Redis) Sdiff(keys ...string) ([]string, error) {
-	return s.SdiffCtx(context.Background(), keys...)
-}
+func (s *Redis) Sdiff(keys ...string) ([]string, error) { _ = "STUB: not implemented"; return nil, nil }
 
-// SdiffCtx is the implementation of redis sdiff command.
 func (s *Redis) SdiffCtx(ctx context.Context, keys ...string) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.SDiff(ctx, keys...).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Sdiffstore is the implementation of redis sdiffstore command.
 func (s *Redis) Sdiffstore(destination string, keys ...string) (int, error) {
-	return s.SdiffstoreCtx(context.Background(), destination, keys...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// SdiffstoreCtx is the implementation of redis sdiffstore command.
 func (s *Redis) SdiffstoreCtx(ctx context.Context, destination string, keys ...string) (
 	int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.SDiffStore(ctx, destination, keys...).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Sinter is the implementation of redis sinter command.
 func (s *Redis) Sinter(keys ...string) ([]string, error) {
-	return s.SinterCtx(context.Background(), keys...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// SinterCtx is the implementation of redis sinter command.
 func (s *Redis) SinterCtx(ctx context.Context, keys ...string) ([]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.SInter(ctx, keys...).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Sinterstore is the implementation of redis sinterstore command.
 func (s *Redis) Sinterstore(destination string, keys ...string) (int, error) {
-	return s.SinterstoreCtx(context.Background(), destination, keys...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// SinterstoreCtx is the implementation of redis sinterstore command.
 func (s *Redis) SinterstoreCtx(ctx context.Context, destination string, keys ...string) (
 	int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.SInterStore(ctx, destination, keys...).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Ttl is the implementation of redis ttl command.
-func (s *Redis) Ttl(key string) (int, error) {
-	return s.TtlCtx(context.Background(), key)
-}
+func (s *Redis) Ttl(key string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// TtlCtx is the implementation of redis ttl command.
 func (s *Redis) TtlCtx(ctx context.Context, key string) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	duration, err := conn.TTL(ctx, key).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	if duration >= 0 {
-		return int(duration / time.Second), nil
-	}
-
-	// -2 means key does not exist
-	// -1 means key exists but has no expire
-	return int(duration), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// TxPipeline returns a Redis transaction pipeline for executing multiple commands atomically.
 func (s *Redis) TxPipeline() (pipe Pipeliner, err error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.TxPipeline(), nil
+	_ = "STUB: not implemented"
+	return *new(Pipeliner), nil
 }
 
-// Unlink is similar to Del but removes keys asynchronously in a separate thread.
-func (s *Redis) Unlink(keys ...string) (int64, error) {
-	return s.UnlinkCtx(context.Background(), keys...)
-}
+func (s *Redis) Unlink(keys ...string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (s *Redis) UnlinkCtx(ctx context.Context, keys ...string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.Unlink(ctx, keys...).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// XAck acknowledges one or more messages in a Redis stream consumer group.
-// It marks the specified messages as successfully processed.
 func (s *Redis) XAck(stream string, group string, ids ...string) (int64, error) {
-	return s.XAckCtx(context.Background(), stream, group, ids...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// XAckCtx is the context-aware version of XAck.
 func (s *Redis) XAckCtx(ctx context.Context, stream string, group string, ids ...string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.XAck(ctx, stream, group, ids...).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// XAdd adds a new entry to a Redis stream with the specified ID and field-value pairs.
-// If noMkStream is true, the command will fail if the stream doesn't exist.
 func (s *Redis) XAdd(stream string, noMkStream bool, id string, values any) (string, error) {
-	return s.XAddCtx(context.Background(), stream, noMkStream, id, values)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// XAddCtx is the context-aware version of XAdd.
 func (s *Redis) XAddCtx(ctx context.Context, stream string, noMkStream bool, id string, values any) (
 	string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.XAdd(ctx, &red.XAddArgs{
-		Stream:     stream,
-		ID:         id,
-		Values:     values,
-		NoMkStream: noMkStream,
-	}).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// XGroupCreateMkStream creates a consumer group for a Redis stream.
-// If the stream doesn't exist, it will be created automatically.
 func (s *Redis) XGroupCreateMkStream(stream string, group string, start string) (string, error) {
-	return s.XGroupCreateMkStreamCtx(context.Background(), stream, group, start)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// XGroupCreateMkStreamCtx is the context-aware version of XGroupCreateMkStream.
 func (s *Redis) XGroupCreateMkStreamCtx(ctx context.Context, stream string, group string,
 	start string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.XGroupCreateMkStream(ctx, stream, group, start).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// XGroupCreate creates a consumer group for a Redis stream.
-// The stream must already exist, otherwise the command will fail.
 func (s *Redis) XGroupCreate(stream string, group string, start string) (string, error) {
-	return s.XGroupCreateCtx(context.Background(), stream, group, start)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// XGroupCreateCtx is the context-aware version of XGroupCreate.
 func (s *Redis) XGroupCreateCtx(ctx context.Context, stream string, group string, start string) (
 	string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.XGroupCreate(ctx, stream, group, start).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// XGroupSetID sets the last delivered ID for a Redis stream consumer group.
 func (s *Redis) XGroupSetID(stream, group, start string) (string, error) {
-	return s.XGroupSetIDCtx(context.Background(), stream, group, start)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// XGroupSetIDCtx is the context-aware version of XGroupSetID.
 func (s *Redis) XGroupSetIDCtx(ctx context.Context, stream, group, start string) (string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return "", err
-	}
-
-	return conn.XGroupSetID(ctx, stream, group, start).Result()
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-// XInfoConsumers returns information about consumers in a Redis stream consumer group.
 func (s *Redis) XInfoConsumers(stream string, group string) ([]red.XInfoConsumer, error) {
-	return s.XInfoConsumersCtx(context.Background(), stream, group)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// XInfoConsumersCtx is the context-aware version of XInfoConsumers.
 func (s *Redis) XInfoConsumersCtx(ctx context.Context, stream string, group string) (
 	[]red.XInfoConsumer, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.XInfoConsumers(ctx, stream, group).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// XInfoGroups returns information about consumer groups for a Redis stream.
 func (s *Redis) XInfoGroups(stream string) ([]red.XInfoGroup, error) {
-	return s.XInfoGroupsCtx(context.Background(), stream)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// XInfoGroupsCtx is the context-aware version of XInfoGroups.
 func (s *Redis) XInfoGroupsCtx(ctx context.Context, stream string) ([]red.XInfoGroup, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.XInfoGroups(ctx, stream).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// XInfoStream returns general information about a Redis stream.
 func (s *Redis) XInfoStream(stream string) (*red.XInfoStream, error) {
-	return s.XInfoStreamCtx(context.Background(), stream)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// XInfoStreamCtx is the context-aware version of XInfoStream.
 func (s *Redis) XInfoStreamCtx(ctx context.Context, stream string) (*red.XInfoStream, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.XInfoStream(ctx, stream).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// XReadGroup reads messages from Redis streams as part of a consumer group.
-// It allows for distributed processing of stream messages with automatic message delivery semantics.
-//
-// For blocking operations, you must create a dedicated RedisNode using CreateBlockingNode to avoid
-// exhausting the connection pool. Blocking commands hold connections for extended periods and should
-// not share the regular connection pool.
-//
-// Example usage:
-//
-//	node, err := redis.CreateBlockingNode(rds)
-//	if err != nil {
-//	    // handle error
-//	}
-//	defer node.Close()
-//
-//	streams, err := rds.XReadGroup(
-//	    node,              // RedisNode created with CreateBlockingNode
-//	    "mygroup",         // consumer group name
-//	    "consumer1",       // consumer ID
-//	    10,                // max number of messages to read
-//	    5*time.Second,     // block duration
-//	    false,             // noAck flag
-//	    "mystream",        // stream name
-//	)
-//
-// Doesn't benefit from pooling redis connections of blocking queries.
 func (s *Redis) XReadGroup(node RedisNode, group string, consumerId string, count int64,
 	block time.Duration, noAck bool, streams ...string) ([]red.XStream, error) {
-	return s.XReadGroupCtx(context.Background(), node, group, consumerId, count, block, noAck, streams...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// XReadGroupCtx is the context-aware version of XReadGroup.
-//
-// For blocking operations, you must create a dedicated RedisNode using CreateBlockingNode to avoid
-// exhausting the connection pool. See XReadGroup for usage examples.
-//
-// Doesn't benefit from pooling redis connections of blocking queries.
 func (s *Redis) XReadGroupCtx(ctx context.Context, node RedisNode, group string, consumerId string,
 	count int64, block time.Duration, noAck bool, streams ...string) ([]red.XStream, error) {
-	if node == nil {
-		return nil, ErrNilNode
-	}
-
-	return node.XReadGroup(ctx, &red.XReadGroupArgs{
-		Group:    group,
-		Consumer: consumerId,
-		Count:    count,
-		Block:    block,
-		NoAck:    noAck,
-		Streams:  streams,
-	}).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Zadd is the implementation of redis zadd command.
 func (s *Redis) Zadd(key string, score int64, value string) (bool, error) {
-	return s.ZaddCtx(context.Background(), key, score, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// ZaddCtx is the implementation of redis zadd command.
 func (s *Redis) ZaddCtx(ctx context.Context, key string, score int64, value string) (bool, error) {
-	return s.ZaddFloatCtx(ctx, key, float64(score), value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// ZaddFloat is the implementation of redis zadd command.
 func (s *Redis) ZaddFloat(key string, score float64, value string) (bool, error) {
-	return s.ZaddFloatCtx(context.Background(), key, score, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// ZaddFloatCtx is the implementation of redis zadd command.
 func (s *Redis) ZaddFloatCtx(ctx context.Context, key string, score float64, value string) (
 	bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	v, err := conn.ZAdd(ctx, key, red.Z{
-		Score:  score,
-		Member: value,
-	}).Result()
-	if err != nil {
-		return false, err
-	}
-
-	return v == 1, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// Zaddnx is the implementation of redis zadd nx command.
 func (s *Redis) Zaddnx(key string, score int64, value string) (bool, error) {
-	return s.ZaddnxCtx(context.Background(), key, score, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// ZaddnxCtx is the implementation of redis zadd nx command.
 func (s *Redis) ZaddnxCtx(ctx context.Context, key string, score int64, value string) (bool, error) {
-	return s.ZaddnxFloatCtx(ctx, key, float64(score), value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// ZaddnxFloat is the implementation of redis zaddnx command.
 func (s *Redis) ZaddnxFloat(key string, score float64, value string) (bool, error) {
-	return s.ZaddFloatCtx(context.Background(), key, score, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// ZaddnxFloatCtx is the implementation of redis zaddnx command.
 func (s *Redis) ZaddnxFloatCtx(ctx context.Context, key string, score float64, value string) (
 	bool, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return false, err
-	}
-
-	v, err := conn.ZAddNX(ctx, key, red.Z{
-		Score:  score,
-		Member: value,
-	}).Result()
-	if err != nil {
-		return false, err
-	}
-
-	return v == 1, nil
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-// Zadds is the implementation of redis zadds command.
 func (s *Redis) Zadds(key string, ps ...Pair) (int64, error) {
-	return s.ZaddsCtx(context.Background(), key, ps...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ZaddsCtx is the implementation of redis zadds command.
 func (s *Redis) ZaddsCtx(ctx context.Context, key string, ps ...Pair) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	zs := make([]red.Z, 0, len(ps))
-	for _, p := range ps {
-		z := red.Z{Score: float64(p.Score), Member: p.Key}
-		zs = append(zs, z)
-	}
-
-	return conn.ZAdd(ctx, key, zs...).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Zcard is the implementation of redis zcard command.
-func (s *Redis) Zcard(key string) (int, error) {
-	return s.ZcardCtx(context.Background(), key)
-}
+func (s *Redis) Zcard(key string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// ZcardCtx is the implementation of redis zcard command.
 func (s *Redis) ZcardCtx(ctx context.Context, key string) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.ZCard(ctx, key).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Zcount is the implementation of redis zcount command.
 func (s *Redis) Zcount(key string, start, stop int64) (int, error) {
-	return s.ZcountCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ZcountCtx is the implementation of redis zcount command.
 func (s *Redis) ZcountCtx(ctx context.Context, key string, start, stop int64) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.ZCount(ctx, key, strconv.FormatInt(start, 10),
-		strconv.FormatInt(stop, 10)).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Zincrby is the implementation of redis zincrby command.
 func (s *Redis) Zincrby(key string, increment int64, field string) (int64, error) {
-	return s.ZincrbyCtx(context.Background(), key, increment, field)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ZincrbyCtx is the implementation of redis zincrby command.
 func (s *Redis) ZincrbyCtx(ctx context.Context, key string, increment int64, field string) (
 	int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.ZIncrBy(ctx, key, float64(increment), field).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int64(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Zscore is the implementation of redis zscore command.
-func (s *Redis) Zscore(key, value string) (int64, error) {
-	return s.ZscoreCtx(context.Background(), key, value)
-}
+func (s *Redis) Zscore(key, value string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// ZscoreCtx is the implementation of redis zscore command.
 func (s *Redis) ZscoreCtx(ctx context.Context, key, value string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.ZScore(ctx, key, value).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int64(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ZscoreByFloat is the implementation of redis zscore command score by float.
 func (s *Redis) ZscoreByFloat(key, value string) (float64, error) {
-	return s.ZscoreByFloatCtx(context.Background(), key, value)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ZscoreByFloatCtx is the implementation of redis zscore command score by float.
 func (s *Redis) ZscoreByFloatCtx(ctx context.Context, key, value string) (float64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.ZScore(ctx, key, value).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Zscan is the implementation of redis zscan command.
 func (s *Redis) Zscan(key string, cursor uint64, match string, count int64) (
 	[]string, uint64, error) {
-	return s.ZscanCtx(context.Background(), key, cursor, match, count)
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
-// ZscanCtx is the implementation of redis zscan command.
 func (s *Redis) ZscanCtx(ctx context.Context, key string, cursor uint64, match string, count int64) (
 	[]string, uint64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return conn.ZScan(ctx, key, cursor, match, count).Result()
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
-// Zrank is the implementation of redis zrank command.
-func (s *Redis) Zrank(key, field string) (int64, error) {
-	return s.ZrankCtx(context.Background(), key, field)
-}
+func (s *Redis) Zrank(key, field string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
-// ZrankCtx is the implementation of redis zrank command.
 func (s *Redis) ZrankCtx(ctx context.Context, key, field string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.ZRank(ctx, key, field).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Zrem is the implementation of redis zrem command.
 func (s *Redis) Zrem(key string, values ...any) (int, error) {
-	return s.ZremCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ZremCtx is the implementation of redis zrem command.
 func (s *Redis) ZremCtx(ctx context.Context, key string, values ...any) (int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.ZRem(ctx, key, values...).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Zremrangebyscore is the implementation of redis zremrangebyscore command.
 func (s *Redis) Zremrangebyscore(key string, start, stop int64) (int, error) {
-	return s.ZremrangebyscoreCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ZremrangebyscoreCtx is the implementation of redis zremrangebyscore command.
 func (s *Redis) ZremrangebyscoreCtx(ctx context.Context, key string, start, stop int64) (
 	int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.ZRemRangeByScore(ctx, key, strconv.FormatInt(start, 10),
-		strconv.FormatInt(stop, 10)).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Zremrangebyrank is the implementation of redis zremrangebyrank command.
 func (s *Redis) Zremrangebyrank(key string, start, stop int64) (int, error) {
-	return s.ZremrangebyrankCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ZremrangebyrankCtx is the implementation of redis zremrangebyrank command.
 func (s *Redis) ZremrangebyrankCtx(ctx context.Context, key string, start, stop int64) (
 	int, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	v, err := conn.ZRemRangeByRank(ctx, key, start, stop).Result()
-	if err != nil {
-		return 0, err
-	}
-
-	return int(v), nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Zrange is the implementation of redis zrange command.
 func (s *Redis) Zrange(key string, start, stop int64) ([]string, error) {
-	return s.ZrangeCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangeCtx is the implementation of redis zrange command.
 func (s *Redis) ZrangeCtx(ctx context.Context, key string, start, stop int64) (
 	[]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.ZRange(ctx, key, start, stop).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangeWithScores is the implementation of redis zrange command with scores.
 func (s *Redis) ZrangeWithScores(key string, start, stop int64) ([]Pair, error) {
-	return s.ZrangeWithScoresCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangeWithScoresCtx is the implementation of redis zrange command with scores.
 func (s *Redis) ZrangeWithScoresCtx(ctx context.Context, key string, start, stop int64) (
 	[]Pair, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRangeWithScores(ctx, key, start, stop).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangeWithScoresByFloat is the implementation of redis zrange command with scores by float64.
 func (s *Redis) ZrangeWithScoresByFloat(key string, start, stop int64) ([]FloatPair, error) {
-	return s.ZrangeWithScoresByFloatCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangeWithScoresByFloatCtx is the implementation of redis zrange command with scores by float64.
 func (s *Redis) ZrangeWithScoresByFloatCtx(ctx context.Context, key string, start, stop int64) (
 	[]FloatPair, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRangeWithScores(ctx, key, start, stop).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toFloatPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZRevRangeWithScores is the implementation of redis zrevrange command with scores.
-// Deprecated: use ZrevrangeWithScores instead.
 func (s *Redis) ZRevRangeWithScores(key string, start, stop int64) ([]Pair, error) {
-	return s.ZrevrangeWithScoresCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangeWithScores is the implementation of redis zrevrange command with scores.
 func (s *Redis) ZrevrangeWithScores(key string, start, stop int64) ([]Pair, error) {
-	return s.ZrevrangeWithScoresCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZRevRangeWithScoresCtx is the implementation of redis zrevrange command with scores.
-// Deprecated: use ZrevrangeWithScoresCtx instead.
 func (s *Redis) ZRevRangeWithScoresCtx(ctx context.Context, key string, start, stop int64) (
 	[]Pair, error) {
-	return s.ZrevrangeWithScoresCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangeWithScoresCtx is the implementation of redis zrevrange command with scores.
 func (s *Redis) ZrevrangeWithScoresCtx(ctx context.Context, key string, start, stop int64) (
 	[]Pair, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRevRangeWithScores(ctx, key, start, stop).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZRevRangeWithScoresByFloat is the implementation of redis zrevrange command with scores by float.
-// Deprecated: use ZrevrangeWithScoresByFloat instead.
 func (s *Redis) ZRevRangeWithScoresByFloat(key string, start, stop int64) ([]FloatPair, error) {
-	return s.ZrevrangeWithScoresByFloatCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangeWithScoresByFloat is the implementation of redis zrevrange command with scores by float.
 func (s *Redis) ZrevrangeWithScoresByFloat(key string, start, stop int64) ([]FloatPair, error) {
-	return s.ZrevrangeWithScoresByFloatCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZRevRangeWithScoresByFloatCtx is the implementation of redis zrevrange command with scores by float.
-// Deprecated: use ZrevrangeWithScoresByFloatCtx instead.
 func (s *Redis) ZRevRangeWithScoresByFloatCtx(ctx context.Context, key string, start, stop int64) (
 	[]FloatPair, error) {
-	return s.ZrevrangeWithScoresByFloatCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangeWithScoresByFloatCtx is the implementation of redis zrevrange command with scores by float.
 func (s *Redis) ZrevrangeWithScoresByFloatCtx(ctx context.Context, key string, start, stop int64) (
 	[]FloatPair, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRevRangeWithScores(ctx, key, start, stop).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toFloatPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangebyscoreWithScores is the implementation of redis zrangebyscore command with scores.
 func (s *Redis) ZrangebyscoreWithScores(key string, start, stop int64) ([]Pair, error) {
-	return s.ZrangebyscoreWithScoresCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangebyscoreWithScoresCtx is the implementation of redis zrangebyscore command with scores.
 func (s *Redis) ZrangebyscoreWithScoresCtx(ctx context.Context, key string, start, stop int64) (
 	[]Pair, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRangeByScoreWithScores(ctx, key, &red.ZRangeBy{
-		Min: strconv.FormatInt(start, 10),
-		Max: strconv.FormatInt(stop, 10),
-	}).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangebyscoreWithScoresByFloat is the implementation of redis zrangebyscore command with scores by float.
 func (s *Redis) ZrangebyscoreWithScoresByFloat(key string, start, stop float64) (
 	[]FloatPair, error) {
-	return s.ZrangebyscoreWithScoresByFloatCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangebyscoreWithScoresByFloatCtx is the implementation of redis zrangebyscore command with scores by float.
 func (s *Redis) ZrangebyscoreWithScoresByFloatCtx(ctx context.Context, key string, start, stop float64) (
 	[]FloatPair, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRangeByScoreWithScores(ctx, key, &red.ZRangeBy{
-		Min: strconv.FormatFloat(start, 'f', -1, 64),
-		Max: strconv.FormatFloat(stop, 'f', -1, 64),
-	}).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toFloatPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangebyscoreWithScoresAndLimit is the implementation of redis zrangebyscore command
-// with scores and limit.
 func (s *Redis) ZrangebyscoreWithScoresAndLimit(key string, start, stop int64,
 	page, size int) ([]Pair, error) {
-	return s.ZrangebyscoreWithScoresAndLimitCtx(context.Background(), key, start, stop, page, size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangebyscoreWithScoresAndLimitCtx is the implementation of redis zrangebyscore command
-// with scores and limit.
 func (s *Redis) ZrangebyscoreWithScoresAndLimitCtx(ctx context.Context, key string, start,
 	stop int64, page, size int) ([]Pair, error) {
-	if size <= 0 {
-		return nil, nil
-	}
-
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRangeByScoreWithScores(ctx, key, &red.ZRangeBy{
-		Min:    strconv.FormatInt(start, 10),
-		Max:    strconv.FormatInt(stop, 10),
-		Offset: int64(page * size),
-		Count:  int64(size),
-	}).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangebyscoreWithScoresByFloatAndLimit is the implementation of redis zrangebyscore command
-// with scores by float and limit.
 func (s *Redis) ZrangebyscoreWithScoresByFloatAndLimit(key string, start, stop float64,
 	page, size int) ([]FloatPair, error) {
-	return s.ZrangebyscoreWithScoresByFloatAndLimitCtx(context.Background(),
-		key, start, stop, page, size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrangebyscoreWithScoresByFloatAndLimitCtx is the implementation of redis zrangebyscore command
-// with scores by float and limit.
 func (s *Redis) ZrangebyscoreWithScoresByFloatAndLimitCtx(ctx context.Context, key string, start,
 	stop float64, page, size int) ([]FloatPair, error) {
-	if size <= 0 {
-		return nil, nil
-	}
-
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRangeByScoreWithScores(ctx, key, &red.ZRangeBy{
-		Min:    strconv.FormatFloat(start, 'f', -1, 64),
-		Max:    strconv.FormatFloat(stop, 'f', -1, 64),
-		Offset: int64(page * size),
-		Count:  int64(size),
-	}).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toFloatPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Zrevrange is the implementation of redis zrevrange command.
 func (s *Redis) Zrevrange(key string, start, stop int64) ([]string, error) {
-	return s.ZrevrangeCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangeCtx is the implementation of redis zrevrange command.
 func (s *Redis) ZrevrangeCtx(ctx context.Context, key string, start, stop int64) (
 	[]string, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	return conn.ZRevRange(ctx, key, start, stop).Result()
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangebyscoreWithScores is the implementation of redis zrevrangebyscore command with scores.
 func (s *Redis) ZrevrangebyscoreWithScores(key string, start, stop int64) ([]Pair, error) {
-	return s.ZrevrangebyscoreWithScoresCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangebyscoreWithScoresCtx is the implementation of redis zrevrangebyscore command with scores.
 func (s *Redis) ZrevrangebyscoreWithScoresCtx(ctx context.Context, key string, start, stop int64) (
 	[]Pair, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRevRangeByScoreWithScores(ctx, key, &red.ZRangeBy{
-		Min: strconv.FormatInt(start, 10),
-		Max: strconv.FormatInt(stop, 10),
-	}).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangebyscoreWithScoresByFloat is the implementation of redis zrevrangebyscore command with scores by float.
 func (s *Redis) ZrevrangebyscoreWithScoresByFloat(key string, start, stop float64) (
 	[]FloatPair, error) {
-	return s.ZrevrangebyscoreWithScoresByFloatCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangebyscoreWithScoresByFloatCtx is the implementation of redis zrevrangebyscore command with scores by float.
 func (s *Redis) ZrevrangebyscoreWithScoresByFloatCtx(ctx context.Context, key string,
 	start, stop float64) ([]FloatPair, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRevRangeByScoreWithScores(ctx, key, &red.ZRangeBy{
-		Min: strconv.FormatFloat(start, 'f', -1, 64),
-		Max: strconv.FormatFloat(stop, 'f', -1, 64),
-	}).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toFloatPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangebyscoreWithScoresAndLimit is the implementation of redis zrevrangebyscore command
-// with scores and limit.
 func (s *Redis) ZrevrangebyscoreWithScoresAndLimit(key string, start, stop int64,
 	page, size int) ([]Pair, error) {
-	return s.ZrevrangebyscoreWithScoresAndLimitCtx(context.Background(),
-		key, start, stop, page, size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangebyscoreWithScoresAndLimitCtx is the implementation of redis zrevrangebyscore command
-// with scores and limit.
 func (s *Redis) ZrevrangebyscoreWithScoresAndLimitCtx(ctx context.Context, key string,
 	start, stop int64, page, size int) ([]Pair, error) {
-	if size <= 0 {
-		return nil, nil
-	}
-
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRevRangeByScoreWithScores(ctx, key, &red.ZRangeBy{
-		Min:    strconv.FormatInt(start, 10),
-		Max:    strconv.FormatInt(stop, 10),
-		Offset: int64(page * size),
-		Count:  int64(size),
-	}).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangebyscoreWithScoresByFloatAndLimit is the implementation of redis zrevrangebyscore command
-// with scores by float and limit.
 func (s *Redis) ZrevrangebyscoreWithScoresByFloatAndLimit(key string, start, stop float64,
 	page, size int) ([]FloatPair, error) {
-	return s.ZrevrangebyscoreWithScoresByFloatAndLimitCtx(context.Background(),
-		key, start, stop, page, size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// ZrevrangebyscoreWithScoresByFloatAndLimitCtx is the implementation of redis zrevrangebyscore command
-// with scores by float and limit.
 func (s *Redis) ZrevrangebyscoreWithScoresByFloatAndLimitCtx(ctx context.Context, key string,
 	start, stop float64, page, size int) ([]FloatPair, error) {
-	if size <= 0 {
-		return nil, nil
-	}
-
-	conn, err := getRedis(s)
-	if err != nil {
-		return nil, err
-	}
-
-	v, err := conn.ZRevRangeByScoreWithScores(ctx, key, &red.ZRangeBy{
-		Min:    strconv.FormatFloat(start, 'f', -1, 64),
-		Max:    strconv.FormatFloat(stop, 'f', -1, 64),
-		Offset: int64(page * size),
-		Count:  int64(size),
-	}).Result()
-	if err != nil {
-		return nil, err
-	}
-
-	return toFloatPairs(v), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-// Zrevrank is the implementation of redis zrevrank command.
 func (s *Redis) Zrevrank(key, field string) (int64, error) {
-	return s.ZrevrankCtx(context.Background(), key, field)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ZrevrankCtx is the implementation of redis zrevrank command.
 func (s *Redis) ZrevrankCtx(ctx context.Context, key, field string) (int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.ZRevRank(ctx, key, field).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// Zunionstore is the implementation of redis zunionstore command.
 func (s *Redis) Zunionstore(dest string, store *ZStore) (int64, error) {
-	return s.ZunionstoreCtx(context.Background(), dest, store)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-// ZunionstoreCtx is the implementation of redis zunionstore command.
 func (s *Redis) ZunionstoreCtx(ctx context.Context, dest string, store *ZStore) (
 	int64, error) {
-	conn, err := getRedis(s)
-	if err != nil {
-		return 0, err
-	}
-
-	return conn.ZUnionStore(ctx, dest, store).Result()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (s *Redis) checkConnection(pingTimeout time.Duration) error {
-	conn, err := getRedis(s)
-	if err != nil {
-		return err
-	}
-
-	timeout := defaultPingTimeout
-	if pingTimeout > 0 {
-		timeout = pingTimeout
-	}
-
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
-
-	return conn.Ping(ctx).Err()
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// maintNotificationsConfig builds the go-redis maintenance notifications config
-// from the configured mode, defaulting to disabled when unset so that the
-// CLIENT MAINT_NOTIFICATIONS command is not issued on connect.
 func (r *Redis) maintNotificationsConfig() *maintnotifications.Config {
-	mode := r.maintNotifications
-	if len(mode) == 0 {
-		mode = maintnotifications.ModeDisabled
-	}
-
-	return &maintnotifications.Config{Mode: mode}
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// Cluster customizes the given Redis as a cluster.
-func Cluster() Option {
-	return func(r *Redis) {
-		r.Type = ClusterType
-	}
-}
+func Cluster() Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// SetSlowThreshold sets the slow threshold.
-func SetSlowThreshold(threshold time.Duration) {
-	slowThreshold.Set(threshold)
-}
+func SetSlowThreshold(threshold time.Duration) { _ = "STUB: not implemented"; return }
 
-// WithHook customizes the given Redis with given durationHook.
-func WithHook(hook Hook) Option {
-	return func(r *Redis) {
-		r.hooks = append(r.hooks, hook)
-	}
-}
+func WithHook(hook Hook) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// WithPass customizes the given Redis with given password.
-func WithPass(pass string) Option {
-	return func(r *Redis) {
-		r.Pass = pass
-	}
-}
+func WithPass(pass string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// WithTLS customizes the given Redis with TLS enabled.
-func WithTLS() Option {
-	return func(r *Redis) {
-		r.tls = true
-	}
-}
+func WithTLS() Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// WithUser customizes the given Redis with given username.
-func WithUser(user string) Option {
-	return func(r *Redis) {
-		r.User = user
-	}
-}
+func WithUser(user string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// WithProtocol customizes the given Redis with protocol.
-func WithProtocol(protocol int) Option {
-	return func(r *Redis) {
-		r.protocol = protocol
-	}
-}
+func WithProtocol(protocol int) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// WithIdentity customizes the given Redis with Identity enabled.
-func WithIdentity() Option {
-	return func(r *Redis) {
-		r.identity = true
-	}
-}
+func WithIdentity() Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// WithMaintNotifications customizes the given Redis with the maintenance
-// notifications mode (disabled, enabled or auto).
-func WithMaintNotifications(mode string) Option {
-	return func(r *Redis) {
-		r.maintNotifications = maintnotifications.Mode(mode)
-	}
-}
+func WithMaintNotifications(mode string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func acceptable(err error) bool {
-	return err == nil || errorx.In(err, red.Nil, context.Canceled)
-}
+func acceptable(err error) bool { _ = "STUB: not implemented"; return false }
 
-func getRedis(r *Redis) (RedisNode, error) {
-	switch r.Type {
-	case ClusterType:
-		return getCluster(r)
-	case NodeType:
-		return getClient(r)
-	default:
-		return nil, fmt.Errorf("redis type '%s' is not supported", r.Type)
-	}
-}
+func getRedis(r *Redis) (RedisNode, error) { _ = "STUB: not implemented"; return *new(RedisNode), nil }
 
-func newRedis(addr string, opts ...Option) *Redis {
-	r := &Redis{
-		Addr: addr,
-		Type: NodeType,
-		brk:  breaker.NewBreaker(),
-	}
+func newRedis(addr string, opts ...Option) *Redis { _ = "STUB: not implemented"; return nil }
 
-	for _, opt := range opts {
-		opt(r)
-	}
+func toPairs(vals []red.Z) []Pair { _ = "STUB: not implemented"; return nil }
 
-	return r
-}
+func toFloatPairs(vals []red.Z) []FloatPair { _ = "STUB: not implemented"; return nil }
 
-func toPairs(vals []red.Z) []Pair {
-	pairs := make([]Pair, len(vals))
-	for i, val := range vals {
-		switch member := val.Member.(type) {
-		case string:
-			pairs[i] = Pair{
-				Key:   member,
-				Score: int64(val.Score),
-			}
-		default:
-			pairs[i] = Pair{
-				Key:   mapping.Repr(val.Member),
-				Score: int64(val.Score),
-			}
-		}
-	}
-	return pairs
-}
-
-func toFloatPairs(vals []red.Z) []FloatPair {
-	pairs := make([]FloatPair, len(vals))
-
-	for i, val := range vals {
-		switch member := val.Member.(type) {
-		case string:
-			pairs[i] = FloatPair{
-				Key:   member,
-				Score: val.Score,
-			}
-		default:
-			pairs[i] = FloatPair{
-				Key:   mapping.Repr(val.Member),
-				Score: val.Score,
-			}
-		}
-	}
-
-	return pairs
-}
-
-func toStrings(vals []any) []string {
-	ret := make([]string, len(vals))
-
-	for i, val := range vals {
-		if val == nil {
-			ret[i] = ""
-			continue
-		}
-
-		switch val := val.(type) {
-		case string:
-			ret[i] = val
-		default:
-			ret[i] = mapping.Repr(val)
-		}
-	}
-
-	return ret
-}
+func toStrings(vals []any) []string { _ = "STUB: not implemented"; return nil }

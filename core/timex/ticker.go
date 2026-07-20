@@ -7,17 +7,14 @@ import (
 	"github.com/zeromicro/go-zero/core/lang"
 )
 
-// errTimeout indicates a timeout.
 var errTimeout = errors.New("timeout")
 
 type (
-	// Ticker interface wraps the Chan and Stop methods.
 	Ticker interface {
 		Chan() <-chan time.Time
 		Stop()
 	}
 
-	// FakeTicker interface is used for unit testing.
 	FakeTicker interface {
 		Ticker
 		Done()
@@ -35,46 +32,18 @@ type (
 	}
 )
 
-// NewTicker returns a Ticker.
-func NewTicker(d time.Duration) Ticker {
-	return &realTicker{
-		Ticker: time.NewTicker(d),
-	}
-}
+func NewTicker(d time.Duration) Ticker { _ = "STUB: not implemented"; return *new(Ticker) }
 
-func (rt *realTicker) Chan() <-chan time.Time {
-	return rt.C
-}
+func (rt *realTicker) Chan() <-chan time.Time { _ = "STUB: not implemented"; return nil }
 
-// NewFakeTicker returns a FakeTicker.
-func NewFakeTicker() FakeTicker {
-	return &fakeTicker{
-		c:    make(chan time.Time, 1),
-		done: make(chan lang.PlaceholderType, 1),
-	}
-}
+func NewFakeTicker() FakeTicker { _ = "STUB: not implemented"; return *new(FakeTicker) }
 
-func (ft *fakeTicker) Chan() <-chan time.Time {
-	return ft.c
-}
+func (ft *fakeTicker) Chan() <-chan time.Time { _ = "STUB: not implemented"; return nil }
 
-func (ft *fakeTicker) Done() {
-	ft.done <- lang.Placeholder
-}
+func (ft *fakeTicker) Done() { _ = "STUB: not implemented"; return }
 
-func (ft *fakeTicker) Stop() {
-	close(ft.c)
-}
+func (ft *fakeTicker) Stop() { _ = "STUB: not implemented"; return }
 
-func (ft *fakeTicker) Tick() {
-	ft.c <- time.Now()
-}
+func (ft *fakeTicker) Tick() { _ = "STUB: not implemented"; return }
 
-func (ft *fakeTicker) Wait(d time.Duration) error {
-	select {
-	case <-time.After(d):
-		return errTimeout
-	case <-ft.done:
-		return nil
-	}
-}
+func (ft *fakeTicker) Wait(d time.Duration) error { _ = "STUB: not implemented"; return nil }

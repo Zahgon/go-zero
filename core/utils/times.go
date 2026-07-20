@@ -1,45 +1,24 @@
 package utils
 
 import (
-	"fmt"
 	"time"
-
-	"github.com/zeromicro/go-zero/core/timex"
 )
 
-// An ElapsedTimer is a timer to track the elapsed time.
 type ElapsedTimer struct {
 	start time.Duration
 }
 
-// NewElapsedTimer returns an ElapsedTimer.
-func NewElapsedTimer() *ElapsedTimer {
-	return &ElapsedTimer{
-		start: timex.Now(),
-	}
-}
+func NewElapsedTimer() *ElapsedTimer { _ = "STUB: not implemented"; return nil }
 
-// Duration returns the elapsed time.
 func (et *ElapsedTimer) Duration() time.Duration {
-	return timex.Since(et.start)
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
-// Elapsed returns the string representation of elapsed time.
-func (et *ElapsedTimer) Elapsed() string {
-	return timex.Since(et.start).String()
-}
+func (et *ElapsedTimer) Elapsed() string { _ = "STUB: not implemented"; return "" }
 
-// ElapsedMs returns the elapsed time of string on milliseconds.
-func (et *ElapsedTimer) ElapsedMs() string {
-	return fmt.Sprintf("%.1fms", float32(timex.Since(et.start))/float32(time.Millisecond))
-}
+func (et *ElapsedTimer) ElapsedMs() string { _ = "STUB: not implemented"; return "" }
 
-// CurrentMicros returns the current microseconds.
-func CurrentMicros() int64 {
-	return time.Now().UnixNano() / int64(time.Microsecond)
-}
+func CurrentMicros() int64 { _ = "STUB: not implemented"; return 0 }
 
-// CurrentMillis returns the current milliseconds.
-func CurrentMillis() int64 {
-	return time.Now().UnixNano() / int64(time.Millisecond)
-}
+func CurrentMillis() int64 { _ = "STUB: not implemented"; return 0 }

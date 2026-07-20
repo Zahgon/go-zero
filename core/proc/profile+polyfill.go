@@ -2,6 +2,4 @@
 
 package proc
 
-func StartProfile() Stopper {
-	return noopStopper
-}
+func StartProfile() Stopper { _ = "STUB: not implemented"; return *new(Stopper) }

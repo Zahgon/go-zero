@@ -1,4 +1,5 @@
-package api // ApiParser
+package api
+
 import (
 	"fmt"
 	"reflect"
@@ -7,7 +8,6 @@ import (
 	"github.com/zeromicro/antlr"
 )
 
-// Suppress unused import errors
 var _ = fmt.Printf
 var _ = reflect.Copy
 var _ = strconv.Itoa
@@ -194,32 +194,11 @@ type ApiParserParser struct {
 	*antlr.BaseParser
 }
 
-// NewApiParserParser produces a new parser instance for the optional input antlr.TokenStream.
-//
-// The *ApiParserParser instance produced may be reused by calling the SetInputStream method.
-// The initial parser configuration is expensive to construct, and the object is not thread-safe;
-// however, if used within a Golang sync.Pool, the construction cost amortizes well and the
-// objects can be used in a thread-safe manner.
 func NewApiParserParser(input antlr.TokenStream) *ApiParserParser {
-	this := new(ApiParserParser)
-	deserializer := antlr.NewATNDeserializer(nil)
-	deserializedATN := deserializer.DeserializeFromUInt16(parserATN)
-	decisionToDFA := make([]*antlr.DFA, len(deserializedATN.DecisionToState))
-	for index, ds := range deserializedATN.DecisionToState {
-		decisionToDFA[index] = antlr.NewDFA(ds, index)
-	}
-	this.BaseParser = antlr.NewBaseParser(input)
-
-	this.Interpreter = antlr.NewParserATNSimulator(this, deserializedATN, decisionToDFA, antlr.NewPredictionContextCache())
-	this.RuleNames = ruleNames
-	this.LiteralNames = literalNames
-	this.SymbolicNames = symbolicNames
-	this.GrammarFileName = "ApiParser.g4"
-
-	return this
+	_ = "STUB: not implemented"
+	return nil
 }
 
-// ApiParserParser tokens.
 const (
 	ApiParserParserEOF           = antlr.TokenEOF
 	ApiParserParserT__0          = 1
@@ -249,7 +228,6 @@ const (
 	ApiParserParserLetterOrDigit = 25
 )
 
-// ApiParserParser rules.
 const (
 	ApiParserParserRULE_api              = 0
 	ApiParserParserRULE_spec             = 1
@@ -291,14 +269,11 @@ const (
 	ApiParserParserRULE_pathItem         = 37
 )
 
-// IApiContext is an interface to support dynamic dispatch.
 type IApiContext interface {
 	antlr.ParserRuleContext
 
-	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// IsApiContext differentiates from other interfaces.
 	IsApiContext()
 }
 
@@ -307,117 +282,46 @@ type ApiContext struct {
 	parser antlr.Parser
 }
 
-func NewEmptyApiContext() *ApiContext {
-	var p = new(ApiContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = ApiParserParserRULE_api
-	return p
-}
+func NewEmptyApiContext() *ApiContext { _ = "STUB: not implemented"; return nil }
 
-func (*ApiContext) IsApiContext() {}
+func (*ApiContext) IsApiContext() { _ = "STUB: not implemented"; return }
 
 func NewApiContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ApiContext {
-	var p = new(ApiContext)
-
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = ApiParserParserRULE_api
-
-	return p
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s *ApiContext) GetParser() antlr.Parser { return s.parser }
+func (s *ApiContext) GetParser() antlr.Parser { _ = "STUB: not implemented"; return *new(antlr.Parser) }
 
-func (s *ApiContext) AllSpec() []ISpecContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*ISpecContext)(nil)).Elem())
-	var tst = make([]ISpecContext, len(ts))
+func (s *ApiContext) AllSpec() []ISpecContext { _ = "STUB: not implemented"; return nil }
 
-	for i, t := range ts {
-		if t != nil {
-			tst[i] = t.(ISpecContext)
-		}
-	}
-
-	return tst
-}
-
-func (s *ApiContext) Spec(i int) ISpecContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*ISpecContext)(nil)).Elem(), i)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(ISpecContext)
-}
+func (s *ApiContext) Spec(i int) ISpecContext { _ = "STUB: not implemented"; return *new(ISpecContext) }
 
 func (s *ApiContext) GetRuleContext() antlr.RuleContext {
-	return s
+	_ = "STUB: not implemented"
+	return *new(antlr.RuleContext)
 }
 
 func (s *ApiContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func (s *ApiContext) Accept(visitor antlr.ParseTreeVisitor) any {
-	switch t := visitor.(type) {
-	case ApiParserVisitor:
-		return t.VisitApi(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
+	_ = "STUB: not implemented"
+	return *new(any)
 }
 
 func (p *ApiParserParser) Api() (localctx IApiContext) {
-	localctx = NewApiContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 0, ApiParserParserRULE_api)
-	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
-	p.EnterOuterAlt(localctx, 1)
-	p.SetState(79)
-	p.GetErrorHandler().Sync(p)
-	_la = p.GetTokenStream().LA(1)
-
-	for _la == ApiParserParserATSERVER || _la == ApiParserParserID {
-		{
-			p.SetState(76)
-			p.Spec()
-		}
-
-		p.SetState(81)
-		p.GetErrorHandler().Sync(p)
-		_la = p.GetTokenStream().LA(1)
-	}
-
-	return localctx
+	_ = "STUB: not implemented"
+	return *new(IApiContext)
 }
 
-// ISpecContext is an interface to support dynamic dispatch.
 type ISpecContext interface {
 	antlr.ParserRuleContext
 
-	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// IsSpecContext differentiates from other interfaces.
 	IsSpecContext()
 }
 
@@ -426,185 +330,82 @@ type SpecContext struct {
 	parser antlr.Parser
 }
 
-func NewEmptySpecContext() *SpecContext {
-	var p = new(SpecContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = ApiParserParserRULE_spec
-	return p
-}
+func NewEmptySpecContext() *SpecContext { _ = "STUB: not implemented"; return nil }
 
-func (*SpecContext) IsSpecContext() {}
+func (*SpecContext) IsSpecContext() { _ = "STUB: not implemented"; return }
 
 func NewSpecContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SpecContext {
-	var p = new(SpecContext)
-
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = ApiParserParserRULE_spec
-
-	return p
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s *SpecContext) GetParser() antlr.Parser { return s.parser }
+func (s *SpecContext) GetParser() antlr.Parser {
+	_ = "STUB: not implemented"
+	return *new(antlr.Parser)
+}
 
 func (s *SpecContext) SyntaxLit() ISyntaxLitContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*ISyntaxLitContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(ISyntaxLitContext)
+	_ = "STUB: not implemented"
+	return *new(ISyntaxLitContext)
 }
 
 func (s *SpecContext) ImportSpec() IImportSpecContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IImportSpecContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IImportSpecContext)
+	_ = "STUB: not implemented"
+	return *new(IImportSpecContext)
 }
 
 func (s *SpecContext) InfoSpec() IInfoSpecContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IInfoSpecContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IInfoSpecContext)
+	_ = "STUB: not implemented"
+	return *new(IInfoSpecContext)
 }
 
 func (s *SpecContext) TypeSpec() ITypeSpecContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*ITypeSpecContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(ITypeSpecContext)
+	_ = "STUB: not implemented"
+	return *new(ITypeSpecContext)
 }
 
 func (s *SpecContext) ServiceSpec() IServiceSpecContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IServiceSpecContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IServiceSpecContext)
+	_ = "STUB: not implemented"
+	return *new(IServiceSpecContext)
 }
 
 func (s *SpecContext) GetRuleContext() antlr.RuleContext {
-	return s
+	_ = "STUB: not implemented"
+	return *new(antlr.RuleContext)
 }
 
 func (s *SpecContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
+	_ = "STUB: not implemented"
+	return ""
 }
 
 func (s *SpecContext) Accept(visitor antlr.ParseTreeVisitor) any {
-	switch t := visitor.(type) {
-	case ApiParserVisitor:
-		return t.VisitSpec(s)
-
-	default:
-		return t.VisitChildren(s)
-	}
+	_ = "STUB: not implemented"
+	return *new(any)
 }
 
 func (p *ApiParserParser) Spec() (localctx ISpecContext) {
-	localctx = NewSpecContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 2, ApiParserParserRULE_spec)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
-	p.SetState(87)
-	p.GetErrorHandler().Sync(p)
-	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 1, p.GetParserRuleContext()) {
-	case 1:
-		p.EnterOuterAlt(localctx, 1)
-		{
-			p.SetState(82)
-			p.SyntaxLit()
-		}
-
-	case 2:
-		p.EnterOuterAlt(localctx, 2)
-		{
-			p.SetState(83)
-			p.ImportSpec()
-		}
-
-	case 3:
-		p.EnterOuterAlt(localctx, 3)
-		{
-			p.SetState(84)
-			p.InfoSpec()
-		}
-
-	case 4:
-		p.EnterOuterAlt(localctx, 4)
-		{
-			p.SetState(85)
-			p.TypeSpec()
-		}
-
-	case 5:
-		p.EnterOuterAlt(localctx, 5)
-		{
-			p.SetState(86)
-			p.ServiceSpec()
-		}
-
-	}
-
-	return localctx
+	_ = "STUB: not implemented"
+	return *new(ISpecContext)
 }
 
-// ISyntaxLitContext is an interface to support dynamic dispatch.
 type ISyntaxLitContext interface {
 	antlr.ParserRuleContext
 
-	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// GetSyntaxToken returns the syntaxToken token.
 	GetSyntaxToken() antlr.Token
 
-	// GetAssign returns the assign token.
 	GetAssign() antlr.Token
 
-	// GetVersion returns the version token.
 	GetVersion() antlr.Token
 
-	// SetSyntaxToken sets the syntaxToken token.
 	SetSyntaxToken(antlr.Token)
 
-	// SetAssign sets the assign token.
 	SetAssign(antlr.Token)
 
-	// SetVersion sets the version token.
 	SetVersion(antlr.Token)
 
-	// IsSyntaxLitContext differentiates from other interfaces.
 	IsSyntaxLitContext()
 }
 
@@ -616,40 +417,42 @@ type SyntaxLitContext struct {
 	version     antlr.Token
 }
 
-func NewEmptySyntaxLitContext() *SyntaxLitContext {
-	var p = new(SyntaxLitContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = ApiParserParserRULE_syntaxLit
-	return p
-}
+func NewEmptySyntaxLitContext() *SyntaxLitContext { _ = "STUB: not implemented"; return nil }
 
-func (*SyntaxLitContext) IsSyntaxLitContext() {}
+func (*SyntaxLitContext) IsSyntaxLitContext() { _ = "STUB: not implemented"; return }
 
 func NewSyntaxLitContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *SyntaxLitContext {
-	var p = new(SyntaxLitContext)
-
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = ApiParserParserRULE_syntaxLit
-
-	return p
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (s *SyntaxLitContext) GetParser() antlr.Parser { return s.parser }
+func (s *SyntaxLitContext) GetParser() antlr.Parser {
+	_ = "STUB: not implemented"
+	return *new(antlr.Parser)
+}
 
-func (s *SyntaxLitContext) GetSyntaxToken() antlr.Token { return s.syntaxToken }
+func (s *SyntaxLitContext) GetSyntaxToken() antlr.Token {
+	_ = "STUB: not implemented"
+	return *new(antlr.Token)
+}
 
-func (s *SyntaxLitContext) GetAssign() antlr.Token { return s.assign }
+func (s *SyntaxLitContext) GetAssign() antlr.Token {
+	_ = "STUB: not implemented"
+	return *new(antlr.Token)
+}
 
-func (s *SyntaxLitContext) GetVersion() antlr.Token { return s.version }
+func (s *SyntaxLitContext) GetVersion() antlr.Token {
+	_ = "STUB: not implemented"
+	return *new(antlr.Token)
+}
 
-func (s *SyntaxLitContext) SetSyntaxToken(v antlr.Token) { s.syntaxToken = v }
+func (s *SyntaxLitContext) SetSyntaxToken(v antlr.Token) { _ = "STUB: not implemented"; return }
 
-func (s *SyntaxLitContext) SetAssign(v antlr.Token) { s.assign = v }
+func (s *SyntaxLitContext) SetAssign(v antlr.Token) { _ = "STUB: not implemented"; return }
 
-func (s *SyntaxLitContext) SetVersion(v antlr.Token) { s.version = v }
+func (s *SyntaxLitContext) SetVersion(v antlr.Token) { _ = "STUB: not implemented"; return }
 
 func (s *SyntaxLitContext) ID() antlr.TerminalNode {
-	return s.GetToken(ApiParserParserID, 0)
+	_ = "STUB: not implemented"
+	return *new(antlr.TerminalNode)
 }

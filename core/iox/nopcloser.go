@@ -6,11 +6,6 @@ type nopCloser struct {
 	io.Writer
 }
 
-func (nopCloser) Close() error {
-	return nil
-}
+func (nopCloser) Close() error { _ = "STUB: not implemented"; return nil }
 
-// NopCloser returns an io.WriteCloser that does nothing on calling Close.
-func NopCloser(w io.Writer) io.WriteCloser {
-	return nopCloser{w}
-}
+func NopCloser(w io.Writer) io.WriteCloser { _ = "STUB: not implemented"; return *new(io.WriteCloser) }

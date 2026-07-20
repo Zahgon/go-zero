@@ -2,12 +2,10 @@ package model
 
 import (
 	"database/sql"
-	"fmt"
 	"strings"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
-	"github.com/zeromicro/go-zero/core/stores/sqlc"
 	"github.com/zeromicro/go-zero/core/stores/sqlx"
 	"github.com/zeromicro/go-zero/core/stringx"
 )
@@ -22,7 +20,6 @@ var (
 )
 
 type (
-	// UserModel defines a model for user
 	UserModel interface {
 		Insert(data User) (sql.Result, error)
 		FindOne(id int64) (*User, error)
@@ -38,98 +35,46 @@ type (
 		table string
 	}
 
-	// User defines an data structure for mysql
 	User struct {
 		ID         int64     `db:"id"`
-		User       string    `db:"user"`     // user
-		Name       string    `db:"name"`     // user name
-		Password   string    `db:"password"` // user password
-		Mobile     string    `db:"mobile"`   // user mobile
-		Gender     string    `db:"gender"`   // male | female | unknown
-		Nickname   string    `db:"nickname"` // user nickname
+		User       string    `db:"user"`
+		Name       string    `db:"name"`
+		Password   string    `db:"password"`
+		Mobile     string    `db:"mobile"`
+		Gender     string    `db:"gender"`
+		Nickname   string    `db:"nickname"`
 		CreateTime time.Time `db:"create_time"`
 		UpdateTime time.Time `db:"update_time"`
 	}
 )
 
-// NewUserModel creates an instance for UserModel
-func NewUserModel(conn sqlx.SqlConn) UserModel {
-	return &defaultUserModel{
-		conn:  conn,
-		table: "`user`",
-	}
-}
+func NewUserModel(conn sqlx.SqlConn) UserModel { _ = "STUB: not implemented"; return *new(UserModel) }
 
 func (m *defaultUserModel) Insert(data User) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, userRowsExpectAutoSet)
-	ret, err := m.conn.Exec(query, data.User, data.Name, data.Password, data.Mobile, data.Gender, data.Nickname)
-	return ret, err
+	_ = "STUB: not implemented"
+	return *new(sql.Result), nil
 }
 
 func (m *defaultUserModel) FindOne(id int64) (*User, error) {
-	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", userRows, m.table)
-	var resp User
-	err := m.conn.QueryRow(&resp, query, id)
-	switch err {
-	case nil:
-		return &resp, nil
-	case sqlc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (m *defaultUserModel) FindOneByUser(user string) (*User, error) {
-	var resp User
-	query := fmt.Sprintf("select %s from %s where `user` = ? limit 1", userRows, m.table)
-	err := m.conn.QueryRow(&resp, query, user)
-	switch err {
-	case nil:
-		return &resp, nil
-	case sqlc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (m *defaultUserModel) FindOneByMobile(mobile string) (*User, error) {
-	var resp User
-	query := fmt.Sprintf("select %s from %s where `mobile` = ? limit 1", userRows, m.table)
-	err := m.conn.QueryRow(&resp, query, mobile)
-	switch err {
-	case nil:
-		return &resp, nil
-	case sqlc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (m *defaultUserModel) FindOneByName(name string) (*User, error) {
-	var resp User
-	query := fmt.Sprintf("select %s from %s where `name` = ? limit 1", userRows, m.table)
-	err := m.conn.QueryRow(&resp, query, name)
-	switch err {
-	case nil:
-		return &resp, nil
-	case sqlc.ErrNotFound:
-		return nil, ErrNotFound
-	default:
-		return nil, err
-	}
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (m *defaultUserModel) Update(data User) error {
-	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, userRowsWithPlaceHolder)
-	_, err := m.conn.Exec(query, data.User, data.Name, data.Password, data.Mobile, data.Gender, data.Nickname, data.ID)
-	return err
-}
+func (m *defaultUserModel) Update(data User) error { _ = "STUB: not implemented"; return nil }
 
-func (m *defaultUserModel) Delete(id int64) error {
-	query := fmt.Sprintf("delete from %s where `id` = ?", m.table)
-	_, err := m.conn.Exec(query, id)
-	return err
-}
+func (m *defaultUserModel) Delete(id int64) error { _ = "STUB: not implemented"; return nil }

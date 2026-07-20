@@ -1,14 +1,8 @@
 package ast
 
 import (
-	"bytes"
-	"fmt"
 	"io"
-	"strings"
 	"text/tabwriter"
-
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/parser/api/token"
-	"github.com/zeromicro/go-zero/tools/goctl/util"
 )
 
 const (
@@ -20,11 +14,9 @@ const (
 
 const (
 	_ WriteMode = 1 << iota
-	// ModeAuto is the default mode, which will automatically
-	//determine whether to write a newline.
+
 	ModeAuto
 
-	// ModeExpectInSameLine will write in the same line.
 	ModeExpectInSameLine
 )
 
@@ -46,356 +38,73 @@ type tokenNodeOpt struct {
 	ignoreLeadingComment bool
 }
 
-// WriteMode is the mode of writing.
 type WriteMode int
 
-// Writer is the writer of ast.
 type Writer struct {
 	tw     *tabwriter.Writer
 	writer io.Writer
 }
 
 func transfer2TokenNode(node Node, isChild bool, opt ...tokenNodeOption) *TokenNode {
-	option := new(tokenNodeOpt)
-	for _, o := range opt {
-		o(option)
-	}
-
-	var copyOpt = append([]tokenNodeOption(nil), opt...)
-	var tn *TokenNode
-	switch val := node.(type) {
-	case *AnyDataType:
-		copyOpt = append(copyOpt, withTokenNodePrefix(NilIndent))
-		tn = transferTokenNode(val.Any, copyOpt...)
-		if option.ignoreHeadComment {
-			tn.HeadCommentGroup = nil
-		}
-		if option.ignoreLeadingComment {
-			tn.LeadingCommentGroup = nil
-		}
-		val.isChild = isChild
-		val.Any = tn
-	case *ArrayDataType:
-		copyOpt = append(copyOpt, withTokenNodePrefix(NilIndent))
-		tn = transferTokenNode(val.LBrack, copyOpt...)
-		if option.ignoreHeadComment {
-			tn.HeadCommentGroup = nil
-		}
-		if option.ignoreLeadingComment {
-			tn.LeadingCommentGroup = nil
-		}
-		val.isChild = isChild
-		val.LBrack = tn
-	case *BaseDataType:
-		copyOpt = append(copyOpt, withTokenNodePrefix(NilIndent))
-		tn = transferTokenNode(val.Base, copyOpt...)
-		if option.ignoreHeadComment {
-			tn.HeadCommentGroup = nil
-		}
-		if option.ignoreLeadingComment {
-			tn.LeadingCommentGroup = nil
-		}
-		val.isChild = isChild
-		val.Base = tn
-	case *InterfaceDataType:
-		copyOpt = append(copyOpt, withTokenNodePrefix(NilIndent))
-		tn = transferTokenNode(val.Interface, copyOpt...)
-		if option.ignoreHeadComment {
-			tn.HeadCommentGroup = nil
-		}
-		if option.ignoreLeadingComment {
-			tn.LeadingCommentGroup = nil
-		}
-		val.isChild = isChild
-		val.Interface = tn
-	case *MapDataType:
-		copyOpt = append(copyOpt, withTokenNodePrefix(NilIndent))
-		tn = transferTokenNode(val.Map, copyOpt...)
-		if option.ignoreHeadComment {
-			tn.HeadCommentGroup = nil
-		}
-		if option.ignoreLeadingComment {
-			tn.LeadingCommentGroup = nil
-		}
-		val.isChild = isChild
-		val.Map = tn
-	case *PointerDataType:
-		copyOpt = append(copyOpt, withTokenNodePrefix(NilIndent))
-		tn = transferTokenNode(val.Star, copyOpt...)
-		if option.ignoreHeadComment {
-			tn.HeadCommentGroup = nil
-		}
-		if option.ignoreLeadingComment {
-			tn.LeadingCommentGroup = nil
-		}
-		val.isChild = isChild
-		val.Star = tn
-	case *SliceDataType:
-		copyOpt = append(copyOpt, withTokenNodePrefix(NilIndent))
-		tn = transferTokenNode(val.LBrack, copyOpt...)
-		if option.ignoreHeadComment {
-			tn.HeadCommentGroup = nil
-		}
-		if option.ignoreLeadingComment {
-			tn.LeadingCommentGroup = nil
-		}
-		val.isChild = isChild
-		val.LBrack = tn
-	case *StructDataType:
-		copyOpt = append(copyOpt, withTokenNodePrefix(NilIndent))
-		tn = transferTokenNode(val.LBrace, copyOpt...)
-		if option.ignoreHeadComment {
-			tn.HeadCommentGroup = nil
-		}
-		if option.ignoreLeadingComment {
-			tn.LeadingCommentGroup = nil
-		}
-		val.isChild = isChild
-		val.LBrace = tn
-	default:
-	}
-
-	return &TokenNode{
-		headFlag:    node.HasHeadCommentGroup(),
-		leadingFlag: node.HasLeadingCommentGroup(),
-		Token: token.Token{
-			Text:     node.Format(option.prefix),
-			Position: node.Pos(),
-		},
-		LeadingCommentGroup: CommentGroup{
-			{
-				token.Token{Position: node.End()},
-			},
-		},
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func transferNilInfixNode(nodes []*TokenNode, opt ...tokenNodeOption) *TokenNode {
-	result := &TokenNode{}
-	var option = new(tokenNodeOpt)
-	for _, o := range opt {
-		o(option)
-	}
-
-	var list []string
-	for _, n := range nodes {
-		list = append(list, n.Token.Text)
-	}
-
-	result.Token = token.Token{
-		Text:     option.prefix + strings.Join(list, option.infix),
-		Position: nodes[0].Pos(),
-	}
-
-	if !option.ignoreHeadComment {
-		result.HeadCommentGroup = nodes[0].HeadCommentGroup
-	}
-	if !option.ignoreLeadingComment {
-		result.LeadingCommentGroup = nodes[len(nodes)-1].LeadingCommentGroup
-	}
-
-	return result
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func transferTokenNode(node *TokenNode, opt ...tokenNodeOption) *TokenNode {
-	result := &TokenNode{}
-	var option = new(tokenNodeOpt)
-	for _, o := range opt {
-		o(option)
-	}
-	result.Token = token.Token{
-		Type:     node.Token.Type,
-		Text:     option.prefix + node.Token.Text,
-		Position: node.Token.Position,
-	}
-	if !option.ignoreHeadComment {
-		for _, v := range node.HeadCommentGroup {
-			result.HeadCommentGroup = append(result.HeadCommentGroup,
-				&CommentStmt{Comment: token.Token{
-					Type:     v.Comment.Type,
-					Text:     option.prefix + v.Comment.Text,
-					Position: v.Comment.Position,
-				}})
-		}
-	}
-	if !option.ignoreLeadingComment {
-		result.LeadingCommentGroup = append(result.LeadingCommentGroup, node.LeadingCommentGroup...)
-	}
-	return result
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func ignoreHeadComment() tokenNodeOption {
-	return func(o *tokenNodeOpt) {
-		o.ignoreHeadComment = true
-	}
-}
+func ignoreHeadComment() tokenNodeOption { _ = "STUB: not implemented"; return *new(tokenNodeOption) }
 
 func ignoreLeadingComment() tokenNodeOption {
-	return func(o *tokenNodeOpt) {
-		o.ignoreLeadingComment = true
-	}
+	_ = "STUB: not implemented"
+	return *new(tokenNodeOption)
 }
 
-func ignoreComment() tokenNodeOption {
-	return func(o *tokenNodeOpt) {
-		o.ignoreHeadComment = true
-		o.ignoreLeadingComment = true
-	}
-}
+func ignoreComment() tokenNodeOption { _ = "STUB: not implemented"; return *new(tokenNodeOption) }
 
 func withTokenNodePrefix(prefix ...string) tokenNodeOption {
-	return func(o *tokenNodeOpt) {
-		for _, p := range prefix {
-			o.prefix = p
-		}
-	}
-
+	_ = "STUB: not implemented"
+	return *new(tokenNodeOption)
 }
+
 func withTokenNodeInfix(infix string) tokenNodeOption {
-	return func(o *tokenNodeOpt) {
-		o.infix = infix
-	}
+	_ = "STUB: not implemented"
+	return *new(tokenNodeOption)
 }
 
-func expectSameLine() Option {
-	return func(o *option) {
-		o.mode = ModeExpectInSameLine
-	}
-}
+func expectSameLine() Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func expectIndentInfix() Option {
-	return func(o *option) {
-		o.infix = Indent
-	}
-}
+func expectIndentInfix() Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func withNode(nodes ...Node) Option {
-	return func(o *option) {
-		o.nodes = nodes
-	}
-}
+func withNode(nodes ...Node) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func withMode(mode WriteMode) Option {
-	return func(o *option) {
-		o.mode = mode
-	}
-}
+func withMode(mode WriteMode) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func withPrefix(prefix ...string) Option {
-	return func(o *option) {
-		for _, p := range prefix {
-			o.prefix = p
-		}
-	}
-}
+func withPrefix(prefix ...string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func withInfix(infix string) Option {
-	return func(o *option) {
-		o.infix = infix
-	}
-}
+func withInfix(infix string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func withRawText() Option {
-	return func(o *option) {
-		o.rawText = true
-	}
-}
+func withRawText() Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// NewWriter returns a new Writer.
-func NewWriter(writer io.Writer) *Writer {
-	return &Writer{
-		tw:     tabwriter.NewWriter(writer, 1, 8, 1, ' ', tabwriter.TabIndent),
-		writer: writer,
-	}
-}
+func NewWriter(writer io.Writer) *Writer { _ = "STUB: not implemented"; return nil }
 
-// NewBufferWriter returns a new buffer Writer.
-func NewBufferWriter() *Writer {
-	writer := bytes.NewBuffer(nil)
-	return &Writer{
-		tw:     tabwriter.NewWriter(writer, 1, 8, 1, ' ', tabwriter.TabIndent),
-		writer: writer,
-	}
-}
+func NewBufferWriter() *Writer { _ = "STUB: not implemented"; return nil }
 
-// String returns the string of the buffer.
-func (w *Writer) String() string {
-	buffer, ok := w.writer.(*bytes.Buffer)
-	if !ok {
-		return ""
-	}
-	w.Flush()
-	return buffer.String()
-}
+func (w *Writer) String() string { _ = "STUB: not implemented"; return "" }
 
-// Flush flushes the buffer.
-func (w *Writer) Flush() {
-	_ = w.tw.Flush()
-}
+func (w *Writer) Flush() { _ = "STUB: not implemented"; return }
 
-// NewLine writes a new line.
-func (w *Writer) NewLine() {
-	_, _ = fmt.Fprint(w.tw, NewLine)
-}
+func (w *Writer) NewLine() { _ = "STUB: not implemented"; return }
 
-// Write writes the node.
-func (w *Writer) Write(opts ...Option) {
-	if len(opts) == 0 {
-		return
-	}
+func (w *Writer) Write(opts ...Option) { _ = "STUB: not implemented"; return }
 
-	var opt = new(option)
-	opt.mode = ModeAuto
-	opt.prefix = NilIndent
-	opt.infix = WhiteSpace
-	for _, v := range opts {
-		v(opt)
-	}
+func (w *Writer) WriteText(text string) { _ = "STUB: not implemented"; return }
 
-	w.write(opt)
-}
-
-// WriteText writes the text.
-func (w *Writer) WriteText(text string) {
-	_, _ = fmt.Fprint(w.tw, text)
-}
-
-func (w *Writer) write(opt *option) {
-	if len(opt.nodes) == 0 {
-		return
-	}
-
-	var textList []string
-	line := opt.nodes[0].End().Line
-	for idx, node := range opt.nodes {
-		mode := opt.mode
-		preIdx := idx - 1
-		var preNodeHasLeading bool
-		if preIdx > -1 && preIdx < len(opt.nodes) {
-			preNode := opt.nodes[preIdx]
-			preNodeHasLeading = preNode.HasLeadingCommentGroup()
-		}
-		if node.HasHeadCommentGroup() || preNodeHasLeading {
-			mode = ModeAuto
-		}
-
-		if mode == ModeAuto && node.Pos().Line > line {
-			textList = append(textList, NewLine)
-		}
-		line = node.End().Line
-		if util.TrimWhiteSpace(node.Format()) == "" {
-			continue
-		}
-
-		textList = append(textList, node.Format(opt.prefix))
-	}
-
-	text := strings.Join(textList, opt.infix)
-	text = strings.ReplaceAll(text, " \n", "\n")
-	text = strings.ReplaceAll(text, "\n ", "\n")
-	if opt.rawText {
-		_, _ = fmt.Fprint(w.writer, text)
-		return
-	}
-	_, _ = fmt.Fprint(w.tw, text)
-}
+func (w *Writer) write(opt *option) { _ = "STUB: not implemented"; return }

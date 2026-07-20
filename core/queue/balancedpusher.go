@@ -2,48 +2,18 @@ package queue
 
 import (
 	"errors"
-	"sync/atomic"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
-// ErrNoAvailablePusher indicates no pusher available.
 var ErrNoAvailablePusher = errors.New("no available pusher")
 
-// A BalancedPusher is used to push messages to multiple pusher with round robin algorithm.
 type BalancedPusher struct {
 	name    string
 	pushers []Pusher
 	index   uint64
 }
 
-// NewBalancedPusher returns a BalancedPusher.
-func NewBalancedPusher(pushers []Pusher) Pusher {
-	return &BalancedPusher{
-		name:    generateName(pushers),
-		pushers: pushers,
-	}
-}
+func NewBalancedPusher(pushers []Pusher) Pusher { _ = "STUB: not implemented"; return *new(Pusher) }
 
-// Name returns the name of pusher.
-func (pusher *BalancedPusher) Name() string {
-	return pusher.name
-}
+func (pusher *BalancedPusher) Name() string { _ = "STUB: not implemented"; return "" }
 
-// Push pushes message to one of the underlying pushers.
-func (pusher *BalancedPusher) Push(message string) error {
-	size := len(pusher.pushers)
-
-	for i := 0; i < size; i++ {
-		index := atomic.AddUint64(&pusher.index, 1) % uint64(size)
-		target := pusher.pushers[index]
-
-		if err := target.Push(message); err != nil {
-			logx.Error(err)
-		} else {
-			return nil
-		}
-	}
-
-	return ErrNoAvailablePusher
-}
+func (pusher *BalancedPusher) Push(message string) error { _ = "STUB: not implemented"; return nil }

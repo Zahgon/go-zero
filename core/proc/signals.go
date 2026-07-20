@@ -20,7 +20,7 @@ var done = make(chan struct{})
 
 func init() {
 	go func() {
-		// https://golang.org/pkg/os/signal/#Notify
+
 		signals := make(chan os.Signal, 1)
 		signal.Notify(signals, syscall.SIGUSR1, syscall.SIGUSR2, syscall.SIGTERM, syscall.SIGINT)
 
@@ -45,16 +45,6 @@ func init() {
 	}()
 }
 
-// Done returns the channel that notifies the process quitting.
-func Done() <-chan struct{} {
-	return done
-}
+func Done() <-chan struct{} { _ = "STUB: not implemented"; return nil }
 
-func stopOnSignal() {
-	select {
-	case <-done:
-		// already closed
-	default:
-		close(done)
-	}
-}
+func stopOnSignal() { _ = "STUB: not implemented"; return }

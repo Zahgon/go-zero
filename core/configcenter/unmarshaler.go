@@ -15,27 +15,17 @@ var registry = &unmarshalerRegistry{
 }
 
 type (
-	// LoaderFn is the function type for loading configuration.
 	LoaderFn func([]byte, any) error
 
-	// unmarshalerRegistry is the registry for unmarshalers.
 	unmarshalerRegistry struct {
 		unmarshalers map[string]LoaderFn
 		mu           sync.RWMutex
 	}
 )
 
-// RegisterUnmarshaler registers an unmarshaler.
-func RegisterUnmarshaler(name string, fn LoaderFn) {
-	registry.mu.Lock()
-	defer registry.mu.Unlock()
-	registry.unmarshalers[name] = fn
-}
+func RegisterUnmarshaler(name string, fn LoaderFn) { _ = "STUB: not implemented"; return }
 
-// Unmarshaler returns the unmarshaler by name.
 func Unmarshaler(name string) (LoaderFn, bool) {
-	registry.mu.RLock()
-	defer registry.mu.RUnlock()
-	fn, ok := registry.unmarshalers[name]
-	return fn, ok
+	_ = "STUB: not implemented"
+	return *new(LoaderFn), false
 }

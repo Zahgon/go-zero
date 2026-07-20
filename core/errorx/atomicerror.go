@@ -2,22 +2,10 @@ package errorx
 
 import "sync/atomic"
 
-// AtomicError defines an atomic error.
 type AtomicError struct {
-	err atomic.Value // error
+	err atomic.Value
 }
 
-// Set sets the error.
-func (ae *AtomicError) Set(err error) {
-	if err != nil {
-		ae.err.Store(err)
-	}
-}
+func (ae *AtomicError) Set(err error) { _ = "STUB: not implemented"; return }
 
-// Load returns the error.
-func (ae *AtomicError) Load() error {
-	if v := ae.err.Load(); v != nil {
-		return v.(error)
-	}
-	return nil
-}
+func (ae *AtomicError) Load() error { _ = "STUB: not implemented"; return nil }

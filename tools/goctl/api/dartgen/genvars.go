@@ -1,10 +1,5 @@
 package dartgen
 
-import (
-	"fmt"
-	"os"
-)
-
 const (
 	varTemplate = `import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -76,28 +71,6 @@ Future<Tokens?> getTokens() async {
 )
 
 func genVars(dir string, isLegacy bool, scheme string, hostname string) error {
-	err := os.MkdirAll(dir, 0o755)
-	if err != nil {
-		return err
-	}
-
-	if !fileExists(dir + "vars.dart") {
-		err = os.WriteFile(dir+"vars.dart", []byte(fmt.Sprintf(`const serverHost='%s://%s';`,
-			scheme, hostname)), 0o644)
-		if err != nil {
-			return err
-		}
-	}
-
-	if !fileExists(dir + "kv.dart") {
-		tpl := varTemplateV2
-		if isLegacy {
-			tpl = varTemplate
-		}
-		err = os.WriteFile(dir+"kv.dart", []byte(tpl), 0o644)
-		if err != nil {
-			return err
-		}
-	}
+	_ = "STUB: not implemented"
 	return nil
 }

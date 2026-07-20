@@ -6,7 +6,6 @@ import (
 )
 
 var (
-	// ErrNotFound is an alias of sql.ErrNoRows
 	ErrNotFound = sql.ErrNoRows
 
 	errCantNestTx    = errors.New("cannot nest transactions")

@@ -1,10 +1,7 @@
 package env
 
 import (
-	"fmt"
 	"log"
-	"os"
-	"path/filepath"
 	"runtime"
 	"strings"
 	"testing"
@@ -36,8 +33,6 @@ const (
 	ExperimentalOff = "off"
 )
 
-// init initializes the goctl environment variables, the environment variables of the function are set in order,
-// please do not change the logic order of the code.
 func init() {
 	defaultGoctlHome, err := pathx.GetDefaultGoctlHome()
 	if err != nil {
@@ -92,92 +87,16 @@ func init() {
 	goctlEnv.SetKV(ProtocGenGoGRPCVersion, protocGenGoGrpcVer)
 }
 
-func Print(args ...string) string {
-	if len(args) == 0 {
-		return strings.Join(goctlEnv.Format(), "\n")
-	}
+func Print(args ...string) string { _ = "STUB: not implemented"; return "" }
 
-	var values []string
-	for _, key := range args {
-		value, ok := goctlEnv.GetString(key)
-		if !ok {
-			value = fmt.Sprintf("%s=%%not found%%", key)
-		}
-		values = append(values, fmt.Sprintf("%s=%s", key, value))
-	}
-	return strings.Join(values, "\n")
-}
+func Get(key string) string { _ = "STUB: not implemented"; return "" }
 
-func Get(key string) string {
-	return GetOr(key, "")
-}
+func Set(t *testing.T, key, value string) { _ = "STUB: not implemented"; return }
 
-// Set sets the environment variable for testing
-func Set(t *testing.T, key, value string) {
-	goctlEnv.SetKV(key, value)
-	t.Cleanup(func() {
-		goctlEnv.Remove(key)
-	})
-}
+func GetOr(key, def string) string { _ = "STUB: not implemented"; return "" }
 
-func GetOr(key, def string) string {
-	return goctlEnv.GetStringOr(key, def)
-}
+func UseExperimental() bool { _ = "STUB: not implemented"; return false }
 
-func UseExperimental() bool {
-	return GetOr(GoctlExperimental, ExperimentalOff) == ExperimentalOn
-}
+func readEnv(goctlHome string) *sortedmap.SortedMap { _ = "STUB: not implemented"; return nil }
 
-func readEnv(goctlHome string) *sortedmap.SortedMap {
-	envFile := filepath.Join(goctlHome, envFileDir)
-	data, err := os.ReadFile(envFile)
-	if err != nil {
-		return nil
-	}
-	dataStr := string(data)
-	lines := strings.Split(dataStr, "\n")
-	sm := sortedmap.New()
-	for _, line := range lines {
-		_, _, err = sm.SetExpression(line)
-		if err != nil {
-			continue
-		}
-	}
-	return sm
-}
-
-func WriteEnv(kv []string) error {
-	defaultGoctlHome, err := pathx.GetDefaultGoctlHome()
-	if err != nil {
-		log.Fatalln(err)
-	}
-	data := sortedmap.New()
-	for _, e := range kv {
-		_, _, err := data.SetExpression(e)
-		if err != nil {
-			return err
-		}
-	}
-	data.RangeIf(func(key, value any) bool {
-		switch key.(string) {
-		case GoctlHome, GoctlCache:
-			path := value.(string)
-			if !pathx.FileExists(path) {
-				err = fmt.Errorf("[writeEnv]: path %q is not exists", path)
-				return false
-			}
-		}
-		if goctlEnv.HasKey(key) {
-			goctlEnv.SetKV(key, value)
-			return true
-		} else {
-			err = fmt.Errorf("[writeEnv]: invalid key: %v", key)
-			return false
-		}
-	})
-	if err != nil {
-		return err
-	}
-	envFile := filepath.Join(defaultGoctlHome, envFileDir)
-	return os.WriteFile(envFile, []byte(strings.Join(goctlEnv.Format(), "\n")), 0o777)
-}
+func WriteEnv(kv []string) error { _ = "STUB: not implemented"; return nil }

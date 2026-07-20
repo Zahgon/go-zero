@@ -12,17 +12,6 @@ type Context struct {
 	BizCodeEnumDescription string
 }
 
-func testingContext(_ *testing.T) Context {
-	return Context{}
-}
+func testingContext(_ *testing.T) Context { _ = "STUB: not implemented"; return *new(Context) }
 
-func contextFromApi(info spec.Info) Context {
-	if len(info.Properties) == 0 {
-		return Context{}
-	}
-	return Context{
-		UseDefinitions:         getBoolFromKVOrDefault(info.Properties, propertyKeyUseDefinitions, defaultValueOfPropertyUseDefinition),
-		WrapCodeMsg:            getBoolFromKVOrDefault(info.Properties, propertyKeyWrapCodeMsg, false),
-		BizCodeEnumDescription: getStringFromKVOrDefault(info.Properties, propertyKeyBizCodeEnumDescription, "business code"),
-	}
-}
+func contextFromApi(info spec.Info) Context { _ = "STUB: not implemented"; return *new(Context) }

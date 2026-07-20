@@ -2,5 +2,4 @@
 
 package migrate
 
-func cancelOnSignals() {
-}
+func cancelOnSignals() { _ = "STUB: not implemented"; return }

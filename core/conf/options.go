@@ -1,7 +1,6 @@
 package conf
 
 type (
-	// Option defines the method to customize the config options.
 	Option func(opt *options)
 
 	options struct {
@@ -9,9 +8,4 @@ type (
 	}
 )
 
-// UseEnv customizes the config to use environment variables.
-func UseEnv() Option {
-	return func(opt *options) {
-		opt.env = true
-	}
-}
+func UseEnv() Option { _ = "STUB: not implemented"; return *new(Option) }

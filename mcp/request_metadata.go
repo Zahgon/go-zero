@@ -3,11 +3,8 @@ package mcp
 import (
 	"context"
 	"net/http"
-
-	"github.com/zeromicro/go-zero/rest/pathvar"
 )
 
-// RequestMetadata carries selected request-scoped values into MCP handlers.
 type RequestMetadata struct {
 	Headers map[string][]string
 	Query   map[string][]string
@@ -16,135 +13,52 @@ type RequestMetadata struct {
 
 type requestMetadataCtxKey struct{}
 
-// RequestMetadataFromContext returns metadata extracted at the transport boundary.
 func RequestMetadataFromContext(ctx context.Context) (RequestMetadata, bool) {
-	metadata, ok := requestMetadataFromContext(ctx)
-	if !ok {
-		return RequestMetadata{}, false
-	}
-
-	return normalizeRequestMetadata(metadata), true
+	_ = "STUB: not implemented"
+	return *new(RequestMetadata), false
 }
 
-// HeaderFromContext returns the first header value for key.
 func HeaderFromContext(ctx context.Context, key string) (string, bool) {
-	metadata, ok := requestMetadataFromContext(ctx)
-	if !ok {
-		return "", false
-	}
-
-	vals := metadata.Headers[http.CanonicalHeaderKey(key)]
-	if len(vals) == 0 {
-		return "", false
-	}
-
-	return vals[0], true
+	_ = "STUB: not implemented"
+	return "", false
 }
 
-// QueryFromContext returns the first query value for key.
 func QueryFromContext(ctx context.Context, key string) (string, bool) {
-	metadata, ok := requestMetadataFromContext(ctx)
-	if !ok {
-		return "", false
-	}
-
-	vals := metadata.Query[key]
-	if len(vals) == 0 {
-		return "", false
-	}
-
-	return vals[0], true
+	_ = "STUB: not implemented"
+	return "", false
 }
 
-// PathFromContext returns the path variable value for key.
 func PathFromContext(ctx context.Context, key string) (string, bool) {
-	metadata, ok := requestMetadataFromContext(ctx)
-	if !ok {
-		return "", false
-	}
-
-	val, ok := metadata.Path[key]
-	if !ok {
-		return "", false
-	}
-
-	return val, true
+	_ = "STUB: not implemented"
+	return "", false
 }
 
 func requestMetadataFromContext(ctx context.Context) (RequestMetadata, bool) {
-	metadata, ok := ctx.Value(requestMetadataCtxKey{}).(RequestMetadata)
-	if !ok {
-		return RequestMetadata{}, false
-	}
-
-	return metadata, true
+	_ = "STUB: not implemented"
+	return *new(RequestMetadata), false
 }
 
-// DefaultRequestMetadataExtractor extracts headers, query values, and path variables.
 func DefaultRequestMetadataExtractor(r *http.Request) RequestMetadata {
-	metadata := RequestMetadata{
-		Headers: make(map[string][]string, len(r.Header)),
-		Query:   make(map[string][]string),
-		Path:    clonePathVars(pathvar.Vars(r)),
-	}
-
-	for key, vals := range r.Header {
-		metadata.Headers[http.CanonicalHeaderKey(key)] = append([]string(nil), vals...)
-	}
-
-	if r.URL != nil {
-		for key, vals := range r.URL.Query() {
-			metadata.Query[key] = append([]string(nil), vals...)
-		}
-	}
-
-	return metadata
+	_ = "STUB: not implemented"
+	return *new(RequestMetadata)
 }
 
 func normalizeRequestMetadata(metadata RequestMetadata) RequestMetadata {
-	return RequestMetadata{
-		Headers: cloneCanonicalHeaderValues(metadata.Headers),
-		Query:   cloneHeaderValues(metadata.Query),
-		Path:    clonePathVars(metadata.Path),
-	}
+	_ = "STUB: not implemented"
+	return *new(RequestMetadata)
 }
 
 func cloneHeaderValues(values map[string][]string) map[string][]string {
-	if len(values) == 0 {
-		return nil
-	}
-
-	cloned := make(map[string][]string, len(values))
-	for key, vals := range values {
-		cloned[key] = append([]string(nil), vals...)
-	}
-
-	return cloned
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func cloneCanonicalHeaderValues(values map[string][]string) map[string][]string {
-	if len(values) == 0 {
-		return nil
-	}
-
-	cloned := make(map[string][]string, len(values))
-	for key, vals := range values {
-		canonical := http.CanonicalHeaderKey(key)
-		cloned[canonical] = append(cloned[canonical], vals...)
-	}
-
-	return cloned
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func clonePathVars(values map[string]string) map[string]string {
-	if len(values) == 0 {
-		return nil
-	}
-
-	cloned := make(map[string]string, len(values))
-	for key, val := range values {
-		cloned[key] = val
-	}
-
-	return cloned
+	_ = "STUB: not implemented"
+	return nil
 }

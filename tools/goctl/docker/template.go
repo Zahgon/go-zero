@@ -2,8 +2,6 @@ package docker
 
 import (
 	_ "embed"
-
-	"github.com/zeromicro/go-zero/tools/goctl/util/pathx"
 )
 
 const (
@@ -14,38 +12,14 @@ const (
 //go:embed docker.tpl
 var dockerTemplate string
 
-// Clean deletes all templates files
-func Clean() error {
-	return pathx.Clean(category)
-}
+func Clean() error { _ = "STUB: not implemented"; return nil }
 
-// GenTemplates creates docker template files
-func GenTemplates() error {
-	return initTemplate()
-}
+func GenTemplates() error { _ = "STUB: not implemented"; return nil }
 
-// Category returns the const string of docker category
-func Category() string {
-	return category
-}
+func Category() string { _ = "STUB: not implemented"; return "" }
 
-// RevertTemplate recovers the deleted template files
-func RevertTemplate(name string) error {
-	return pathx.CreateTemplate(category, name, dockerTemplate)
-}
+func RevertTemplate(name string) error { _ = "STUB: not implemented"; return nil }
 
-// Update deletes and creates new template files
-func Update() error {
-	err := Clean()
-	if err != nil {
-		return err
-	}
+func Update() error { _ = "STUB: not implemented"; return nil }
 
-	return initTemplate()
-}
-
-func initTemplate() error {
-	return pathx.InitTemplates(category, map[string]string{
-		dockerTemplateFile: dockerTemplate,
-	})
-}
+func initTemplate() error { _ = "STUB: not implemented"; return nil }

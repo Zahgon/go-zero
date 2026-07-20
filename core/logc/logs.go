@@ -2,7 +2,6 @@ package logc
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -12,160 +11,66 @@ type (
 	LogField = logx.LogField
 )
 
-// AddGlobalFields adds global fields.
-func AddGlobalFields(fields ...LogField) {
-	logx.AddGlobalFields(fields...)
-}
+func AddGlobalFields(fields ...LogField) { _ = "STUB: not implemented"; return }
 
-// Alert alerts v in alert level, and the message is written to error log.
-func Alert(_ context.Context, v string) {
-	logx.Alert(v)
-}
+func Alert(_ context.Context, v string) { _ = "STUB: not implemented"; return }
 
-// Close closes the logging.
-func Close() error {
-	return logx.Close()
-}
+func Close() error { _ = "STUB: not implemented"; return nil }
 
-// Debug writes v into access log.
-func Debug(ctx context.Context, v ...interface{}) {
-	getLogger(ctx).Debug(v...)
-}
+func Debug(ctx context.Context, v ...interface{}) { _ = "STUB: not implemented"; return }
 
-// Debugf writes v with format into access log.
 func Debugf(ctx context.Context, format string, v ...interface{}) {
-	getLogger(ctx).Debugf(format, v...)
+	_ = "STUB: not implemented"
+	return
 }
 
-// Debugfn writes fn result into access log.
-// This is useful when the function is expensive to compute,
-// and we want to log it only when necessary.
-func Debugfn(ctx context.Context, fn func() any) {
-	getLogger(ctx).Debugfn(fn)
-}
+func Debugfn(ctx context.Context, fn func() any) { _ = "STUB: not implemented"; return }
 
-// Debugv writes v into access log with json content.
-func Debugv(ctx context.Context, v interface{}) {
-	getLogger(ctx).Debugv(v)
-}
+func Debugv(ctx context.Context, v interface{}) { _ = "STUB: not implemented"; return }
 
-// Debugw writes msg along with fields into the access log.
-func Debugw(ctx context.Context, msg string, fields ...LogField) {
-	getLogger(ctx).Debugw(msg, fields...)
-}
+func Debugw(ctx context.Context, msg string, fields ...LogField) { _ = "STUB: not implemented"; return }
 
-// Error writes v into error log.
-func Error(ctx context.Context, v ...any) {
-	getLogger(ctx).Error(v...)
-}
+func Error(ctx context.Context, v ...any) { _ = "STUB: not implemented"; return }
 
-// Errorf writes v with format into error log.
-func Errorf(ctx context.Context, format string, v ...any) {
-	getLogger(ctx).Errorf(fmt.Errorf(format, v...).Error())
-}
+func Errorf(ctx context.Context, format string, v ...any) { _ = "STUB: not implemented"; return }
 
-// Errorfn writes fn result into error log.
-// This is useful when the function is expensive to compute,
-// and we want to log it only when necessary.
-func Errorfn(ctx context.Context, fn func() any) {
-	getLogger(ctx).Errorfn(fn)
-}
+func Errorfn(ctx context.Context, fn func() any) { _ = "STUB: not implemented"; return }
 
-// Errorv writes v into error log with json content.
-// No call stack attached, because not elegant to pack the messages.
-func Errorv(ctx context.Context, v any) {
-	getLogger(ctx).Errorv(v)
-}
+func Errorv(ctx context.Context, v any) { _ = "STUB: not implemented"; return }
 
-// Errorw writes msg along with fields into the error log.
-func Errorw(ctx context.Context, msg string, fields ...LogField) {
-	getLogger(ctx).Errorw(msg, fields...)
-}
+func Errorw(ctx context.Context, msg string, fields ...LogField) { _ = "STUB: not implemented"; return }
 
-// Field returns a LogField for the given key and value.
-func Field(key string, value any) LogField {
-	return logx.Field(key, value)
-}
+func Field(key string, value any) LogField { _ = "STUB: not implemented"; return *new(LogField) }
 
-// Info writes v into access log.
-func Info(ctx context.Context, v ...any) {
-	getLogger(ctx).Info(v...)
-}
+func Info(ctx context.Context, v ...any) { _ = "STUB: not implemented"; return }
 
-// Infof writes v with format into access log.
-func Infof(ctx context.Context, format string, v ...any) {
-	getLogger(ctx).Infof(format, v...)
-}
+func Infof(ctx context.Context, format string, v ...any) { _ = "STUB: not implemented"; return }
 
-// Infofn writes fn result into access log.
-// This is useful when the function is expensive to compute,
-// and we want to log it only when necessary.
-func Infofn(ctx context.Context, fn func() any) {
-	getLogger(ctx).Infofn(fn)
-}
+func Infofn(ctx context.Context, fn func() any) { _ = "STUB: not implemented"; return }
 
-// Infov writes v into access log with json content.
-func Infov(ctx context.Context, v any) {
-	getLogger(ctx).Infov(v)
-}
+func Infov(ctx context.Context, v any) { _ = "STUB: not implemented"; return }
 
-// Infow writes msg along with fields into the access log.
-func Infow(ctx context.Context, msg string, fields ...LogField) {
-	getLogger(ctx).Infow(msg, fields...)
-}
+func Infow(ctx context.Context, msg string, fields ...LogField) { _ = "STUB: not implemented"; return }
 
-// Must checks if err is nil, otherwise logs the error and exits.
-func Must(err error) {
-	logx.Must(err)
-}
+func Must(err error) { _ = "STUB: not implemented"; return }
 
-// MustSetup sets up logging with given config c. It exits on error.
-func MustSetup(c logx.LogConf) {
-	logx.MustSetup(c)
-}
+func MustSetup(c logx.LogConf) { _ = "STUB: not implemented"; return }
 
-// SetLevel sets the logging level. It can be used to suppress some logs.
-func SetLevel(level uint32) {
-	logx.SetLevel(level)
-}
+func SetLevel(level uint32) { _ = "STUB: not implemented"; return }
 
-// SetUp sets up the logx.
-// If already set up, return nil.
-// We allow SetUp to be called multiple times, because, for example,
-// we need to allow different service frameworks to initialize logx respectively.
-// The same logic for SetUp
-func SetUp(c LogConf) error {
-	return logx.SetUp(c)
-}
+func SetUp(c LogConf) error { _ = "STUB: not implemented"; return nil }
 
-// Slow writes v into slow log.
-func Slow(ctx context.Context, v ...any) {
-	getLogger(ctx).Slow(v...)
-}
+func Slow(ctx context.Context, v ...any) { _ = "STUB: not implemented"; return }
 
-// Slowf writes v with format into slow log.
-func Slowf(ctx context.Context, format string, v ...any) {
-	getLogger(ctx).Slowf(format, v...)
-}
+func Slowf(ctx context.Context, format string, v ...any) { _ = "STUB: not implemented"; return }
 
-// Slowfn writes fn result into slow log.
-// This is useful when the function is expensive to compute,
-// and we want to log it only when necessary.
-func Slowfn(ctx context.Context, fn func() any) {
-	getLogger(ctx).Slowfn(fn)
-}
+func Slowfn(ctx context.Context, fn func() any) { _ = "STUB: not implemented"; return }
 
-// Slowv writes v into slow log with json content.
-func Slowv(ctx context.Context, v any) {
-	getLogger(ctx).Slowv(v)
-}
+func Slowv(ctx context.Context, v any) { _ = "STUB: not implemented"; return }
 
-// Sloww writes msg along with fields into slow log.
-func Sloww(ctx context.Context, msg string, fields ...LogField) {
-	getLogger(ctx).Sloww(msg, fields...)
-}
+func Sloww(ctx context.Context, msg string, fields ...LogField) { _ = "STUB: not implemented"; return }
 
-// getLogger returns the logx.Logger with the given ctx and correct caller.
 func getLogger(ctx context.Context) logx.Logger {
-	return logx.WithContext(ctx).WithCallerSkip(1)
+	_ = "STUB: not implemented"
+	return *new(logx.Logger)
 }

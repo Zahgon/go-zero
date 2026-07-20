@@ -1,10 +1,7 @@
 package token
 
 import (
-	"fmt"
-
 	"github.com/zeromicro/go-zero/tools/goctl/pkg/parser/api/placeholder"
-	"github.com/zeromicro/go-zero/tools/goctl/util"
 )
 
 const (
@@ -18,99 +15,41 @@ const (
 	ImportKeyword = "import"
 )
 
-// Type is the type of token.
 type Type int
 
-// EofToken is the end of file token.
 var EofToken = Token{Type: EOF}
 
-// ErrorToken is the error token.
 var ErrorToken = Token{Type: error}
 
-// Token is the token of a rune.
 type Token struct {
 	Type     Type
 	Text     string
 	Position Position
 }
 
-// Fork forks token for a given Type.
-func (t Token) Fork(tp Type) Token {
-	return Token{
-		Type:     tp,
-		Text:     t.Text,
-		Position: t.Position,
-	}
-}
+func (t Token) Fork(tp Type) Token { _ = "STUB: not implemented"; return *new(Token) }
 
-// IsEmptyString returns true if the token is empty string.
-func (t Token) IsEmptyString() bool {
-	if t.Type != STRING && t.Type != RAW_STRING {
-		return false
-	}
-	text := util.TrimWhiteSpace(t.Text)
-	return text == `""` || text == "``"
-}
+func (t Token) IsEmptyString() bool { _ = "STUB: not implemented"; return false }
 
-// IsComment returns true if the token is comment.
-func (t Token) IsComment() bool {
-	return t.IsType(COMMENT)
-}
+func (t Token) IsComment() bool { _ = "STUB: not implemented"; return false }
 
-// IsDocument returns true if the token is document.
-func (t Token) IsDocument() bool {
-	return t.IsType(DOCUMENT)
-}
+func (t Token) IsDocument() bool { _ = "STUB: not implemented"; return false }
 
-// IsType returns true if the token is the given type.
-func (t Token) IsType(tp Type) bool {
-	return t.Type == tp
-}
+func (t Token) IsType(tp Type) bool { _ = "STUB: not implemented"; return false }
 
-// Line returns the line number of the token.
-func (t Token) Line() int {
-	return t.Position.Line
-}
+func (t Token) Line() int { _ = "STUB: not implemented"; return 0 }
 
-// String returns the string of the token.
-func (t Token) String() string {
-	if t == ErrorToken {
-		return t.Type.String()
-	}
-	return fmt.Sprintf("%s %s %s", t.Position.String(), t.Type.String(), t.Text)
-}
+func (t Token) String() string { _ = "STUB: not implemented"; return "" }
 
-// Valid returns true if the token is valid.
-func (t Token) Valid() bool {
-	return t.Type != token_bg
-}
+func (t Token) Valid() bool { _ = "STUB: not implemented"; return false }
 
-// IsKeyword returns true if the token is keyword.
-func (t Token) IsKeyword() bool {
-	return golang_keyword_beg < t.Type && t.Type < golang_keyword_end
-}
+func (t Token) IsKeyword() bool { _ = "STUB: not implemented"; return false }
 
-// IsBaseType returns true if the token is base type.
-func (t Token) IsBaseType() bool {
-	_, ok := baseDataType[t.Text]
-	return ok
-}
+func (t Token) IsBaseType() bool { _ = "STUB: not implemented"; return false }
 
-// IsHttpMethod returns true if the token is http method.
-func (t Token) IsHttpMethod() bool {
-	_, ok := httpMethod[t.Text]
-	return ok
-}
+func (t Token) IsHttpMethod() bool { _ = "STUB: not implemented"; return false }
 
-// Is returns true if the token text is one of the given list.
-func (t Token) Is(text ...string) bool {
-	for _, v := range text {
-		if t.Text == v {
-			return true
-		}
-	}
-	return false
-}
+func (t Token) Is(text ...string) bool { _ = "STUB: not implemented"; return false }
 
 const (
 	token_bg Type = iota
@@ -121,31 +60,31 @@ const (
 	DOCUMENT
 
 	literal_beg
-	IDENT      // main
-	INT        // 123
-	DURATION   // 3s,3ms
-	STRING     // "abc"
-	RAW_STRING // `abc`
-	PATH       // `abc`
+	IDENT
+	INT
+	DURATION
+	STRING
+	RAW_STRING
+	PATH
 	literal_end
 
 	operator_beg
-	SUB    // -
-	MUL    // *
-	QUO    // /
-	ASSIGN // =
+	SUB
+	MUL
+	QUO
+	ASSIGN
 
-	LPAREN // (
-	LBRACK // [
-	LBRACE // {
-	COMMA  // ,
-	DOT    // .
+	LPAREN
+	LBRACK
+	LBRACE
+	COMMA
+	DOT
 
-	RPAREN    // )
-	RBRACE    // }
-	RBRACK    // ]
-	SEMICOLON // ;
-	COLON     // :
+	RPAREN
+	RBRACE
+	RBRACK
+	SEMICOLON
+	COLON
 	ELLIPSIS
 	operator_end
 
@@ -191,13 +130,7 @@ const (
 	token_end
 )
 
-// String returns the string of the token type.
-func (t Type) String() string {
-	if t >= token_bg && t < token_end {
-		return tokens[t]
-	}
-	return ""
-}
+func (t Type) String() string { _ = "STUB: not implemented"; return "" }
 
 var tokens = [...]string{
 	ILLEGAL: "ILLEGAL",
@@ -267,7 +200,6 @@ var tokens = [...]string{
 	ANY:        "interface{}",
 }
 
-// HttpMethods returns the http methods.
 var HttpMethods = []interface{}{"get", "head", "post", "put", "patch", "delete", "connect", "options", "trace"}
 
 var httpMethod = map[string]placeholder.Type{
@@ -283,7 +215,7 @@ var httpMethod = map[string]placeholder.Type{
 }
 
 var keywords = map[string]Type{
-	// golang_keyword_bg
+
 	"break":    BREAK,
 	"case":     CASE,
 	"chan":     CHAN,
@@ -313,7 +245,6 @@ var keywords = map[string]Type{
 	"switch": SWITCH,
 	"type":   TYPE,
 	"var":    VAR,
-	// golang_keyword_end
 }
 
 var baseDataType = map[string]placeholder.Type{
@@ -339,17 +270,6 @@ var baseDataType = map[string]placeholder.Type{
 	"any":        placeholder.PlaceHolder,
 }
 
-// LookupKeyword returns the keyword type if the given ident is keyword.
-func LookupKeyword(ident string) (Type, bool) {
-	tp, ok := keywords[ident]
-	return tp, ok
-}
+func LookupKeyword(ident string) (Type, bool) { _ = "STUB: not implemented"; return *new(Type), false }
 
-// NewIllegalToken returns a new illegal token.
-func NewIllegalToken(b rune, pos Position) Token {
-	return Token{
-		Type:     ILLEGAL,
-		Text:     string(b),
-		Position: pos,
-	}
-}
+func NewIllegalToken(b rune, pos Position) Token { _ = "STUB: not implemented"; return *new(Token) }
