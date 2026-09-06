@@ -6,7 +6,7 @@ var (
 	varStringHome     string
 	varStringCategory string
 	varStringName     string
-	// Cmd describes a template command.
+
 	Cmd       = cobrax.NewCommand("template")
 	initCmd   = cobrax.NewCommand("init", cobrax.WithRunE(genTemplates))
 	cleanCmd  = cobrax.NewCommand("clean", cobrax.WithRunE(cleanTemplates))

@@ -1,12 +1,7 @@
 package converter
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/zeromicro/ddl-parser/parser"
-	"github.com/zeromicro/go-zero/tools/goctl/config"
-	"github.com/zeromicro/go-zero/tools/goctl/pkg/env"
 )
 
 var unsignedTypeMap = map[string]string{
@@ -18,8 +13,7 @@ var unsignedTypeMap = map[string]string{
 }
 
 var commonMysqlDataTypeMapInt = map[int]string{
-	// For consistency, all integer types are converted to int64
-	// number
+
 	parser.Bit:       "byte",
 	parser.TinyInt:   "int64",
 	parser.SmallInt:  "int64",
@@ -42,13 +36,13 @@ var commonMysqlDataTypeMapInt = map[int]string{
 	parser.Fixed:     "float64",
 	parser.Numeric:   "float64",
 	parser.Real:      "float64",
-	// date&time
+
 	parser.Date:      "time.Time",
 	parser.DateTime:  "time.Time",
 	parser.Timestamp: "time.Time",
 	parser.Time:      "string",
 	parser.Year:      "int64",
-	// string
+
 	parser.Char:            "string",
 	parser.VarChar:         "string",
 	parser.NVarChar:        "string",
@@ -70,13 +64,13 @@ var commonMysqlDataTypeMapInt = map[int]string{
 	parser.LongBlob:        "string",
 	parser.MediumBlob:      "string",
 	parser.TinyBlob:        "string",
-	// bool
+
 	parser.Bool:    "bool",
 	parser.Boolean: "bool",
 }
 
 var commonMysqlDataTypeMap = map[int]string{
-	// number
+
 	parser.Bit:       "bit",
 	parser.TinyInt:   "tinyint",
 	parser.SmallInt:  "smallint",
@@ -99,13 +93,13 @@ var commonMysqlDataTypeMap = map[int]string{
 	parser.Fixed:     "fixed",
 	parser.Numeric:   "numeric",
 	parser.Real:      "real",
-	// date&time
+
 	parser.Date:      "date",
 	parser.DateTime:  "datetime",
 	parser.Timestamp: "timestamp",
 	parser.Time:      "time",
 	parser.Year:      "year",
-	// string
+
 	parser.Char:            "char",
 	parser.VarChar:         "varchar",
 	parser.NVarChar:        "nvarchar",
@@ -127,18 +121,17 @@ var commonMysqlDataTypeMap = map[int]string{
 	parser.LongBlob:        "longblob",
 	parser.MediumBlob:      "mediumblob",
 	parser.TinyBlob:        "tinyblob",
-	// bool
+
 	parser.Bool:    "bool",
 	parser.Boolean: "boolean",
 }
 
 var commonMysqlDataTypeMapString = map[string]string{
-	// For consistency, all integer types are converted to int64
-	// bool
+
 	"bool":    "bool",
 	"_bool":   "pq.BoolArray",
 	"boolean": "bool",
-	// number
+
 	"tinyint":   "int64",
 	"smallint":  "int64",
 	"mediumint": "int64",
@@ -165,13 +158,13 @@ var commonMysqlDataTypeMapString = map[string]string{
 	"fixed":     "float64",
 	"real":      "float64",
 	"bit":       "byte",
-	// date & time
+
 	"date":      "time.Time",
 	"datetime":  "time.Time",
 	"timestamp": "time.Time",
 	"time":      "string",
 	"year":      "int64",
-	// string
+
 	"linestring":      "string",
 	"multilinestring": "string",
 	"nvarchar":        "string",
@@ -202,115 +195,23 @@ var commonMysqlDataTypeMapString = map[string]string{
 	"ltree":           "[]byte",
 }
 
-// ConvertDataType converts mysql column type into golang type
 func ConvertDataType(dataBaseType int, isDefaultNull, unsigned, strict bool) (string, string, error) {
-	if env.UseExperimental() {
-		tp, ok := commonMysqlDataTypeMap[dataBaseType]
-		if !ok {
-			return "", "", fmt.Errorf("unsupported database type: %v", dataBaseType)
-		}
-
-		goType, thirdPkg, _, err := ConvertStringDataType(tp, isDefaultNull, unsigned, strict)
-		return goType, thirdPkg, err
-	}
-
-	// the following are the old version compatibility code.
-	tp, ok := commonMysqlDataTypeMapInt[dataBaseType]
-	if !ok {
-		return "", "", fmt.Errorf("unsupported database type: %v", dataBaseType)
-	}
-
-	return mayConvertNullType(tp, isDefaultNull, unsigned, strict), "", nil
+	_ = "STUB: not implemented"
+	return "", "", nil
 }
 
-// ConvertStringDataType converts mysql column type into golang type
 func ConvertStringDataType(dataBaseType string, isDefaultNull, unsigned, strict bool) (
 	goType string, thirdPkg string, isPQArray bool, err error) {
-	if env.UseExperimental() {
-		customTp, thirdImport := convertDatatypeWithConfig(dataBaseType, isDefaultNull, unsigned)
-		if len(customTp) != 0 {
-			return customTp, thirdImport, false, nil
-		}
-
-		tp, ok := commonMysqlDataTypeMapString[strings.ToLower(dataBaseType)]
-		if !ok {
-			return "", "", false, fmt.Errorf("unsupported database type: %s", dataBaseType)
-		}
-
-		if strings.HasPrefix(dataBaseType, "_") {
-			return tp, "", true, nil
-		}
-
-		return mayConvertNullType(tp, isDefaultNull, unsigned, strict), "", false, nil
-	}
-
-	// the following are the old version compatibility code.
-	tp, ok := commonMysqlDataTypeMapString[strings.ToLower(dataBaseType)]
-	if !ok {
-		return "", "", false, fmt.Errorf("unsupported database type: %s", dataBaseType)
-	}
-
-	if strings.HasPrefix(dataBaseType, "_") {
-		return tp, "", true, nil
-	}
-
-	return mayConvertNullType(tp, isDefaultNull, unsigned, strict), "", false, nil
+	_ = "STUB: not implemented"
+	return "", "", false, nil
 }
 
 func convertDatatypeWithConfig(dataBaseType string, isDefaultNull, unsigned bool) (string, string) {
-	externalConfig, err := config.GetExternalConfig()
-	if err != nil {
-		return "", ""
-	}
-
-	opt, ok := externalConfig.Model.TypesMap[strings.ToLower(dataBaseType)]
-	if !ok || (len(opt.Type) == 0 && len(opt.UnsignedType) == 0 && len(opt.NullType) == 0) {
-		return "", ""
-	}
-
-	if isDefaultNull {
-		if len(opt.NullType) != 0 {
-			return opt.NullType, opt.Pkg
-		}
-	} else if unsigned {
-		if len(opt.UnsignedType) != 0 {
-			return opt.UnsignedType, opt.Pkg
-		}
-	}
-	return opt.Type, opt.Pkg
+	_ = "STUB: not implemented"
+	return "", ""
 }
 
 func mayConvertNullType(goDataType string, isDefaultNull, unsigned, strict bool) string {
-	if !isDefaultNull {
-		if unsigned && strict {
-			ret, ok := unsignedTypeMap[goDataType]
-			if ok {
-				return ret
-			}
-		}
-		return goDataType
-	}
-
-	switch goDataType {
-	case "int64":
-		return "sql.NullInt64"
-	case "int32":
-		return "sql.NullInt32"
-	case "float64":
-		return "sql.NullFloat64"
-	case "bool":
-		return "sql.NullBool"
-	case "string":
-		return "sql.NullString"
-	case "time.Time":
-		return "sql.NullTime"
-	default:
-		if unsigned {
-			ret, ok := unsignedTypeMap[goDataType]
-			if ok {
-				return ret
-			}
-		}
-		return goDataType
-	}
+	_ = "STUB: not implemented"
+	return ""
 }

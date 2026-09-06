@@ -1,11 +1,6 @@
 package dartgen
 
 import (
-	"bytes"
-	"os"
-	"strings"
-	"text/template"
-
 	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
 )
 
@@ -91,116 +86,13 @@ type DartSpec struct {
 }
 
 func genData(dir string, api *spec.ApiSpec, isLegacy bool) error {
-	err := os.MkdirAll(dir, 0o755)
-	if err != nil {
-		return err
-	}
-
-	err = genTokens(dir, isLegacy)
-	if err != nil {
-		return err
-	}
-
-	file, err := os.OpenFile(dir+strings.ToLower(api.Service.Name+".dart"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	t := template.New("dataTemplate")
-	t = t.Funcs(funcMap)
-	tpl := dataTemplateV2
-	if isLegacy {
-		tpl = dataTemplate
-	}
-	t, err = t.Parse(tpl)
-	if err != nil {
-		return err
-	}
-
-	err, dartSpec := convertDataType(api, isLegacy)
-	if err != nil {
-		return err
-	}
-
-	return t.Execute(file, dartSpec)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func genTokens(dir string, isLeagcy bool) error {
-	path := dir + "tokens.dart"
-	if fileExists(path) {
-		return nil
-	}
-
-	tokensFile, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
-	if err != nil {
-		return err
-	}
-
-	defer tokensFile.Close()
-	tpl := tokensFileContentV2
-	if isLeagcy {
-		tpl = tokensFileContent
-	}
-	_, err = tokensFile.WriteString(tpl)
-	return err
-}
+func genTokens(dir string, isLeagcy bool) error { _ = "STUB: not implemented"; return nil }
 
 func convertDataType(api *spec.ApiSpec, isLegacy bool) (error, *DartSpec) {
-	var result DartSpec
-	types := api.Types
-	if len(types) == 0 {
-		return nil, &result
-	}
-
-	for _, ty := range types {
-		defineStruct, ok := ty.(spec.DefineStruct)
-		if ok {
-			for index, member := range defineStruct.Members {
-				structMember, ok := member.Type.(spec.NestedStruct)
-				if ok {
-					defineStruct.Members[index].Type = spec.PrimitiveType{RawName: member.Name}
-					t := template.New("dataTemplate")
-					t = t.Funcs(funcMap)
-					tpl := dataTemplateV2
-					if isLegacy {
-						tpl = dataTemplate
-					}
-					t, err := t.Parse(tpl)
-					if err != nil {
-						return err, nil
-					}
-
-					var innerClassSpec = &spec.ApiSpec{
-						Types: []spec.Type{
-							spec.DefineStruct{
-								RawName: member.Name,
-								Members: structMember.Members,
-							},
-						},
-					}
-					err, dartSpec := convertDataType(innerClassSpec, isLegacy)
-					if err != nil {
-						return err, nil
-					}
-
-					writer := bytes.NewBuffer(nil)
-					err = t.Execute(writer, dartSpec)
-					if err != nil {
-						return err, nil
-					}
-					result.InnerClassList = append(result.InnerClassList, writer.String())
-				} else {
-					tp, err := specTypeToDart(member.Type)
-					if err != nil {
-						return err, nil
-					}
-					defineStruct.Members[index].Type = buildSpecType(member.Type, tp)
-				}
-			}
-		}
-	}
-	result.APISpec = api
-
-	return nil, &result
+	_ = "STUB: not implemented"
+	return nil, nil
 }

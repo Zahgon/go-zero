@@ -5,12 +5,8 @@ import "time"
 const defaultBulkTasks = 1000
 
 type (
-	// BulkOption defines the method to customize a BulkExecutor.
 	BulkOption func(options *bulkOptions)
 
-	// A BulkExecutor is an executor that can execute tasks on either requirement meets:
-	// 1. up to given size of tasks
-	// 2. flush interval time elapsed
 	BulkExecutor struct {
 		executor  *PeriodicalExecutor
 		container *bulkContainer
@@ -22,61 +18,25 @@ type (
 	}
 )
 
-// NewBulkExecutor returns a BulkExecutor.
 func NewBulkExecutor(execute Execute, opts ...BulkOption) *BulkExecutor {
-	options := newBulkOptions()
-	for _, opt := range opts {
-		opt(&options)
-	}
-
-	container := &bulkContainer{
-		execute:  execute,
-		maxTasks: options.cachedTasks,
-	}
-	executor := &BulkExecutor{
-		executor:  NewPeriodicalExecutor(options.flushInterval, container),
-		container: container,
-	}
-
-	return executor
-}
-
-// Add adds task into be.
-func (be *BulkExecutor) Add(task any) error {
-	be.executor.Add(task)
+	_ = "STUB: not implemented"
 	return nil
 }
 
-// Flush forces be to flush and execute tasks.
-func (be *BulkExecutor) Flush() {
-	be.executor.Flush()
-}
+func (be *BulkExecutor) Add(task any) error { _ = "STUB: not implemented"; return nil }
 
-// Wait waits be to done with the task execution.
-func (be *BulkExecutor) Wait() {
-	be.executor.Wait()
-}
+func (be *BulkExecutor) Flush() { _ = "STUB: not implemented"; return }
 
-// WithBulkTasks customizes a BulkExecutor with given tasks limit.
-func WithBulkTasks(tasks int) BulkOption {
-	return func(options *bulkOptions) {
-		options.cachedTasks = tasks
-	}
-}
+func (be *BulkExecutor) Wait() { _ = "STUB: not implemented"; return }
 
-// WithBulkInterval customizes a BulkExecutor with given flush interval.
+func WithBulkTasks(tasks int) BulkOption { _ = "STUB: not implemented"; return *new(BulkOption) }
+
 func WithBulkInterval(duration time.Duration) BulkOption {
-	return func(options *bulkOptions) {
-		options.flushInterval = duration
-	}
+	_ = "STUB: not implemented"
+	return *new(BulkOption)
 }
 
-func newBulkOptions() bulkOptions {
-	return bulkOptions{
-		cachedTasks:   defaultBulkTasks,
-		flushInterval: defaultFlushInterval,
-	}
-}
+func newBulkOptions() bulkOptions { _ = "STUB: not implemented"; return *new(bulkOptions) }
 
 type bulkContainer struct {
 	tasks    []any
@@ -84,18 +44,8 @@ type bulkContainer struct {
 	maxTasks int
 }
 
-func (bc *bulkContainer) AddTask(task any) bool {
-	bc.tasks = append(bc.tasks, task)
-	return len(bc.tasks) >= bc.maxTasks
-}
+func (bc *bulkContainer) AddTask(task any) bool { _ = "STUB: not implemented"; return false }
 
-func (bc *bulkContainer) Execute(tasks any) {
-	vals := tasks.([]any)
-	bc.execute(vals)
-}
+func (bc *bulkContainer) Execute(tasks any) { _ = "STUB: not implemented"; return }
 
-func (bc *bulkContainer) RemoveAll() any {
-	tasks := bc.tasks
-	bc.tasks = nil
-	return tasks
-}
+func (bc *bulkContainer) RemoveAll() any { _ = "STUB: not implemented"; return *new(any) }

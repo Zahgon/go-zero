@@ -1,12 +1,5 @@
 package discov
 
-import (
-	"fmt"
-	"strings"
-
-	"github.com/zeromicro/go-zero/core/discov/internal"
-)
-
 const (
 	_ = iota
 	indexOfId
@@ -14,28 +7,10 @@ const (
 
 const timeToLive int64 = 10
 
-// TimeToLive is seconds to live in etcd.
 var TimeToLive = timeToLive
 
-func extract(etcdKey string, index int) (string, bool) {
-	if index < 0 {
-		return "", false
-	}
+func extract(etcdKey string, index int) (string, bool) { _ = "STUB: not implemented"; return "", false }
 
-	fields := strings.FieldsFunc(etcdKey, func(ch rune) bool {
-		return ch == internal.Delimiter
-	})
-	if index >= len(fields) {
-		return "", false
-	}
+func extractId(etcdKey string) (string, bool) { _ = "STUB: not implemented"; return "", false }
 
-	return fields[index], true
-}
-
-func extractId(etcdKey string) (string, bool) {
-	return extract(etcdKey, indexOfId)
-}
-
-func makeEtcdKey(key string, id int64) string {
-	return fmt.Sprintf("%s%c%d", key, internal.Delimiter, id)
-}
+func makeEtcdKey(key string, id int64) string { _ = "STUB: not implemented"; return "" }

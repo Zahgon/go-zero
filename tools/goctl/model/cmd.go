@@ -7,7 +7,6 @@ import (
 )
 
 var (
-	// Cmd describes a model command.
 	Cmd             = cobrax.NewCommand("model")
 	mysqlCmd        = cobrax.NewCommand("mysql")
 	ddlCmd          = cobrax.NewCommand("ddl", cobrax.WithRunE(command.MysqlDDL))

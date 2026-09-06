@@ -3,12 +3,10 @@ package prof
 import "github.com/zeromicro/go-zero/core/utils"
 
 type (
-	// A ProfilePoint is a profile time point.
 	ProfilePoint struct {
 		*utils.ElapsedTimer
 	}
 
-	// A Profiler interface represents a profiler that used to report profile points.
 	Profiler interface {
 		Start() ProfilePoint
 		Report(name string, point ProfilePoint)
@@ -21,43 +19,20 @@ type (
 
 var profiler = newNullProfiler()
 
-// EnableProfiling enables profiling.
-func EnableProfiling() {
-	profiler = newRealProfiler()
-}
+func EnableProfiling() { _ = "STUB: not implemented"; return }
 
-// Start starts a Profiler, and returns a start profiling point.
-func Start() ProfilePoint {
-	return profiler.Start()
-}
+func Start() ProfilePoint { _ = "STUB: not implemented"; return *new(ProfilePoint) }
 
-// Report reports a ProfilePoint with given name.
-func Report(name string, point ProfilePoint) {
-	profiler.Report(name, point)
-}
+func Report(name string, point ProfilePoint) { _ = "STUB: not implemented"; return }
 
-func newRealProfiler() Profiler {
-	return &realProfiler{}
-}
+func newRealProfiler() Profiler { _ = "STUB: not implemented"; return *new(Profiler) }
 
-func (rp *realProfiler) Start() ProfilePoint {
-	return ProfilePoint{
-		ElapsedTimer: utils.NewElapsedTimer(),
-	}
-}
+func (rp *realProfiler) Start() ProfilePoint { _ = "STUB: not implemented"; return *new(ProfilePoint) }
 
-func (rp *realProfiler) Report(name string, point ProfilePoint) {
-	duration := point.Duration()
-	report(name, duration)
-}
+func (rp *realProfiler) Report(name string, point ProfilePoint) { _ = "STUB: not implemented"; return }
 
-func newNullProfiler() Profiler {
-	return &nullProfiler{}
-}
+func newNullProfiler() Profiler { _ = "STUB: not implemented"; return *new(Profiler) }
 
-func (np *nullProfiler) Start() ProfilePoint {
-	return ProfilePoint{}
-}
+func (np *nullProfiler) Start() ProfilePoint { _ = "STUB: not implemented"; return *new(ProfilePoint) }
 
-func (np *nullProfiler) Report(string, ProfilePoint) {
-}
+func (np *nullProfiler) Report(string, ProfilePoint) { _ = "STUB: not implemented"; return }

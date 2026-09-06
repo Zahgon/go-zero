@@ -1,10 +1,6 @@
 package dartgen
 
 import (
-	"os"
-	"strings"
-	"text/template"
-
 	"github.com/zeromicro/go-zero/tools/goctl/api/spec"
 )
 
@@ -53,51 +49,8 @@ Future {{normalizeHandlerName .Handler}}(
 {{end}}`
 
 func genApi(dir string, api *spec.ApiSpec, isLegacy bool) error {
-	err := os.MkdirAll(dir, 0o755)
-	if err != nil {
-		return err
-	}
-
-	err = genApiFile(dir, isLegacy)
-	if err != nil {
-		return err
-	}
-
-	file, err := os.OpenFile(dir+strings.ToLower(api.Service.Name+".dart"), os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
-	if err != nil {
-		return err
-	}
-
-	defer file.Close()
-	t := template.New("apiTemplate")
-	t = t.Funcs(funcMap)
-	tpl := apiTemplateV2
-	if isLegacy {
-		tpl = apiTemplate
-	}
-	t, err = t.Parse(tpl)
-	if err != nil {
-		return err
-	}
-
-	return t.Execute(file, api)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func genApiFile(dir string, isLegacy bool) error {
-	path := dir + "api.dart"
-	if fileExists(path) {
-		return nil
-	}
-	apiFile, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0o644)
-	if err != nil {
-		return err
-	}
-
-	defer apiFile.Close()
-	tpl := apiFileContentV2
-	if isLegacy {
-		tpl = apiFileContent
-	}
-	_, err = apiFile.WriteString(tpl)
-	return err
-}
+func genApiFile(dir string, isLegacy bool) error { _ = "STUB: not implemented"; return nil }

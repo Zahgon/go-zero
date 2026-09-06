@@ -18,10 +18,8 @@ var (
 )
 
 type (
-	// Option defines the method to customize a mongo model.
 	Option func(opts *clientOptions)
 
-	// TypeCodec is a struct that stores specific type Encoder/Decoder.
 	TypeCodec struct {
 		ValueType reflect.Type
 		Encoder   bson.ValueEncoder
@@ -31,43 +29,14 @@ type (
 	clientOptions = options.ClientOptions
 )
 
-// DisableLog disables logging of mongo commands, includes info and slow logs.
-func DisableLog() {
-	logMon.Set(false)
-	logSlowMon.Set(false)
-}
+func DisableLog() { _ = "STUB: not implemented"; return }
 
-// DisableInfoLog disables info logging of mongo commands, but keeps slow logs.
-func DisableInfoLog() {
-	logMon.Set(false)
-}
+func DisableInfoLog() { _ = "STUB: not implemented"; return }
 
-// SetSlowThreshold sets the slow threshold.
-func SetSlowThreshold(threshold time.Duration) {
-	slowThreshold.Set(threshold)
-}
+func SetSlowThreshold(threshold time.Duration) { _ = "STUB: not implemented"; return }
 
-// WithTimeout set the mon client operation timeout.
-func WithTimeout(timeout time.Duration) Option {
-	return func(opts *clientOptions) {
-		opts.SetTimeout(timeout)
-	}
-}
+func WithTimeout(timeout time.Duration) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-// WithTypeCodec registers TypeCodecs to convert custom types.
-func WithTypeCodec(typeCodecs ...TypeCodec) Option {
-	return func(opts *clientOptions) {
-		registry := bson.NewRegistry()
-		for _, v := range typeCodecs {
-			registry.RegisterTypeEncoder(v.ValueType, v.Encoder)
-			registry.RegisterTypeDecoder(v.ValueType, v.Decoder)
-		}
-		opts.SetRegistry(registry)
-	}
-}
+func WithTypeCodec(typeCodecs ...TypeCodec) Option { _ = "STUB: not implemented"; return *new(Option) }
 
-func defaultTimeoutOption() Option {
-	return func(opts *clientOptions) {
-		opts.SetTimeout(defaultTimeout)
-	}
-}
+func defaultTimeoutOption() Option { _ = "STUB: not implemented"; return *new(Option) }

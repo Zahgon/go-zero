@@ -25,7 +25,6 @@ var (
 	varStringServiceAccount  string
 	varStringImagePullPolicy string
 
-	// Cmd describes a kube command.
 	Cmd       = cobrax.NewCommand("kube")
 	deployCmd = cobrax.NewCommand("deploy", cobrax.WithRunE(deploymentCommand))
 )

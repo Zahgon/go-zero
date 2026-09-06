@@ -1,11 +1,5 @@
 package generator
 
-import (
-	"fmt"
-
-	"github.com/zeromicro/go-zero/tools/goctl/util/pathx"
-)
-
 const (
 	category                          = "rpc"
 	callTemplateFile                  = "call.tpl"
@@ -35,38 +29,12 @@ var templates = map[string]string{
 	rpcTemplateFile:           rpcTemplateText,
 }
 
-// GenTemplates is the entry for command goctl template,
-// it will create the specified category
-func GenTemplates() error {
-	return pathx.InitTemplates(category, templates)
-}
+func GenTemplates() error { _ = "STUB: not implemented"; return nil }
 
-// RevertTemplate restores the deleted template files
-func RevertTemplate(name string) error {
-	content, ok := templates[name]
-	if !ok {
-		return fmt.Errorf("%s: no such file name", name)
-	}
-	return pathx.CreateTemplate(category, name, content)
-}
+func RevertTemplate(name string) error { _ = "STUB: not implemented"; return nil }
 
-// Clean deletes all template files
-func Clean() error {
-	return pathx.Clean(category)
-}
+func Clean() error { _ = "STUB: not implemented"; return nil }
 
-// Update is used to update the template files, it will delete the existing old templates at first,
-// and then create the latest template files
-func Update() error {
-	err := Clean()
-	if err != nil {
-		return err
-	}
+func Update() error { _ = "STUB: not implemented"; return nil }
 
-	return pathx.InitTemplates(category, templates)
-}
-
-// Category returns a const string value for rpc template category
-func Category() string {
-	return category
-}
+func Category() string { _ = "STUB: not implemented"; return "" }

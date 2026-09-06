@@ -15,13 +15,8 @@ type contextValuer struct {
 }
 
 func (cv contextValuer) Value(key string) (any, bool) {
-	v := cv.Context.Value(key)
-	return v, v != nil
+	_ = "STUB: not implemented"
+	return *new(any), false
 }
 
-// For unmarshals ctx into v.
-func For(ctx context.Context, v any) error {
-	return unmarshaler.UnmarshalValuer(contextValuer{
-		Context: ctx,
-	}, v)
-}
+func For(ctx context.Context, v any) error { _ = "STUB: not implemented"; return nil }

@@ -4,31 +4,16 @@ package proc
 
 import "time"
 
-// ShutdownConf is empty on windows.
 type ShutdownConf struct{}
 
-// AddShutdownListener returns fn itself on windows, lets callers call fn on their own.
-func AddShutdownListener(fn func()) func() {
-	return fn
-}
+func AddShutdownListener(fn func()) func() { _ = "STUB: not implemented"; return nil }
 
-// AddWrapUpListener returns fn itself on windows, lets callers call fn on their own.
-func AddWrapUpListener(fn func()) func() {
-	return fn
-}
+func AddWrapUpListener(fn func()) func() { _ = "STUB: not implemented"; return nil }
 
-// SetTimeToForceQuit does nothing on windows.
-func SetTimeToForceQuit(duration time.Duration) {
-}
+func SetTimeToForceQuit(duration time.Duration) { _ = "STUB: not implemented"; return }
 
-// Setup does nothing on windows.
-func Setup(conf ShutdownConf) {
-}
+func Setup(conf ShutdownConf) { _ = "STUB: not implemented"; return }
 
-// Shutdown does nothing on windows.
-func Shutdown() {
-}
+func Shutdown() { _ = "STUB: not implemented"; return }
 
-// WrapUp does nothing on windows.
-func WrapUp() {
-}
+func WrapUp() { _ = "STUB: not implemented"; return }

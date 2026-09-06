@@ -3,7 +3,6 @@ package proc
 var noopStopper nilStopper
 
 type (
-	// Stopper interface wraps the method Stop.
 	Stopper interface {
 		Stop()
 	}
@@ -11,5 +10,4 @@ type (
 	nilStopper struct{}
 )
 
-func (ns nilStopper) Stop() {
-}
+func (ns nilStopper) Stop() { _ = "STUB: not implemented"; return }

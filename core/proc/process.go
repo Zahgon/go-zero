@@ -15,12 +15,6 @@ func init() {
 	pid = os.Getpid()
 }
 
-// Pid returns pid of current process.
-func Pid() int {
-	return pid
-}
+func Pid() int { _ = "STUB: not implemented"; return 0 }
 
-// ProcessName returns the processname, same as the command name.
-func ProcessName() string {
-	return procName
-}
+func ProcessName() string { _ = "STUB: not implemented"; return "" }

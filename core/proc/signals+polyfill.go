@@ -2,8 +2,4 @@
 
 package proc
 
-import "context"
-
-func Done() <-chan struct{} {
-	return context.Background().Done()
-}
+func Done() <-chan struct{} { _ = "STUB: not implemented"; return nil }

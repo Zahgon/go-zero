@@ -3,19 +3,14 @@ package kv
 import (
 	"context"
 	"errors"
-	"log"
 
-	"github.com/zeromicro/go-zero/core/errorx"
 	"github.com/zeromicro/go-zero/core/hash"
-	"github.com/zeromicro/go-zero/core/stores/cache"
 	"github.com/zeromicro/go-zero/core/stores/redis"
 )
 
-// ErrNoRedisNode is an error that indicates no redis node.
 var ErrNoRedisNode = errors.New("no redis node")
 
 type (
-	// Store interface represents a KV store.
 	Store interface {
 		Decr(key string) (int64, error)
 		DecrCtx(ctx context.Context, key string) (int64, error)
@@ -154,888 +149,620 @@ type (
 	}
 )
 
-// NewStore returns a Store.
-func NewStore(c KvConf) Store {
-	if len(c) == 0 || cache.TotalWeights(c) <= 0 {
-		log.Fatal("no cache nodes")
-	}
+func NewStore(c KvConf) Store { _ = "STUB: not implemented"; return *new(Store) }
 
-	// even if only one node, we chose to use consistent hash,
-	// because Store and redis.Redis has different methods.
-	dispatcher := hash.NewConsistentHash()
-	for _, node := range c {
-		cn := redis.MustNewRedis(node.RedisConf)
-		dispatcher.AddWithWeight(cn, node.Weight)
-	}
-
-	return clusterStore{
-		dispatcher: dispatcher,
-	}
-}
-
-func (cs clusterStore) Decr(key string) (int64, error) {
-	return cs.DecrCtx(context.Background(), key)
-}
+func (cs clusterStore) Decr(key string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (cs clusterStore) DecrCtx(ctx context.Context, key string) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.DecrCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Decrby(key string, decrement int64) (int64, error) {
-	return cs.DecrbyCtx(context.Background(), key, decrement)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) DecrbyCtx(ctx context.Context, key string, decrement int64) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.DecrbyCtx(ctx, key, decrement)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-func (cs clusterStore) Del(keys ...string) (int, error) {
-	return cs.DelCtx(context.Background(), keys...)
-}
+func (cs clusterStore) Del(keys ...string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (cs clusterStore) DelCtx(ctx context.Context, keys ...string) (int, error) {
-	var val int
-	var be errorx.BatchError
-
-	for _, key := range keys {
-		node, e := cs.getRedis(key)
-		if e != nil {
-			be.Add(e)
-			continue
-		}
-
-		if v, e := node.DelCtx(ctx, key); e != nil {
-			be.Add(e)
-		} else {
-			val += v
-		}
-	}
-
-	return val, be.Err()
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Eval(script, key string, args ...any) (any, error) {
-	return cs.EvalCtx(context.Background(), script, key, args...)
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
 func (cs clusterStore) EvalCtx(ctx context.Context, script, key string, args ...any) (any, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.EvalCtx(ctx, script, []string{key}, args...)
+	_ = "STUB: not implemented"
+	return *new(any), nil
 }
 
 func (cs clusterStore) Exists(key string) (bool, error) {
-	return cs.ExistsCtx(context.Background(), key)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) ExistsCtx(ctx context.Context, key string) (bool, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return false, err
-	}
-
-	return node.ExistsCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-func (cs clusterStore) Expire(key string, seconds int) error {
-	return cs.ExpireCtx(context.Background(), key, seconds)
-}
+func (cs clusterStore) Expire(key string, seconds int) error { _ = "STUB: not implemented"; return nil }
 
 func (cs clusterStore) ExpireCtx(ctx context.Context, key string, seconds int) error {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return err
-	}
-
-	return node.ExpireCtx(ctx, key, seconds)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (cs clusterStore) Expireat(key string, expireTime int64) error {
-	return cs.ExpireatCtx(context.Background(), key, expireTime)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (cs clusterStore) ExpireatCtx(ctx context.Context, key string, expireTime int64) error {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return err
-	}
-
-	return node.ExpireatCtx(ctx, key, expireTime)
+	_ = "STUB: not implemented"
+	return nil
 }
 
-func (cs clusterStore) Get(key string) (string, error) {
-	return cs.GetCtx(context.Background(), key)
-}
+func (cs clusterStore) Get(key string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
 func (cs clusterStore) GetCtx(ctx context.Context, key string) (string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return "", err
-	}
-
-	return node.GetCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (cs clusterStore) Hdel(key, field string) (bool, error) {
-	return cs.HdelCtx(context.Background(), key, field)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) HdelCtx(ctx context.Context, key, field string) (bool, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return false, err
-	}
-
-	return node.HdelCtx(ctx, key, field)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) Hexists(key, field string) (bool, error) {
-	return cs.HexistsCtx(context.Background(), key, field)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) HexistsCtx(ctx context.Context, key, field string) (bool, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return false, err
-	}
-
-	return node.HexistsCtx(ctx, key, field)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) Hget(key, field string) (string, error) {
-	return cs.HgetCtx(context.Background(), key, field)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (cs clusterStore) HgetCtx(ctx context.Context, key, field string) (string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return "", err
-	}
-
-	return node.HgetCtx(ctx, key, field)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (cs clusterStore) Hgetall(key string) (map[string]string, error) {
-	return cs.HgetallCtx(context.Background(), key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) HgetallCtx(ctx context.Context, key string) (map[string]string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.HgetallCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) Hincrby(key, field string, increment int) (int, error) {
-	return cs.HincrbyCtx(context.Background(), key, field, increment)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) HincrbyCtx(ctx context.Context, key, field string, increment int) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.HincrbyCtx(ctx, key, field, increment)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Hkeys(key string) ([]string, error) {
-	return cs.HkeysCtx(context.Background(), key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) HkeysCtx(ctx context.Context, key string) ([]string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.HkeysCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (cs clusterStore) Hlen(key string) (int, error) {
-	return cs.HlenCtx(context.Background(), key)
-}
+func (cs clusterStore) Hlen(key string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (cs clusterStore) HlenCtx(ctx context.Context, key string) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.HlenCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Hmget(key string, fields ...string) ([]string, error) {
-	return cs.HmgetCtx(context.Background(), key, fields...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) HmgetCtx(ctx context.Context, key string, fields ...string) ([]string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.HmgetCtx(ctx, key, fields...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (cs clusterStore) Hset(key, field, value string) error {
-	return cs.HsetCtx(context.Background(), key, field, value)
-}
+func (cs clusterStore) Hset(key, field, value string) error { _ = "STUB: not implemented"; return nil }
 
 func (cs clusterStore) HsetCtx(ctx context.Context, key, field, value string) error {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return err
-	}
-
-	return node.HsetCtx(ctx, key, field, value)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (cs clusterStore) Hsetnx(key, field, value string) (bool, error) {
-	return cs.HsetnxCtx(context.Background(), key, field, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) HsetnxCtx(ctx context.Context, key, field, value string) (bool, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return false, err
-	}
-
-	return node.HsetnxCtx(ctx, key, field, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) Hmset(key string, fieldsAndValues map[string]string) error {
-	return cs.HmsetCtx(context.Background(), key, fieldsAndValues)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (cs clusterStore) HmsetCtx(ctx context.Context, key string, fieldsAndValues map[string]string) error {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return err
-	}
-
-	return node.HmsetCtx(ctx, key, fieldsAndValues)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (cs clusterStore) Hvals(key string) ([]string, error) {
-	return cs.HvalsCtx(context.Background(), key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) HvalsCtx(ctx context.Context, key string) ([]string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.HvalsCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (cs clusterStore) Incr(key string) (int64, error) {
-	return cs.IncrCtx(context.Background(), key)
-}
+func (cs clusterStore) Incr(key string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (cs clusterStore) IncrCtx(ctx context.Context, key string) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.IncrCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Incrby(key string, increment int64) (int64, error) {
-	return cs.IncrbyCtx(context.Background(), key, increment)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) IncrbyCtx(ctx context.Context, key string, increment int64) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.IncrbyCtx(ctx, key, increment)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-func (cs clusterStore) Llen(key string) (int, error) {
-	return cs.LlenCtx(context.Background(), key)
-}
+func (cs clusterStore) Llen(key string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (cs clusterStore) LlenCtx(ctx context.Context, key string) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.LlenCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Lindex(key string, index int64) (string, error) {
-	return cs.LindexCtx(context.Background(), key, index)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (cs clusterStore) LindexCtx(ctx context.Context, key string, index int64) (string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return "", err
-	}
-
-	return node.LindexCtx(ctx, key, index)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
-func (cs clusterStore) Lpop(key string) (string, error) {
-	return cs.LpopCtx(context.Background(), key)
-}
+func (cs clusterStore) Lpop(key string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
 func (cs clusterStore) LpopCtx(ctx context.Context, key string) (string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return "", err
-	}
-
-	return node.LpopCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (cs clusterStore) Lpush(key string, values ...any) (int, error) {
-	return cs.LpushCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) LpushCtx(ctx context.Context, key string, values ...any) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.LpushCtx(ctx, key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Lrange(key string, start, stop int) ([]string, error) {
-	return cs.LrangeCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) LrangeCtx(ctx context.Context, key string, start, stop int) ([]string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.LrangeCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) Lrem(key string, count int, value string) (int, error) {
-	return cs.LremCtx(context.Background(), key, count, value)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) LremCtx(ctx context.Context, key string, count int, value string) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.LremCtx(ctx, key, count, value)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Persist(key string) (bool, error) {
-	return cs.PersistCtx(context.Background(), key)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) PersistCtx(ctx context.Context, key string) (bool, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return false, err
-	}
-
-	return node.PersistCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) Pfadd(key string, values ...any) (bool, error) {
-	return cs.PfaddCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) PfaddCtx(ctx context.Context, key string, values ...any) (bool, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return false, err
-	}
-
-	return node.PfaddCtx(ctx, key, values...)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
-func (cs clusterStore) Pfcount(key string) (int64, error) {
-	return cs.PfcountCtx(context.Background(), key)
-}
+func (cs clusterStore) Pfcount(key string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (cs clusterStore) PfcountCtx(ctx context.Context, key string) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.PfcountCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Rpush(key string, values ...any) (int, error) {
-	return cs.RpushCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) RpushCtx(ctx context.Context, key string, values ...any) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.RpushCtx(ctx, key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Sadd(key string, values ...any) (int, error) {
-	return cs.SaddCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) SaddCtx(ctx context.Context, key string, values ...any) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.SaddCtx(ctx, key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-func (cs clusterStore) Scard(key string) (int64, error) {
-	return cs.ScardCtx(context.Background(), key)
-}
+func (cs clusterStore) Scard(key string) (int64, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (cs clusterStore) ScardCtx(ctx context.Context, key string) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ScardCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-func (cs clusterStore) Set(key, value string) error {
-	return cs.SetCtx(context.Background(), key, value)
-}
+func (cs clusterStore) Set(key, value string) error { _ = "STUB: not implemented"; return nil }
 
 func (cs clusterStore) SetCtx(ctx context.Context, key, value string) error {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return err
-	}
-
-	return node.SetCtx(ctx, key, value)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (cs clusterStore) Setex(key, value string, seconds int) error {
-	return cs.SetexCtx(context.Background(), key, value, seconds)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (cs clusterStore) SetexCtx(ctx context.Context, key, value string, seconds int) error {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return err
-	}
-
-	return node.SetexCtx(ctx, key, value, seconds)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 func (cs clusterStore) Setnx(key, value string) (bool, error) {
-	return cs.SetnxCtx(context.Background(), key, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) SetnxCtx(ctx context.Context, key, value string) (bool, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return false, err
-	}
-
-	return node.SetnxCtx(ctx, key, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) SetnxEx(key, value string, seconds int) (bool, error) {
-	return cs.SetnxExCtx(context.Background(), key, value, seconds)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) SetnxExCtx(ctx context.Context, key, value string, seconds int) (bool, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return false, err
-	}
-
-	return node.SetnxExCtx(ctx, key, value, seconds)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) GetSet(key, value string) (string, error) {
-	return cs.GetSetCtx(context.Background(), key, value)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (cs clusterStore) GetSetCtx(ctx context.Context, key, value string) (string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return "", err
-	}
-
-	return node.GetSetCtx(ctx, key, value)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (cs clusterStore) Sismember(key string, value any) (bool, error) {
-	return cs.SismemberCtx(context.Background(), key, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) SismemberCtx(ctx context.Context, key string, value any) (bool, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return false, err
-	}
-
-	return node.SismemberCtx(ctx, key, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) Smembers(key string) ([]string, error) {
-	return cs.SmembersCtx(context.Background(), key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) SmembersCtx(ctx context.Context, key string) ([]string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.SmembersCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (cs clusterStore) Spop(key string) (string, error) {
-	return cs.SpopCtx(context.Background(), key)
-}
+func (cs clusterStore) Spop(key string) (string, error) { _ = "STUB: not implemented"; return "", nil }
 
 func (cs clusterStore) SpopCtx(ctx context.Context, key string) (string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return "", err
-	}
-
-	return node.SpopCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return "", nil
 }
 
 func (cs clusterStore) Srandmember(key string, count int) ([]string, error) {
-	return cs.SrandmemberCtx(context.Background(), key, count)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) SrandmemberCtx(ctx context.Context, key string, count int) ([]string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.SrandmemberCtx(ctx, key, count)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) Srem(key string, values ...any) (int, error) {
-	return cs.SremCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) SremCtx(ctx context.Context, key string, values ...any) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.SremCtx(ctx, key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Sscan(key string, cursor uint64, match string, count int64) (
 	keys []string, cur uint64, err error) {
-	return cs.SscanCtx(context.Background(), key, cursor, match, count)
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
 func (cs clusterStore) SscanCtx(ctx context.Context, key string, cursor uint64, match string, count int64) (
 	keys []string, cur uint64, err error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, 0, err
-	}
-
-	return node.SscanCtx(ctx, key, cursor, match, count)
+	_ = "STUB: not implemented"
+	return nil, 0, nil
 }
 
-func (cs clusterStore) Ttl(key string) (int, error) {
-	return cs.TtlCtx(context.Background(), key)
-}
+func (cs clusterStore) Ttl(key string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (cs clusterStore) TtlCtx(ctx context.Context, key string) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.TtlCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Zadd(key string, score int64, value string) (bool, error) {
-	return cs.ZaddCtx(context.Background(), key, score, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) ZaddFloat(key string, score float64, value string) (bool, error) {
-	return cs.ZaddFloatCtx(context.Background(), key, score, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) ZaddCtx(ctx context.Context, key string, score int64, value string) (bool, error) {
-	return cs.ZaddFloatCtx(ctx, key, float64(score), value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) ZaddFloatCtx(ctx context.Context, key string, score float64, value string) (bool, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return false, err
-	}
-
-	return node.ZaddFloatCtx(ctx, key, score, value)
+	_ = "STUB: not implemented"
+	return false, nil
 }
 
 func (cs clusterStore) Zadds(key string, ps ...redis.Pair) (int64, error) {
-	return cs.ZaddsCtx(context.Background(), key, ps...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) ZaddsCtx(ctx context.Context, key string, ps ...redis.Pair) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ZaddsCtx(ctx, key, ps...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
-func (cs clusterStore) Zcard(key string) (int, error) {
-	return cs.ZcardCtx(context.Background(), key)
-}
+func (cs clusterStore) Zcard(key string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
 func (cs clusterStore) ZcardCtx(ctx context.Context, key string) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ZcardCtx(ctx, key)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Zcount(key string, start, stop int64) (int, error) {
-	return cs.ZcountCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) ZcountCtx(ctx context.Context, key string, start, stop int64) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ZcountCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Zincrby(key string, increment int64, field string) (int64, error) {
-	return cs.ZincrbyCtx(context.Background(), key, increment, field)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) ZincrbyCtx(ctx context.Context, key string, increment int64, field string) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ZincrbyCtx(ctx, key, increment, field)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Zrank(key, field string) (int64, error) {
-	return cs.ZrankCtx(context.Background(), key, field)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) ZrankCtx(ctx context.Context, key, field string) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ZrankCtx(ctx, key, field)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Zrange(key string, start, stop int64) ([]string, error) {
-	return cs.ZrangeCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrangeCtx(ctx context.Context, key string, start, stop int64) ([]string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.ZrangeCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrangeWithScores(key string, start, stop int64) ([]redis.Pair, error) {
-	return cs.ZrangeWithScoresCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrangeWithScoresCtx(ctx context.Context, key string, start, stop int64) ([]redis.Pair, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.ZrangeWithScoresCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrangebyscoreWithScores(key string, start, stop int64) ([]redis.Pair, error) {
-	return cs.ZrangebyscoreWithScoresCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrangebyscoreWithScoresCtx(ctx context.Context, key string, start, stop int64) ([]redis.Pair, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.ZrangebyscoreWithScoresCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrangebyscoreWithScoresAndLimit(key string, start, stop int64, page, size int) (
 	[]redis.Pair, error) {
-	return cs.ZrangebyscoreWithScoresAndLimitCtx(context.Background(), key, start, stop, page, size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrangebyscoreWithScoresAndLimitCtx(ctx context.Context, key string, start, stop int64, page, size int) (
 	[]redis.Pair, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.ZrangebyscoreWithScoresAndLimitCtx(ctx, key, start, stop, page, size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) Zrem(key string, values ...any) (int, error) {
-	return cs.ZremCtx(context.Background(), key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) ZremCtx(ctx context.Context, key string, values ...any) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ZremCtx(ctx, key, values...)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Zremrangebyrank(key string, start, stop int64) (int, error) {
-	return cs.ZremrangebyrankCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) ZremrangebyrankCtx(ctx context.Context, key string, start, stop int64) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ZremrangebyrankCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Zremrangebyscore(key string, start, stop int64) (int, error) {
-	return cs.ZremrangebyscoreCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) ZremrangebyscoreCtx(ctx context.Context, key string, start, stop int64) (int, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ZremrangebyscoreCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Zrevrange(key string, start, stop int64) ([]string, error) {
-	return cs.ZrevrangeCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrevrangeCtx(ctx context.Context, key string, start, stop int64) ([]string, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.ZrevrangeCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrevrangebyscoreWithScores(key string, start, stop int64) ([]redis.Pair, error) {
-	return cs.ZrevrangebyscoreWithScoresCtx(context.Background(), key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrevrangebyscoreWithScoresCtx(ctx context.Context, key string, start, stop int64) ([]redis.Pair, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.ZrevrangebyscoreWithScoresCtx(ctx, key, start, stop)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrevrangebyscoreWithScoresAndLimit(key string, start, stop int64, page, size int) (
 	[]redis.Pair, error) {
-	return cs.ZrevrangebyscoreWithScoresAndLimitCtx(context.Background(), key, start, stop, page, size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) ZrevrangebyscoreWithScoresAndLimitCtx(ctx context.Context, key string, start, stop int64, page, size int) (
 	[]redis.Pair, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return nil, err
-	}
-
-	return node.ZrevrangebyscoreWithScoresAndLimitCtx(ctx, key, start, stop, page, size)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (cs clusterStore) Zrevrank(key, field string) (int64, error) {
-	return cs.ZrevrankCtx(context.Background(), key, field)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) ZrevrankCtx(ctx context.Context, key, field string) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ZrevrankCtx(ctx, key, field)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) Zscore(key, value string) (int64, error) {
-	return cs.ZscoreCtx(context.Background(), key, value)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) ZscoreCtx(ctx context.Context, key, value string) (int64, error) {
-	node, err := cs.getRedis(key)
-	if err != nil {
-		return 0, err
-	}
-
-	return node.ZscoreCtx(ctx, key, value)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (cs clusterStore) getRedis(key string) (*redis.Redis, error) {
-	val, ok := cs.dispatcher.Get(key)
-	if !ok {
-		return nil, ErrNoRedisNode
-	}
-
-	return val.(*redis.Redis), nil
+	_ = "STUB: not implemented"
+	return nil, nil
 }

@@ -8,7 +8,6 @@ import (
 )
 
 var (
-	// Cmd describes a rpc command.
 	Cmd = cobrax.NewCommand("rpc", cobrax.WithRunE(func(command *cobra.Command, strings []string) error {
 		return cli.RPCTemplate(true)
 	}))

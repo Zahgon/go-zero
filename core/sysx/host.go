@@ -16,7 +16,4 @@ func init() {
 	}
 }
 
-// Hostname returns the name of the host, if no hostname, a random id is returned.
-func Hostname() string {
-	return hostname
-}
+func Hostname() string { _ = "STUB: not implemented"; return "" }

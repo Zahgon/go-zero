@@ -1,12 +1,5 @@
 package util
 
-import (
-	"slices"
-	"strings"
-
-	"github.com/zeromicro/go-zero/tools/goctl/util/console"
-)
-
 var goKeyword = map[string]string{
 	"var":         "variable",
 	"const":       "constant",
@@ -34,98 +27,29 @@ var goKeyword = map[string]string{
 	"default":     "dft",
 }
 
-// Title returns a string value with s[0] which has been convert into upper case that
-// there are not empty input text
-func Title(s string) string {
-	if len(s) == 0 {
-		return s
-	}
+func Title(s string) string { _ = "STUB: not implemented"; return "" }
 
-	return strings.ToUpper(s[:1]) + s[1:]
-}
+func Untitle(s string) string { _ = "STUB: not implemented"; return "" }
 
-// Untitle returns a string value with s[0] which has been convert into lower case that
-// there are not empty input text
-func Untitle(s string) string {
-	if len(s) == 0 {
-		return s
-	}
+func Index(slice []string, item string) int { _ = "STUB: not implemented"; return 0 }
 
-	return strings.ToLower(s[:1]) + s[1:]
-}
+func SafeString(in string) string { _ = "STUB: not implemented"; return "" }
 
-// Index returns the index where the item equal,it will return -1 if mismatched
-// Deprecated: use slices.Index instead
-func Index(slice []string, item string) int {
-	return slices.Index(slice, item)
-}
+func isSafeRune(r rune) bool { _ = "STUB: not implemented"; return false }
 
-// SafeString converts the input string into a safe naming style in golang
-func SafeString(in string) string {
-	if len(in) == 0 {
-		return in
-	}
+func isLetter(r rune) bool { _ = "STUB: not implemented"; return false }
 
-	data := strings.Map(func(r rune) rune {
-		if isSafeRune(r) {
-			return r
-		}
-		return '_'
-	}, in)
+func isNumber(r rune) bool { _ = "STUB: not implemented"; return false }
 
-	headRune := rune(data[0])
-	if isNumber(headRune) {
-		return "_" + data
-	}
-	return data
-}
+func EscapeGolangKeyword(s string) string { _ = "STUB: not implemented"; return "" }
 
-func isSafeRune(r rune) bool {
-	return isLetter(r) || isNumber(r) || r == '_'
-}
+func isGolangKeyword(s string) bool { _ = "STUB: not implemented"; return false }
 
-func isLetter(r rune) bool {
-	return 'A' <= r && r <= 'z'
-}
+func TrimWhiteSpace(s string) string { _ = "STUB: not implemented"; return "" }
 
-func isNumber(r rune) bool {
-	return '0' <= r && r <= '9'
-}
-
-// EscapeGolangKeyword escapes the golang keywords.
-func EscapeGolangKeyword(s string) string {
-	if !isGolangKeyword(s) {
-		return s
-	}
-
-	r := goKeyword[s]
-	console.Info("[EscapeGolangKeyword]: go keyword is forbidden %q, converted into %q", s, r)
-	return r
-}
-
-func isGolangKeyword(s string) bool {
-	_, ok := goKeyword[s]
-	return ok
-}
-
-func TrimWhiteSpace(s string) string {
-	r := strings.NewReplacer(" ", "", "\t", "", "\n", "", "\f", "", "\r", "")
-	return r.Replace(s)
-}
-
-func IsEmptyStringOrWhiteSpace(s string) bool {
-	v := TrimWhiteSpace(s)
-	return len(v) == 0
-}
+func IsEmptyStringOrWhiteSpace(s string) bool { _ = "STUB: not implemented"; return false }
 
 func FieldsAndTrimSpace(s string, f func(r rune) bool) []string {
-	fields := strings.FieldsFunc(s, f)
-	var resp []string
-	for _, v := range fields {
-		val := TrimWhiteSpace(v)
-		if len(val) > 0 {
-			resp = append(resp, v)
-		}
-	}
-	return resp
+	_ = "STUB: not implemented"
+	return nil
 }

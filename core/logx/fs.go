@@ -19,22 +19,21 @@ type (
 	realFileSystem struct{}
 )
 
-func (fs realFileSystem) Close(closer io.Closer) error {
-	return closer.Close()
-}
+func (fs realFileSystem) Close(closer io.Closer) error { _ = "STUB: not implemented"; return nil }
 
 func (fs realFileSystem) Copy(writer io.Writer, reader io.Reader) (int64, error) {
-	return io.Copy(writer, reader)
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 func (fs realFileSystem) Create(name string) (*os.File, error) {
-	return os.Create(name)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 func (fs realFileSystem) Open(name string) (*os.File, error) {
-	return os.Open(name)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
-func (fs realFileSystem) Remove(name string) error {
-	return os.Remove(name)
-}
+func (fs realFileSystem) Remove(name string) error { _ = "STUB: not implemented"; return nil }

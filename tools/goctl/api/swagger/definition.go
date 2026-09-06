@@ -6,27 +6,11 @@ import (
 )
 
 func definitionsFromTypes(ctx Context, types []apiSpec.Type) spec.Definitions {
-	if !ctx.UseDefinitions {
-		return nil
-	}
-	definitions := make(spec.Definitions)
-	for _, tp := range types {
-		typeName := tp.Name()
-		definitions[typeName] = schemaFromType(ctx, tp)
-	}
-	return definitions
+	_ = "STUB: not implemented"
+	return *new(spec.Definitions)
 }
 
 func schemaFromType(ctx Context, tp apiSpec.Type) spec.Schema {
-	p, r := propertiesFromType(ctx, tp)
-	props := spec.SchemaProps{
-		Type:                 typeFromGoType(ctx, tp),
-		Properties:           p,
-		AdditionalProperties: mapFromGoType(ctx, tp),
-		Items:                itemsFromGoType(ctx, tp),
-		Required:             r,
-	}
-	return spec.Schema{
-		SchemaProps: props,
-	}
+	_ = "STUB: not implemented"
+	return *new(spec.Schema)
 }

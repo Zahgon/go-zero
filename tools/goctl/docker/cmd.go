@@ -13,7 +13,6 @@ var (
 	varStringVersion string
 	varStringTZ      string
 
-	// Cmd describes a docker command.
 	Cmd = cobrax.NewCommand("docker", cobrax.WithRunE(dockerCommand))
 )
 

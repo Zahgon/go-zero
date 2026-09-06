@@ -3,40 +3,38 @@ package color
 import "github.com/fatih/color"
 
 const (
-	// NoColor is no color for both foreground and background.
 	NoColor Color = iota
-	// FgBlack is the foreground color black.
+
 	FgBlack
-	// FgRed is the foreground color red.
+
 	FgRed
-	// FgGreen is the foreground color green.
+
 	FgGreen
-	// FgYellow is the foreground color yellow.
+
 	FgYellow
-	// FgBlue is the foreground color blue.
+
 	FgBlue
-	// FgMagenta is the foreground color magenta.
+
 	FgMagenta
-	// FgCyan is the foreground color cyan.
+
 	FgCyan
-	// FgWhite is the foreground color white.
+
 	FgWhite
 
-	// BgBlack is the background color black.
 	BgBlack
-	// BgRed is the background color red.
+
 	BgRed
-	// BgGreen is the background color green.
+
 	BgGreen
-	// BgYellow is the background color yellow.
+
 	BgYellow
-	// BgBlue is the background color blue.
+
 	BgBlue
-	// BgMagenta is the background color magenta.
+
 	BgMagenta
-	// BgCyan is the background color cyan.
+
 	BgCyan
-	// BgWhite is the background color white.
+
 	BgWhite
 )
 
@@ -61,13 +59,6 @@ var colors = map[Color][]color.Attribute{
 
 type Color uint32
 
-// WithColor returns a string with the given color applied.
-func WithColor(text string, colour Color) string {
-	c := color.New(colors[colour]...)
-	return c.Sprint(text)
-}
+func WithColor(text string, colour Color) string { _ = "STUB: not implemented"; return "" }
 
-// WithColorPadding returns a string with the given color applied with leading and trailing spaces.
-func WithColorPadding(text string, colour Color) string {
-	return WithColor(" "+text+" ", colour)
-}
+func WithColorPadding(text string, colour Color) string { _ = "STUB: not implemented"; return "" }

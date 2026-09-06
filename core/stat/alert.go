@@ -4,16 +4,12 @@ package stat
 
 import (
 	"flag"
-	"fmt"
-	"strings"
 	"sync"
-	"sync/atomic"
 	"time"
 
 	"github.com/zeromicro/go-zero/core/executors"
 	"github.com/zeromicro/go-zero/core/logx"
 	"github.com/zeromicro/go-zero/core/proc"
-	"github.com/zeromicro/go-zero/core/sysx"
 )
 
 const (
@@ -35,36 +31,6 @@ func init() {
 	}
 }
 
-// Report reports given message.
-func Report(msg string) {
-	lock.RLock()
-	fn := reporter
-	lock.RUnlock()
+func Report(msg string) { _ = "STUB: not implemented"; return }
 
-	if fn != nil {
-		reported := lessExecutor.DoOrDiscard(func() {
-			var builder strings.Builder
-			builder.WriteString(fmt.Sprintln(time.Now().Format(time.DateTime)))
-			if len(clusterName) > 0 {
-				builder.WriteString(fmt.Sprintf("cluster: %s\n", clusterName))
-			}
-			builder.WriteString(fmt.Sprintf("host: %s\n", sysx.Hostname()))
-			dp := atomic.SwapInt32(&dropped, 0)
-			if dp > 0 {
-				builder.WriteString(fmt.Sprintf("dropped: %d\n", dp))
-			}
-			builder.WriteString(strings.TrimSpace(msg))
-			fn(builder.String())
-		})
-		if !reported {
-			atomic.AddInt32(&dropped, 1)
-		}
-	}
-}
-
-// SetReporter sets the given reporter.
-func SetReporter(fn func(string)) {
-	lock.Lock()
-	defer lock.Unlock()
-	reporter = fn
-}
+func SetReporter(fn func(string)) { _ = "STUB: not implemented"; return }

@@ -1,8 +1,5 @@
 package metric
 
-import "github.com/zeromicro/go-zero/core/prometheus"
-
-// A VectorOpts is a general configuration.
 type VectorOpts struct {
 	Namespace string
 	Subsystem string
@@ -11,10 +8,4 @@ type VectorOpts struct {
 	Labels    []string
 }
 
-func update(fn func()) {
-	if !prometheus.Enabled() {
-		return
-	}
-
-	fn()
-}
+func update(fn func()) { _ = "STUB: not implemented"; return }

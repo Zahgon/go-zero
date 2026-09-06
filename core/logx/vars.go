@@ -7,15 +7,14 @@ import (
 )
 
 const (
-	// DebugLevel logs everything
 	DebugLevel uint32 = iota
-	// InfoLevel does not include debugs
+
 	InfoLevel
-	// ErrorLevel includes errors, slows, stacks
+
 	ErrorLevel
-	// SevereLevel only log severe messages
+
 	SevereLevel
-	// disableLevel doesn't log any messages
+
 	disableLevel = 0xff
 )
 
@@ -64,11 +63,10 @@ const (
 )
 
 var (
-	// ErrLogPathNotSet is an error that indicates the log path is not set.
 	ErrLogPathNotSet = errors.New("log path must be set")
-	// ErrLogServiceNameNotSet is an error that indicates that the service name is not set.
+
 	ErrLogServiceNameNotSet = errors.New("log service name must be set")
-	// ExitOnFatal defines whether to exit on fatal errors, defined here to make it easier to test.
+
 	ExitOnFatal = syncx.ForAtomicBool(true)
 
 	truncatedField = Field(truncatedKey, true)

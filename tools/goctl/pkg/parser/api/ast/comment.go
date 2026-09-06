@@ -1,75 +1,36 @@
 package ast
 
 import (
-	"strings"
-
 	"github.com/zeromicro/go-zero/tools/goctl/pkg/parser/api/token"
-	"github.com/zeromicro/go-zero/tools/goctl/util"
 )
 
-// CommentGroup represents a list of comments.
 type CommentGroup []*CommentStmt
 
-// List returns the list of comments.
-func (cg CommentGroup) List() []string {
-	var list = make([]string, 0, len(cg))
-	for _, v := range cg {
-		comment := v.Comment.Text
-		if util.IsEmptyStringOrWhiteSpace(comment) {
-			continue
-		}
-		list = append(list, comment)
-	}
-	return list
-}
+func (cg CommentGroup) List() []string { _ = "STUB: not implemented"; return nil }
 
-// String joins and returns the comment text.
-func (cg CommentGroup) String() string {
-	return cg.Join(" ")
-}
+func (cg CommentGroup) String() string { _ = "STUB: not implemented"; return "" }
 
-// Join joins the comments with the given separator.
-func (cg CommentGroup) Join(sep string) string {
-	if !cg.Valid() {
-		return ""
-	}
-	list := cg.List()
-	return strings.Join(list, sep)
-}
+func (cg CommentGroup) Join(sep string) string { _ = "STUB: not implemented"; return "" }
 
-// Valid returns true if the comment is valid.
-func (cg CommentGroup) Valid() bool {
-	return len(cg) > 0
-}
+func (cg CommentGroup) Valid() bool { _ = "STUB: not implemented"; return false }
 
-// CommentStmt represents a comment statement.
 type CommentStmt struct {
-	// Comment is the comment token.
 	Comment token.Token
 }
 
-func (c *CommentStmt) HasHeadCommentGroup() bool {
-	return false
-}
+func (c *CommentStmt) HasHeadCommentGroup() bool { _ = "STUB: not implemented"; return false }
 
-func (c *CommentStmt) HasLeadingCommentGroup() bool {
-	return false
-}
+func (c *CommentStmt) HasLeadingCommentGroup() bool { _ = "STUB: not implemented"; return false }
 
 func (c *CommentStmt) CommentGroup() (head, leading CommentGroup) {
-	return
+	_ = "STUB: not implemented"
+	return *new(CommentGroup), *new(CommentGroup)
 }
 
-func (c *CommentStmt) stmtNode() {}
+func (c *CommentStmt) stmtNode() { _ = "STUB: not implemented"; return }
 
-func (c *CommentStmt) Pos() token.Position {
-	return c.Comment.Position
-}
+func (c *CommentStmt) Pos() token.Position { _ = "STUB: not implemented"; return *new(token.Position) }
 
-func (c *CommentStmt) End() token.Position {
-	return c.Comment.Position
-}
+func (c *CommentStmt) End() token.Position { _ = "STUB: not implemented"; return *new(token.Position) }
 
-func (c *CommentStmt) Format(prefix ...string) string {
-	return peekOne(prefix) + c.Comment.Text
-}
+func (c *CommentStmt) Format(prefix ...string) string { _ = "STUB: not implemented"; return "" }

@@ -6,7 +6,6 @@ const (
 	drop
 )
 
-// bucket defines the bucket that holds sum and num of additions.
 type bucket struct {
 	Sum     int64
 	Success int64
@@ -14,35 +13,12 @@ type bucket struct {
 	Drop    int64
 }
 
-func (b *bucket) Add(v int64) {
-	switch v {
-	case fail:
-		b.fail()
-	case drop:
-		b.drop()
-	default:
-		b.succeed()
-	}
-}
+func (b *bucket) Add(v int64) { _ = "STUB: not implemented"; return }
 
-func (b *bucket) Reset() {
-	b.Sum = 0
-	b.Success = 0
-	b.Failure = 0
-	b.Drop = 0
-}
+func (b *bucket) Reset() { _ = "STUB: not implemented"; return }
 
-func (b *bucket) drop() {
-	b.Sum++
-	b.Drop++
-}
+func (b *bucket) drop() { _ = "STUB: not implemented"; return }
 
-func (b *bucket) fail() {
-	b.Sum++
-	b.Failure++
-}
+func (b *bucket) fail() { _ = "STUB: not implemented"; return }
 
-func (b *bucket) succeed() {
-	b.Sum++
-	b.Success++
-}
+func (b *bucket) succeed() { _ = "STUB: not implemented"; return }

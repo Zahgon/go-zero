@@ -1,23 +1,7 @@
 package cache
 
-import "strings"
-
 const keySeparator = ","
 
-// TotalWeights returns the total weights of given nodes.
-func TotalWeights(c []NodeConf) int {
-	var weights int
+func TotalWeights(c []NodeConf) int { _ = "STUB: not implemented"; return 0 }
 
-	for _, node := range c {
-		if node.Weight < 0 {
-			node.Weight = 0
-		}
-		weights += node.Weight
-	}
-
-	return weights
-}
-
-func formatKeys(keys []string) string {
-	return strings.Join(keys, keySeparator)
-}
+func formatKeys(keys []string) string { _ = "STUB: not implemented"; return "" }

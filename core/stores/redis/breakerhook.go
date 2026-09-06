@@ -1,8 +1,6 @@
 package redis
 
 import (
-	"context"
-
 	red "github.com/redis/go-redis/v9"
 	"github.com/zeromicro/go-zero/core/breaker"
 	"github.com/zeromicro/go-zero/core/lang"
@@ -18,25 +16,16 @@ type breakerHook struct {
 }
 
 func (h breakerHook) DialHook(next red.DialHook) red.DialHook {
-	return next
+	_ = "STUB: not implemented"
+	return *new(red.DialHook)
 }
 
 func (h breakerHook) ProcessHook(next red.ProcessHook) red.ProcessHook {
-	return func(ctx context.Context, cmd red.Cmder) error {
-		if _, ok := ignoreCmds[cmd.Name()]; ok {
-			return next(ctx, cmd)
-		}
-
-		return h.brk.DoWithAcceptableCtx(ctx, func() error {
-			return next(ctx, cmd)
-		}, acceptable)
-	}
+	_ = "STUB: not implemented"
+	return *new(red.ProcessHook)
 }
 
 func (h breakerHook) ProcessPipelineHook(next red.ProcessPipelineHook) red.ProcessPipelineHook {
-	return func(ctx context.Context, cmds []red.Cmder) error {
-		return h.brk.DoWithAcceptableCtx(ctx, func() error {
-			return next(ctx, cmds)
-		}, acceptable)
-	}
+	_ = "STUB: not implemented"
+	return *new(red.ProcessPipelineHook)
 }

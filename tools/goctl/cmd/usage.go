@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-
 	"github.com/gookit/color"
 )
 
@@ -27,21 +25,10 @@ var colorRender = []func(v any) string{
 	},
 }
 
-func blue(s string) string {
-	return color.LightBlue.Render(s)
-}
+func blue(s string) string { _ = "STUB: not implemented"; return "" }
 
-func green(s string) string {
-	return color.LightGreen.Render(s)
-}
+func green(s string) string { _ = "STUB: not implemented"; return "" }
 
-func rainbow(s string) string {
-	s0 := s[0]
-	return colorRender[int(s0)%(len(colorRender)-1)](s)
-}
+func rainbow(s string) string { _ = "STUB: not implemented"; return "" }
 
-// rpadx adds padding to the right of a string.
-func rpadx(s string, padding int) string {
-	template := fmt.Sprintf("%%-%ds", padding)
-	return rainbow(fmt.Sprintf(template, s))
-}
+func rpadx(s string, padding int) string { _ = "STUB: not implemented"; return "" }
